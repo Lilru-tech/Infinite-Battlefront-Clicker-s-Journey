@@ -1,0 +1,21 @@
+{
+  "name": "package",
+  "version": "1.0.0",
+  "description": "Idle Game",
+  "main": "server.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Lilru-tech/Infinite-Battlefront-Clicker-s-Journey"
+  },
+  "keywords": [
+    "none"
+  ],
+  "author": "Lilru",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

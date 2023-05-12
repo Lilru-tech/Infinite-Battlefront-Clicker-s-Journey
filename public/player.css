@@ -1,0 +1,93 @@
+  /* Set the health bar style for player */
+  #playerHealthBar {
+    width: 80%;
+    height: 20px;
+    background-color: #f2f2f2;
+    overflow: hidden;
+    grid-column: 1 / span 3;
+  }
+
+  .player-health {
+    height: 100%;
+    background-color: #2ecc71;
+    border-radius: 3px;
+    transition: width 0.5s ease-in-out;
+  }
+  
+  #playerHealth {
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    background-color: #4CAF50;
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  /* Set the image size and margin */
+#playerImage {
+    width: 200px;
+    height: 200px;
+    margin-top: 10px;
+    border-radius: 5px;
+    grid-column: 1 / span 2;
+    margin-bottom: 10px;
+  }
+  
+  /* Set the image size and margin */
+  #playerDeadImage {
+    width: 500px;
+    height: 500px;
+    grid-column: 1 / span 2;
+    margin-top: 10px;
+    display: none;
+    border-radius: 5px;
+  }
+
+  #experienceBarContainer {
+    border: 2px solid #000;
+    border-radius: 5px;
+    width: 80%;
+    background-color: #d1bebe;
+  }
+  
+  #experienceBar {
+    height: 20px;
+    background-color: #f2f2f2;
+    overflow: hidden;
+  }
+  
+  #experience {
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    background-color: #4c7daf;
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  #experienceCount,
+  #levelUpExperience {
+    position: relative;
+    z-index: 1;
+  }
+  
+  #experienceCount {
+    margin-right: 5px;
+  }
+  
+  #levelUpExperience {
+    margin-left: 5px;
+  }
