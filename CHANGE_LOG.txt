@@ -1,0 +1,6 @@
+ponernombre repo git
+Last Version: 1.0.0
+
+Version history
+*1.0.0
+Start base project
