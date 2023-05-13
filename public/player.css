@@ -9,7 +9,7 @@
 
   .player-health {
     height: 100%;
-    background-color: #2ecc71;
+    background-color: #accc2e;
     border-radius: 3px;
     transition: width 0.5s ease-in-out;
   }
@@ -77,17 +77,10 @@
     justify-content: center;
     align-items: center;
   }
-  
-  #experienceCount,
-  #levelUpExperience {
-    position: relative;
-    z-index: 1;
-  }
-  
-  #experienceCount {
-    margin-right: 5px;
-  }
-  
-  #levelUpExperience {
-    margin-left: 5px;
+
+  .player-experience {
+    height: 100%;
+    background-color: #2ecc71;
+    border-radius: 5px;
+    transition: width 0.5s ease-in-out;
   }

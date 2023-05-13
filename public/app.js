@@ -12,11 +12,15 @@ let currentPlayerHealth;
 let playerHealth = 100;
 let deathCount = 0;
 let criticalChance = 0;
-let criticalDamage = 0;
+let criticalDamage = 100;
 let maxDamageDealt = 0;
 let maxDamageTaken = 0;
 let monsterKills = 0;
+let damageDealt = 0;
+let damageBlocked = 0;
 
+const centerDiv = document.getElementById('center');
+const leftDiv = document.getElementById('left');
 const clickButton = document.getElementById('clickButton');
 const moneyCountSpan = document.getElementById('moneyCount');
 const experienceCountSpan = document.getElementById('experienceCount');
@@ -45,11 +49,51 @@ const experienceBar = document.getElementById('experienceBar');
 const levelUpExperienceSpan = document.getElementById('levelUpExperience');
 attackSpan.textContent = attack;
 defenseSpan.textContent = defense;
+criticalChanceSpan.textContent = criticalChance+ "%";
+criticalDamageSpan.textContent = criticalDamage+ "%";
 restoreHealthButton.style.display = 'none';
 hardRestoreHealthButton.style.display = 'none';
 playerImage.style.display = 'block';
 playerDeadImage.style.display = 'none';
 dead.style.display = 'none';
+
+  const vocationImages = {
+    Knight: {
+      alive: 'player.png',
+      dead: 'playerDead.png'
+    },
+    Mage: {
+      alive: 'player2.png',
+      dead: 'playerDead2.png'
+    },
+    Elf: {
+      alive: 'player3.png',
+      dead: 'playerDead3.png'
+    },
+    Warrior: {
+      alive: 'player4.png',
+      dead: 'playerDead4.png'
+    },
+    Druid: {
+      alive: 'player5.png',
+      dead: 'playerDead5.png'
+    },
+    Paladin: {
+      alive: 'player6.png',
+      dead: 'playerDead6.png'
+    },
+  };
+
+  const selectedVocation = localStorage.getItem('selectedVocation');
+  const playerImageElement = document.getElementById('playerImage');
+  const playerDeadImageElement = document.getElementById('playerDeadImage');
+
+  if (vocationImages.hasOwnProperty(selectedVocation)) {
+    const vocationImagesData = vocationImages[selectedVocation];
+    playerImageElement.src = `sprites/${vocationImagesData.alive}`;
+    playerDeadImageElement.src = `sprites/${vocationImagesData.dead}`;
+  }
+
 
 if (leftFoldableContainer.style.display === 'block') {
   statsButton.innerHTML = 'Stats';
@@ -80,32 +124,10 @@ logStyle.addEventListener('click', () => {
 });
 
 clickButton.addEventListener('click', function() {
-  const damageDealt = Math.floor(Math.random() * 8) + attack - 5;
-  const damageBlocked = Math.floor(Math.random() * (defense / 2)) + (defense / 2);
-  if (damageDealt > maxDamageDealt) {
-    maxDamageDealt = damageDealt;
-    topDamageDealt.textContent = maxDamageDealt;
-  }
-  currentMonsterHealth -= damageDealt;
-  updateHealthBar();
-  // take damage from the monster
-  const monsterAttack = Math.floor(Math.random() * 50) + 1;
-  const damageTaken = Math.max(0, monsterAttack - damageBlocked);
-  if (damageTaken > maxDamageTaken) {
-    maxDamageTaken = damageTaken;
-    topDamageTaken.textContent = maxDamageTaken;
-  }
-  currentPlayerHealth -= damageTaken;
+  calculateDamage(attack);
+  calculateDamageBlocked(defense);
+  updateExperienceBar(experienceCount, levelUpExperience(level));
   updatePlayerHealthBar();
-  if (damageTaken === 0){
-    const monsterDamageLog = "You blocked the monster attack!.\n";
-    const playerDamageLog = "You dealt " + damageDealt + " damage to the monster.\n";
-    updateLog(monsterDamageLog + playerDamageLog);
-  } else {
-    const monsterDamageLog = "The monster did " + damageTaken + " damage to you.\n";
-    const playerDamageLog = "You dealt " + damageDealt + " damage to the monster.\n";
-    updateLog(monsterDamageLog + playerDamageLog);
-  }
 
 // Create the restoreHealthButton element
 const restoreHealthButton = document.createElement('button');
@@ -131,10 +153,10 @@ overlay.appendChild(hardRestoreHealthButton);
 
 // Define function to handle player death
 function handlePlayerDeath() {
-  healthBarContainer.style.display = 'none';
-  monsterImage.style.display = 'none';
-  clickButton.style.display = 'none';
-  playerImage.style.display = 'none';
+  leftDiv.style.display = 'none';
+  centerDiv.style.display = 'none';
+  hideShop.style.display = 'none';
+  rightFoldableContainer.style.display = 'none';
   playerDeadImage.style.display = 'block';
 
   showDeadOverlay();
@@ -149,6 +171,7 @@ function handlePlayerDeath() {
 }
 
 restoreHealthButton.addEventListener('click', () => {
+  updateExperienceBar(experienceCount, levelUpExperience(level));
   const reviveCost = 100;
   const experienceLost = experienceCount - Math.floor(experienceCount * 0.99);
   moneyCount -= reviveCost;
@@ -156,15 +179,14 @@ restoreHealthButton.addEventListener('click', () => {
   experienceCount -= experienceLost;
   updatePlayerHealthBar();
   moneyCountSpan.textContent = moneyCount;
-  experienceCountSpan.textContent = experienceCount;
-  clickButton.style.display = 'block';
+  leftDiv.style.display = 'flex';
+  centerDiv.style.display = 'flex';
+  hideShop.style.display = 'block';
+  rightFoldableContainer.style.display = 'block';
   restoreHealthButton.style.display = 'none';
   dead.style.display = 'none';
-  healthBarContainer.style.display = 'block';
-  monsterImage.style.display = 'block';
-  playerImage.style.display = 'block';
   playerDeadImage.style.display = 'none';
-  updateLog("You lost " + experienceLost + " experience points.\n");
+  updateLog("You died, lost " + experienceLost + " experience points.\n");
   deathCount++;
   deathCountSpan.textContent = deathCount;        
   const overlay = document.getElementById('overlay');
@@ -173,21 +195,21 @@ restoreHealthButton.addEventListener('click', () => {
 });
 
 hardRestoreHealthButton.addEventListener('click', () => {
+  updateExperienceBar(experienceCount, levelUpExperience(level));
   const hardExperienceLost = experienceCount - Math.floor(experienceCount * 0.90);
   updateLog("You don't have enough money, so you will lose 10% of your experience!");
   currentPlayerHealth = playerHealth;
   experienceCount -= hardExperienceLost;
   updatePlayerHealthBar();
   moneyCountSpan.textContent = moneyCount;
-  experienceCountSpan.textContent = experienceCount;
-  clickButton.style.display = 'block';
+  leftDiv.style.display = 'flex';
+  centerDiv.style.display = 'flex';
+  hideShop.style.display = 'block';
+  rightFoldableContainer.style.display = 'block';
   hardRestoreHealthButton.style.display = 'none';
   dead.style.display = 'none';
-  healthBarContainer.style.display = 'block';
-  monsterImage.style.display = 'block';
-  playerImage.style.display = 'block';
   playerDeadImage.style.display = 'none';
-  updateLog("You lost " + hardExperienceLost + " experience points.\n");
+  updateLog("You died, you lost " + hardExperienceLost + " experience points.\n");
   deathCount++;
   deathCountSpan.textContent = deathCount;   
     const overlay = document.getElementById('overlay');
@@ -199,17 +221,18 @@ hardRestoreHealthButton.addEventListener('click', () => {
 if (currentPlayerHealth <= 0) {
   updateLog("You have been killed by the monster!");
   handlePlayerDeath();
+  updateExperienceBar(experienceCount, levelUpExperience(level));
 }
 
 
   if (currentMonsterHealth <= 0) {
     defeatMonster();
     monsterKills++;
+    updateExperienceBar(experienceCount, levelUpExperience(level));
   }
 
   // Update counters
   moneyCountSpan.textContent = moneyCount;
-  experienceCountSpan.textContent = experienceCount;
   monsterKillSpan.textContent = monsterKills;
 });
 

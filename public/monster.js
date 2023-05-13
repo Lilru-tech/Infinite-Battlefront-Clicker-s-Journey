@@ -6,9 +6,9 @@ function updateHealthBar() {
     } else if (healthPercentage > 50) {
       healthBar.style.backgroundColor = 'orange';
     } else if (healthPercentage > 30){
-        healthBar.style.backgroundColor = 'yellow'
+        healthBar.style.backgroundColor = '#d8fb17'
     } else if (healthPercentage > 5){
-        healthBar.style.backgroundColor = 'red'
+        healthBar.style.backgroundColor = '#9b2c2c'
     } else {
       healthBar.style.backgroundColor = 'black';
     }
@@ -33,7 +33,7 @@ function updateHealthBar() {
     spawnMonster();
 
     // Gain experience and money
-const experience = Math.floor(Math.random() * 50) + 1;
+const experience = Math.floor(Math.random() * 100) + 1;
 experienceCount += experience;
 experienceCountSpan.textContent = experienceCount;
 const experienceMessage = "You have earned "+experience+" experience points.\n";
@@ -49,6 +49,6 @@ if (Math.random() <= 1.0) {
 updateLog(experienceMessage + moneyMessage);
 
   // Load new random monster image
-  const monsterNum = Math.floor(Math.random() * 52) + 1;
+  const monsterNum = Math.floor(Math.random() * 76) + 1;
   monsterImage.src = `sprites/monster${monsterNum}.png`;
 }

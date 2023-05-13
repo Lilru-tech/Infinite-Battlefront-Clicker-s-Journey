@@ -1,9 +1,8 @@
 body {
+  font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
   align-items: center;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
   margin-top: 10px;
   background-image: linear-gradient(to bottom, #93E8F1, #FFFFFF);
   background-size: cover;
@@ -11,48 +10,14 @@ body {
   min-height: 80vh;
 }
 
-/* Styles for the left div */
-#left {
-  display: flex;
-  flex-direction: column;
-  margin-top: 20px;
-  height: 95%;
-  width: 95%;
-}
-
-/* Styles for the center div */
-#center {
-  grid-template-columns: 1fr 1fr;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  margin-top: 20px;
-  height: 95%;
-  width: 95%;
-}
-
-/* Styles for the right div */
-#right {
-  display: flex;
-  align-items: right;
-  flex-direction: column;
-  margin-top: 20px;
-  height: 95%;
-  width: 95%;
-}
-
-
-/* Set max-width and center the game container */
-.container {
-  max-width: 800px;
-  margin: 0 auto;
-}
-
 /* Set the game title style */
 h1 {
+  font-size: 48px;
+  font-weight: bold;
   text-align: center;
-  font-size: 36px;
-  margin-bottom: 10px;
+  color: #ffd700; /* gold color */
+  text-shadow: 2px 2px #8b0000; /* red shadow */
+  margin-top: 10px;
 }
 
 h2 {
@@ -62,191 +27,4 @@ h2 {
   color: #ffd700;
   text-shadow: 1px 1px #8b0000;
   font-weight: bold;
-}
-
-#superior h2 {
-  font-size: 24px;
-  margin: 0;
-}
-
-#center #title {
-  font-size: 48px;
-  font-weight: bold;
-  text-align: center;
-  color: #ffd700; /* gold color */
-  text-shadow: 2px 2px #8b0000; /* red shadow */
-  margin-top: 10px;
-}
-
-#logFoldableContainer {
-  width: 100%;
-}
-
-#log {
-  display: flex;
-  font-size: 10px;
-  color: #000000;
-  width: 100%;
-  height: 300px;
-  overflow: auto;
-  overflow-y: scroll;
-  scrollbar-width: none;
-}
-
-#log::-webkit-scrollbar {
-  display: none;
-}
-
-#statsButton {
-  margin-bottom: 10px;
-}
-
-.foldable {
-  cursor: pointer;
-}
-
-#rightFoldableContainer {
-  display: flex;
-  flex-direction: column;
-  min-height: 10%;
-  width: 95%;
-}
-
-#leftFoldableContainer {
-  display: flex;
-  flex-direction: column;
-  min-height: 10%;
-  width: 95%;
-}
-
-#dead {
-  text-align: center;
-  font-size: 60px;
-  margin-bottom: 30px;
-  text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000, 0 0 30px #ff0000, 0 0 40px #ff0000;
-  color: #000000;
-}
-
-@keyframes fade {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-
-/* Set the button style */
-#clickButton {
-  grid-column: 1 / span 3;
-  display: block;
-  margin: 20px auto;
-  padding: 10px 20px;
-  font-size: 24px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-/* Set the button style */
-#restoreHealthButton {
-  display: block;
-  margin: 20px auto;
-  padding: 10px 20px;
-  font-size: 24px;
-  background-color: #9b2c2c; /* Change the background color */
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.3);
-}
-
-#restoreHealthButton:hover {
-  background-color: #7b0f0f; /* Change the hover background color */
-  box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.5);
-}
-
-
-/* Set the button style */
-#hardRestoreHealthButton {
-  display: block;
-  margin: 20px auto;
-  padding: 10px 20px;
-  font-size: 24px;
-  background-color: #9b2c2c; /* Change the background color */
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.3);
-  animation: fade 5s;
-}
-
-#hardRestoreHealthButton:hover {
-  background-color: #7b0f0f; /* Change the hover background color */
-  box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.5);
-}
-
-
-#clickButton:hover {
-  background-color: #3e8e41;
-}
-
-/* Set the text style */
-p {
-  font-size: 20px;
-  margin-bottom: 10px;
-}
-
-/* Set the span style */
-span {
-  font-weight: bold;
-}
-
-#overlay {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.8);
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  z-index: 999;
-  animation: fade 3s;
-}
-
-#buttonsContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-}
-
-.deadContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-fieldset {
-  width: 95%;
-  border: 1px solid #000;
-  border-radius: 5px;
-}
-
-legend {
-  text-align: center;
-}
-
-.shop-list {
-  list-style-type: none;
-  padding: 0;
 }

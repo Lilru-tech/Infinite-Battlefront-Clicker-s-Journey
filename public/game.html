@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Idle Clicker Game</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="game.css">
+  <link rel="stylesheet" href="monster.css">
+  <link rel="stylesheet" href="player.css">
+  <link rel="stylesheet" href="shop.css">
+</head>
+<body>
+  <div class="overlay" id="overlay">
+    <div id="buttonsContainer">
+      <button id="restoreHealthButton">Restore Health (Cost: 100 Money and 1% of experience)</button>
+      <button id="hardRestoreHealthButton">Restore Health (Cost: 10% of experience)</button>
+    </div>
+    <div class="deadContainer">
+      <img id="playerDeadImage" src="" alt="Player Dead Image">
+      <p id="dead">You died</p>
+    </div>
+  </div>
+  <div id="left">
+    <fieldset>
+      <legend><h2 id="statsButton" class="foldable"></h2></legend>
+    <div id="leftFoldableContainer">
+      <fieldset>
+        <legend>Combat Stats</legend>
+        <p>Attack:<span id="attack"></span></p>
+        <p>Defense:<span id="defense"></span></p>
+        <p>Critical chance:<span id="criticalChance"></span></p>
+        <p>Critical damage:<span id="criticalDamage"></span></p>
+      </fieldset>
+      <p>Level: <span id="level">1</span></p>
+      <p>Money: <span id="moneyCount">0</span></p>
+      <p>Deaths: <span id="deathCount">0</span></p>
+      <p>Top damage dealt: <span id="topDamageDealt">0</span></p>
+      <p>Top damage taken: <span id="topDamageTaken">0</span></p>
+      <p>Monster killed: <span id="monsterKill">0</span></p>
+    </fieldset>
+    </div>
+  </div>
+  <div id="center">
+  <h1 id="title">Infinite Batelfront</h1>
+    <div id="healthBarContainer">
+      <div id="healthBar">
+        <div id="health"><span id="currentMonsterHealth"></span>/<span id="maxMonsterHealth"></span></div>
+      </div>   
+    </div>   
+    <img id="monster" src="sprites/monster1.png">    
+    <button id="clickButton" onclick="attack()">Attack!</button>
+    <div id="healthBarContainer">
+      <div id="playerHealthBar" class="player-health">
+        <div id="playerHealth"><span id="currentPlayerHealth"></span>/<span id="maxPlayerHealth"></span></div>
+      </div>
+    </div>  
+    <img id="playerImage" src="" alt="Player Image">
+    <div id="experienceBarContainer">
+      <div id="experienceBar" class="player-experience">
+        <div id="experience"><span id="experienceCount"></span><span id="levelUpExperience"></span></div>
+    </div>
+    </div>
+    <fieldset>
+      <legend><h2 id="logStyle" class="foldable">Log</h2></legend>
+      <div id="logFoldableContainer">
+    <div id="log">
+      <p id="logContent"></p>
+    </div>
+    </div>
+  </fieldset>
+  </div>
+  <div id="right">
+    <div id="shop">
+      <fieldset id="hideShop">
+      <legend><h2 id="shopButton" class="foldable"></h2></legend>
+      <div id="rightFoldableContainer"></div>
+    </div>
+  </fieldset>
+</div>
+    <script src="app.js"></script>    
+    <script src="monster.js"></script>
+    <script src="player.js"></script>
+    <script src="shop.js"></script>
+    <script src="level.js"></script>
+</body>
+</html>
