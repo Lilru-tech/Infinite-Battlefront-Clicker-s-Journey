@@ -32,7 +32,7 @@ const shopItems = [
         }
       },
       {
-        name: '+1 Critical Chance',
+        name: '+1% Critical Chance',
         description: 'Increase critical probability',
         itemType: 'criticalChance',
         price: 500,
@@ -42,7 +42,7 @@ const shopItems = [
         }
       },
       {
-        name: '+1 Critical Damage',
+        name: '+1% Critical Damage',
         description: 'Increase critical damage',
         itemType: 'criticalDamage',
         price: 1000,

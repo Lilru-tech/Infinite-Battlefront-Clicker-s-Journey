@@ -1,6 +1,13 @@
 ponernombre repo git
-Last Version: 1.0.0
+Last Version: 1.0.1
 
 Version history
+*1.1.0
+Added critical damage
+Added Vocations
+Added 24 new monsters
+Added level up stats increase (attack, defense and health)
+Fixed experienceBar
+
 *1.0.0
 Start base project
