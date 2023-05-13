@@ -62,10 +62,6 @@ dead.style.display = 'none';
       alive: 'player.png',
       dead: 'playerDead.png'
     },
-    Paladin: {
-      alive: 'player6.png',
-      dead: 'playerDead6.png'
-    },
     Mage: {
       alive: 'player2.png',
       dead: 'playerDead2.png'
@@ -81,7 +77,11 @@ dead.style.display = 'none';
     Druid: {
       alive: 'player5.png',
       dead: 'playerDead5.png'
-    }
+    },
+    Paladin: {
+      alive: 'player6.png',
+      dead: 'playerDead6.png'
+    },
   };
 
   const selectedVocation = localStorage.getItem('selectedVocation');

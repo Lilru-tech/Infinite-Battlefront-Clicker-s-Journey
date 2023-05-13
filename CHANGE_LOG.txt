@@ -1,5 +1,5 @@
 ponernombre repo git
-Last Version: 1.0.1
+Last Version: 1.1.0
 
 Version history
 *1.1.0
