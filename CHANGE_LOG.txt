@@ -1,7 +1,13 @@
 ponernombre repo git
-Last Version: 1.2.0
+Last Version: 1.3.0
 
 Version history
+*1.3.0
+Implemented Save button and auto save
+Implemented the posibility to level down
+Changed buttons style
+Changed shop style
+
 *1.2.0
 Added promotions
 Deleted damageDealt and damageTaken log messages to make them appear in the screen (right above the image of the monster or the player)

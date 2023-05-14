@@ -1,10 +1,21 @@
 body {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-  }
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  margin: 0;
+  padding: 0;
+}
+
+#menu {
+  grid-column: 1 / 4;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
   
   /* Styles for the left div */
   #left {
+    margin-left: 10px;
     display: flex;
     flex-direction: column;
     margin-top: 20px;
@@ -73,11 +84,12 @@ body {
   }
   
   #rightFoldableContainer {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
     min-height: 10%;
     width: 95%;
-  }
+  }  
   
   #leftFoldableContainer {
     display: flex;
@@ -102,20 +114,42 @@ body {
       opacity: 1;
     }
   }
-  
-  
-  /* Set the button style */
-  #clickButton {
-    grid-column: 1 / span 3;
-    display: block;
-    margin: 20px auto;
-    padding: 10px 20px;
-    font-size: 24px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 5px;
+
+  .button {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    background-color: #fbeee0;
+    border: 2px solid #422800;
+    border-radius: 30px;
+    box-shadow: #422800 4px 4px 0 0;
+    color: #422800;
     cursor: pointer;
+    display: inline-block;
+    font-weight: 600;
+    font-size: 18px;
+    padding: 0 18px;
+    line-height: 50px;
+    text-align: center;
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+  }
+  
+  .button:hover {
+    background-color: #fff;
+  }
+  
+  .button:active {
+    box-shadow: #422800 2px 2px 0 0;
+    transform: translate(2px, 2px);
+  }
+  
+  @media (min-width: 768px) {
+    .button {
+      min-width: 120px;
+      padding: 0 25px;
+    }
   }
   
   /* Set the button style */
@@ -156,11 +190,6 @@ body {
   #hardRestoreHealthButton:hover {
     background-color: #7b0f0f; /* Change the hover background color */
     box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.5);
-  }
-  
-  
-  #clickButton:hover {
-    background-color: #3e8e41;
   }
   
   /* Set the text style */

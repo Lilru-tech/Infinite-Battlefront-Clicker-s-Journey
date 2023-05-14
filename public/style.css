@@ -28,3 +28,14 @@ h2 {
   text-shadow: 1px 1px #8b0000;
   font-weight: bold;
 }
+
+.shop-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.shop-item legend {
+  margin-bottom: 10px;
+}
