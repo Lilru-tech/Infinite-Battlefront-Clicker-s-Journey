@@ -1,3 +1,5 @@
+const damageNumber = document.getElementById('damage-number');
+
 function updateHealthBar() {
     const healthPercentage = (currentMonsterHealth / (monsterHealth + healthBonus)) * 100;
     healthBar.style.width = `${healthPercentage}%`;
@@ -35,7 +37,8 @@ function updateHealthBar() {
     // Gain experience and money
 const experience = Math.floor(Math.random() * 100) + 1;
 experienceCount += experience;
-experienceCountSpan.textContent = experienceCount;
+experienceCountSpan.textContent = experienceCount+"/";
+levelUpExperienceSpan.textContent = levelUpExperience(level);
 const experienceMessage = "You have earned "+experience+" experience points.\n";
 
 let moneyMessage = "No money for you :(";

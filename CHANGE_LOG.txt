@@ -2,6 +2,9 @@ ponernombre repo git
 Last Version: 1.1.0
 
 Version history
+*1.2.0
+Deleted damageDealt and damageTaken log messages to make them appear in the screen (right above the image of the monster or the player)
+
 *1.1.0
 Added critical damage
 Added Vocations

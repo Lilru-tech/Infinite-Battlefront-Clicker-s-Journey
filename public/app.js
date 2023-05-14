@@ -1,5 +1,3 @@
-let attack = 10;
-let defense = 10;
 let moneyCount = 0
 let experienceCount = 0;
 let totalExperienceCount = 0;
@@ -29,8 +27,6 @@ const monsterImage = document.getElementById('monster');
 const healthBar = document.getElementById('healthBar');
 const healthBarContainer = document.getElementById('healthBarContainer');
 const logDiv = document.getElementById('log');
-const attackSpan = document.getElementById('attack');
-const defenseSpan = document.getElementById('defense');
 const playerHealthBar = document.getElementById('playerHealthBar');
 const restoreHealthButton = document.getElementById('restoreHealthButton');
 const hardRestoreHealthButton = document.getElementById('hardRestoreHealthButton');
@@ -47,8 +43,7 @@ const topDamageTaken = document.getElementById('topDamageTaken');
 const monsterKillSpan = document.getElementById('monsterKill');
 const experienceBar = document.getElementById('experienceBar');
 const levelUpExperienceSpan = document.getElementById('levelUpExperience');
-attackSpan.textContent = attack;
-defenseSpan.textContent = defense;
+
 criticalChanceSpan.textContent = criticalChance+ "%";
 criticalDamageSpan.textContent = criticalDamage+ "%";
 restoreHealthButton.style.display = 'none';
@@ -56,6 +51,7 @@ hardRestoreHealthButton.style.display = 'none';
 playerImage.style.display = 'block';
 playerDeadImage.style.display = 'none';
 dead.style.display = 'none';
+
 
   const vocationImages = {
     Knight: {
@@ -93,6 +89,8 @@ dead.style.display = 'none';
     playerImageElement.src = `sprites/${vocationImagesData.alive}`;
     playerDeadImageElement.src = `sprites/${vocationImagesData.dead}`;
   }
+
+
 
 
 if (leftFoldableContainer.style.display === 'block') {
@@ -245,4 +243,3 @@ function updateLog(message) {
     logContent.removeChild(logContent.lastChild);
   }
 }
-

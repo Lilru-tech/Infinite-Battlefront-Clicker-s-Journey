@@ -38,6 +38,7 @@
       <p>Top damage taken: <span id="topDamageTaken">0</span></p>
       <p>Monster killed: <span id="monsterKill">0</span></p>
     </fieldset>
+    <button id="promotion" onclick="promotion()">Promote!</button>
     </div>
   </div>
   <div id="center">
@@ -46,15 +47,21 @@
       <div id="healthBar">
         <div id="health"><span id="currentMonsterHealth"></span>/<span id="maxMonsterHealth"></span></div>
       </div>   
-    </div>   
-    <img id="monster" src="sprites/monster1.png">    
+    </div>
+    <div id="game-container">  
+      <span id="damage-number"></span>
+      <img id="monster" src="sprites/monster1.png">
+    </div> 
     <button id="clickButton" onclick="attack()">Attack!</button>
     <div id="healthBarContainer">
       <div id="playerHealthBar" class="player-health">
         <div id="playerHealth"><span id="currentPlayerHealth"></span>/<span id="maxPlayerHealth"></span></div>
       </div>
     </div>  
+    <div id="game-container2">  
+      <span id="damage-number"></span>
     <img id="playerImage" src="" alt="Player Image">
+  </div> 
     <div id="experienceBarContainer">
       <div id="experienceBar" class="player-experience">
         <div id="experience"><span id="experienceCount"></span><span id="levelUpExperience"></span></div>

@@ -1,10 +1,12 @@
+const promotionButton = document.getElementById('promotion');
+
 clickButton.addEventListener('click', () => {
     if (experienceCount >= levelUpExperience(level)) {
       levelUp();
       totalExperienceCount += levelUpExperience;
     }
-    experienceCountSpan.textContent = experienceCount + " / " + levelUpExperience(level);
-    totalExperienceCountSpan.textContent = totalExperienceCount;
+    experienceCountSpan.textContent = experienceCount + "/";
+    levelUpExperienceSpan.textContent = levelUpExperience(level);
   });
   
 
@@ -58,21 +60,35 @@ clickButton.addEventListener('click', () => {
     updatePlayerHealthBar();
     updateLog("Your stats increased by +" + attackIncrease + " attack, +" + defenseIncrease + " defense and +" + playerHealthIncrease + " health points.");
     updateLog("Congratulations! You have leveled up to level "+level+"!");
-    updateExperienceBar(experienceCount, levelUpExperience(level));
   };
   
-    // Level up if necessary
-    while (experienceCount >= levelUpExperience(level)) {
-      levelUp();
-      updateExperienceBar(experienceCount, levelUpExperience(level));
+  function updateExperienceBar(experienceCount, levelUpExperience) {
+    let displayedExperience = experienceCount;
+    if (experienceCount > levelUpExperience) {
+      displayedExperience = `${experienceCount}/${levelUpExperience}`;
     }
-    
-    function updateExperienceBar(experienceCount, levelUpExperience) {
-      const expPercentage = (experienceCount / levelUpExperience) * 100;
-      if (expPercentage > 100){
-        experienceBar.style.width = (expPercentage + '%')-100;
+    const expPercentage = (experienceCount / levelUpExperience) * 100;
+    if (expPercentage > 100) {
+      experienceBar.style.width = `${expPercentage - 100}%`;
+    } else {
+      experienceBar.style.width = `${expPercentage}%`;
+    }
+  }
+  
+  updateExperienceBar(experienceCount, levelUpExperience(level));
+  
+  while (experienceCount >= levelUpExperience(level)) {
+    levelUp();
+    updateExperienceBar(experienceCount, levelUpExperience(level));
+  }
+  
+
+    function updatePromotionButton() {
+      if (level >= 5) {
+        promotionButton.style.display = 'block';
       } else {
-        experienceBar.style.width = expPercentage + '%';
+        promotionButton.style.display = 'none';
       }
     }
-    updateExperienceBar(experienceCount, levelUpExperience(level));
+    
+    updatePromotionButton();
