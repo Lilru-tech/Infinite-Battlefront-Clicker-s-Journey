@@ -38,3 +38,42 @@
     margin-top: 10px;
     border-radius: 5px;
   }
+
+  .fade-out {
+    animation: fadeOut 1s ease-in forwards;
+  }
+  
+  #game-container {
+    position: relative;
+  }
+
+  .damage-number {
+    position: absolute;
+    top: calc(var(--random-y) * 100%);
+    left: calc(var(--random-x) * 100%);
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+    color: red;
+    animation: damageAnimation 1s ease-in forwards;
+    z-index: 2;
+  }
+
+  .damage-number.critical {
+    font-size: 32px;
+    color: yellow;
+  }
+  
+  @keyframes damageAnimation {
+    0% {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: translate(-50%, -200%) scale(1.5);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(-50%, -200%) scale(1.5);
+    }
+  }
