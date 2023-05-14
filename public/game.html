@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="monster.css">
   <link rel="stylesheet" href="player.css">
   <link rel="stylesheet" href="shop.css">
+  <link rel="stylesheet" href="vocations.css">
 </head>
 <body>
   <div class="overlay" id="overlay">
@@ -38,7 +39,7 @@
       <p>Top damage taken: <span id="topDamageTaken">0</span></p>
       <p>Monster killed: <span id="monsterKill">0</span></p>
     </fieldset>
-    <button id="promotion" onclick="promotion()">Promote!</button>
+    <button id="promotion" onclick="promotion()"></button>
     </div>
   </div>
   <div id="center">
@@ -52,7 +53,7 @@
       <span id="damage-number"></span>
       <img id="monster" src="sprites/monster1.png">
     </div> 
-    <button id="clickButton" onclick="attack()">Attack!</button>
+    <button id="clickButton">Attack!</button>
     <div id="healthBarContainer">
       <div id="playerHealthBar" class="player-health">
         <div id="playerHealth"><span id="currentPlayerHealth"></span>/<span id="maxPlayerHealth"></span></div>
@@ -89,5 +90,6 @@
     <script src="player.js"></script>
     <script src="shop.js"></script>
     <script src="level.js"></script>
+    <script src="vocations.js"></script>
 </body>
 </html>

@@ -1,5 +1,3 @@
-const promotionButton = document.getElementById('promotion');
-
 clickButton.addEventListener('click', () => {
     if (experienceCount >= levelUpExperience(level)) {
       levelUp();
@@ -8,7 +6,6 @@ clickButton.addEventListener('click', () => {
     experienceCountSpan.textContent = experienceCount + "/";
     levelUpExperienceSpan.textContent = levelUpExperience(level);
   });
-  
 
   const levelUpExperience = function(level) {
     if (level === 1){
@@ -28,27 +25,54 @@ clickButton.addEventListener('click', () => {
       attackIncrease = Math.floor(Math.random() * 6) + 3;
       defenseIncrease = Math.floor(Math.random() * 4) + 2;
       playerHealthIncrease = Math.floor(Math.random() * 10) + 10;
+    } else if (selectedVocation === 'Elite Knight') {
+      attackIncrease = Math.floor((Math.random() * 6 + 3) * 1.2);
+      defenseIncrease = Math.floor((Math.random() * 4 + 2) * 1.2);
+      playerHealthIncrease = Math.floor((Math.random() * 10 + 10) * 1.2);
     } else if (selectedVocation === 'Paladin') {
       attackIncrease = Math.floor(Math.random() * 4) + 2;
       defenseIncrease = Math.floor(Math.random() * 6) + 3;
       playerHealthIncrease = Math.floor(Math.random() * 8) + 8;
+    } else if (selectedVocation === 'Holy Paladin') {
+      attackIncrease = Math.floor((Math.random() * 4 + 2) * 1.2);
+      defenseIncrease = Math.floor((Math.random() * 6 + 3) * 1.2);
+      playerHealthIncrease = Math.floor((Math.random() * 8 + 8) * 1.2);
     } else if (selectedVocation === 'Mage') {
       attackIncrease = Math.floor(Math.random() * 4) + 1;
       defenseIncrease = Math.floor(Math.random() * 2) + 1;
       playerHealthIncrease = Math.floor(Math.random() * 6) + 6;
+    } else if (selectedVocation === 'Archmage') {
+      attackIncrease = Math.floor((Math.random() * 4 + 1) * 1.2);
+      defenseIncrease = Math.floor((Math.random() * 2 + 1) * 1.2);
+      playerHealthIncrease = Math.floor((Math.random() * 6 + 6) * 1.2);
     } else if (selectedVocation === 'Elf') {
       attackIncrease = Math.floor(Math.random() * 3) + 1;
       defenseIncrease = Math.floor(Math.random() * 3) + 1;
       playerHealthIncrease = Math.floor(Math.random() * 4) + 4;
+    } else if (selectedVocation === 'Elder Elf') {
+      attackIncrease = Math.floor((Math.random() * 3 + 1) * 1.2);
+      defenseIncrease = Math.floor((Math.random() * 3 + 1) * 1.2);
+      playerHealthIncrease = Math.floor((Math.random() * 4 + 4) * 1.2);
     } else if (selectedVocation === 'Warrior') {
       attackIncrease = Math.floor(Math.random() * 6) + 4;
       defenseIncrease = Math.floor(Math.random() * 3) + 1;
       playerHealthIncrease = Math.floor(Math.random() * 8) + 6;
+    } else if (selectedVocation === 'Warlord') {
+      attackIncrease = Math.floor((Math.random() * 6 + 4) * 1.2);
+      defenseIncrease = Math.floor((Math.random() * 3 + 1) * 1.2);
+      playerHealthIncrease = Math.floor((Math.random() * 8 + 6) * 1.2);
     } else if (selectedVocation === 'Druid') {
       attackIncrease = Math.floor(Math.random() * 3) + 1;
       defenseIncrease = Math.floor(Math.random() * 2) + 2;
       playerHealthIncrease = Math.floor(Math.random() * 8) + 4;
+    } else if (selectedVocation === 'Archdruid') {
+      attackIncrease = Math.floor((Math.random() * 3 + 1) * 1.2);
+      defenseIncrease = Math.floor((Math.random() * 2 + 2) * 1.2);
+      playerHealthIncrease = Math.floor((Math.random() * 8 + 4) * 1.2);
     }
+
+    updateLog("Your stats increased by +" + attackIncrease + " attack, +" + defenseIncrease + " defense and +" + playerHealthIncrease + " health points.");
+    updateLog("Congratulations! You have leveled up to level "+level+"!");
   
     attack += attackIncrease;
     defense += defenseIncrease;
@@ -58,8 +82,6 @@ clickButton.addEventListener('click', () => {
     defenseSpan.textContent = defense;
     playerHealthSpan.textContent = playerHealth;
     updatePlayerHealthBar();
-    updateLog("Your stats increased by +" + attackIncrease + " attack, +" + defenseIncrease + " defense and +" + playerHealthIncrease + " health points.");
-    updateLog("Congratulations! You have leveled up to level "+level+"!");
   };
   
   function updateExperienceBar(experienceCount, levelUpExperience) {
@@ -81,14 +103,3 @@ clickButton.addEventListener('click', () => {
     levelUp();
     updateExperienceBar(experienceCount, levelUpExperience(level));
   }
-  
-
-    function updatePromotionButton() {
-      if (level >= 5) {
-        promotionButton.style.display = 'block';
-      } else {
-        promotionButton.style.display = 'none';
-      }
-    }
-    
-    updatePromotionButton();

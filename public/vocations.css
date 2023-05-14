@@ -31,3 +31,26 @@ header {
     width: 45%;
   }
 }
+
+#promotion {
+  background-color: #4CAF50;
+  color: white;
+  font-size: 1.25rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+#promotion:hover {
+  background-color: #3F9A40;
+  transform: scale(1.05);
+}
+
+#promotion:active {
+  background-color: #2D6E32;
+  transform: scale(1);
+}

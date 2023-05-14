@@ -43,6 +43,7 @@ const topDamageTaken = document.getElementById('topDamageTaken');
 const monsterKillSpan = document.getElementById('monsterKill');
 const experienceBar = document.getElementById('experienceBar');
 const levelUpExperienceSpan = document.getElementById('levelUpExperience');
+const playerHealthSpan = document.getElementById('playerHealth');
 
 criticalChanceSpan.textContent = criticalChance+ "%";
 criticalDamageSpan.textContent = criticalDamage+ "%";
@@ -58,40 +59,56 @@ dead.style.display = 'none';
       alive: 'player.png',
       dead: 'playerDead.png'
     },
+    'Elite Knight': { 
+      alive: 'playerPromoted.png', 
+      dead: 'playerPromotedDead.png' },
     Mage: {
       alive: 'player2.png',
       dead: 'playerDead2.png'
     },
+    'Archmage': { 
+      alive: 'playerPromoted2.png', 
+      dead: 'playerPromotedDead2.png' },
     Elf: {
       alive: 'player3.png',
       dead: 'playerDead3.png'
     },
+    'Elder Elf': { 
+      alive: 'playerPromoted3.png', 
+      dead: 'playerPromotedDead3.png' },
     Warrior: {
       alive: 'player4.png',
       dead: 'playerDead4.png'
     },
+    'Warlord': { 
+      alive: 'playerPromoted4.png', 
+      dead: 'playerPromotedDead4.png' },
     Druid: {
       alive: 'player5.png',
       dead: 'playerDead5.png'
     },
+    'Archdruid': { 
+      alive: 'playerPromoted5.png', 
+      dead: 'playerPromotedDead5.png' },
     Paladin: {
       alive: 'player6.png',
       dead: 'playerDead6.png'
     },
+    'Holy Paladin': { 
+      alive: 'playerPromoted6.png', 
+      dead: 'playerPromotedDead6.png' }
   };
 
-  const selectedVocation = localStorage.getItem('selectedVocation');
+  let selectedVocation = localStorage.getItem('selectedVocation');
   const playerImageElement = document.getElementById('playerImage');
   const playerDeadImageElement = document.getElementById('playerDeadImage');
+
 
   if (vocationImages.hasOwnProperty(selectedVocation)) {
     const vocationImagesData = vocationImages[selectedVocation];
     playerImageElement.src = `sprites/${vocationImagesData.alive}`;
     playerDeadImageElement.src = `sprites/${vocationImagesData.dead}`;
   }
-
-
-
 
 if (leftFoldableContainer.style.display === 'block') {
   statsButton.innerHTML = 'Stats';
@@ -126,6 +143,7 @@ clickButton.addEventListener('click', function() {
   calculateDamageBlocked(defense);
   updateExperienceBar(experienceCount, levelUpExperience(level));
   updatePlayerHealthBar();
+  showOrHidePromotionButton(level);
 
 // Create the restoreHealthButton element
 const restoreHealthButton = document.createElement('button');

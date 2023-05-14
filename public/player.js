@@ -1,11 +1,57 @@
 let attack = 10;
 let defense = 10;
+let promotionValue = 10000;
 
+const promotionButton = document.getElementById('promotion');
 const attackSpan = document.getElementById('attack');
 const defenseSpan = document.getElementById('defense');
 
 attackSpan.textContent = attack;
 defenseSpan.textContent = defense;
+promotionButton.textContent = `Promote for ${promotionValue} coins`;
+
+function showOrHidePromotionButton(level) {
+  const isPromoted = localStorage.getItem('isPromoted') === 'true';
+
+  if (level >= 20 && !isPromoted) {
+    promotionButton.style.display = 'block';
+  } else {
+    promotionButton.style.display = 'none';
+  }
+}
+showOrHidePromotionButton(level);
+
+const promotionMapping = {
+  Knight: 'Elite Knight',
+  Paladin: 'Holy Paladin',
+  Mage: 'Archmage',
+  Elf: 'Elder Elf',
+  Warrior: 'Warlord',
+  Druid: 'Archdruid'
+};
+
+function promotion() {
+  if (moneyCount >= promotionValue) {
+    if (selectedVocation && promotionMapping.hasOwnProperty(selectedVocation)) {
+      const promotedVocation = promotionMapping[selectedVocation];
+  
+      if (vocationImages.hasOwnProperty(promotedVocation)) {
+        const promotedVocationImagesData = vocationImages[promotedVocation];
+        playerImageElement.src = `sprites/${promotedVocationImagesData.alive}`;
+        playerDeadImageElement.src = `sprites/${promotedVocationImagesData.dead}`;
+      }
+    }
+    moneyCount -= promotionValue;
+    moneyCountSpan.textContent = moneyCount;
+    promotionButton.style.display = 'none';
+    localStorage.setItem('isPromoted', 'true');
+    updateLog("Congratulations! You have been promoted!");
+  } else {
+    updateLog("You don't have enough coins for promotion.");
+  }
+}
+
+promotionButton.addEventListener('click', promotion);
 
 function updatePlayerHealthBar() {
     if (currentPlayerHealth <= 0) {
