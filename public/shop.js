@@ -65,32 +65,44 @@ const shop = {
     shopList.className = 'shop-list';
   
     const rightFoldableContainer = document.getElementById('rightFoldableContainer');
-
+    rightFoldableContainer.style.display = 'grid';
+    rightFoldableContainer.style.gridTemplateColumns = 'repeat(2, 1fr)';
+    rightFoldableContainer.style.gap = '10px';
+  
+    const firstColumn = document.createElement('div');
+    const secondColumn = document.createElement('div');
+  
     shop.items.forEach((item, index) => {
       const listItem = document.createElement('li');
       listItem.className = 'shop-item';
   
-      const itemName = document.createElement('h3');
-      itemName.textContent = item.name;
-      listItem.appendChild(itemName);
-  
-      const itemDescription = document.createElement('p');
-      itemDescription.textContent = item.description;
-      listItem.appendChild(itemDescription);
-  
-      const itemPrice = document.createElement('p');
-      itemPrice.textContent = `Price: ${item.price} coins`;
-      listItem.appendChild(itemPrice);
-  
       const purchaseButton = document.createElement('button');
-      purchaseButton.className = 'purchase-button';
-      purchaseButton.textContent = `Buy`;
+      purchaseButton.className = 'button';
+      purchaseButton.id = 'shopBuyButton';
       purchaseButton.dataset.price = item.price;
       purchaseButton.dataset.index = index;
+      purchaseButton.title = item.description;
+  
+      const itemName = document.createElement('span');
+      itemName.textContent = item.name;
+      purchaseButton.appendChild(itemName);
+  
+      const itemPrice = document.createElement('p');
+      itemPrice.textContent = `${item.price} coins`;
+      purchaseButton.appendChild(itemPrice);
+  
+      listItem.appendChild(purchaseButton);
+  
+      if (index % 2 === 0) {
+        firstColumn.appendChild(listItem);
+      } else {
+        secondColumn.appendChild(listItem);
+      }
+  
       purchaseButton.onclick = () => {
         const price = parseInt(purchaseButton.dataset.price, 10);
         if (moneyCount >= price) {
-            updateLog("You bought "+item.name+" for " +item.price+ " coints");
+          updateLog("You bought " + item.name + " for " + item.price + " coins");
           item.effect();
           moneyCount -= price;
           updateMoneyCount(moneyCount);
@@ -98,40 +110,41 @@ const shop = {
             attackSpan.textContent = attack;
           } else if (item.itemType === 'defense') {
             defenseSpan.textContent = defense;
-          } else if (item.itemType === 'playerHealth'){
-            playerHealthBar.textContent = 'HP: '+currentPlayerHealth+'/'+playerHealth;
-          } else if (item.itemType === 'criticalChance'){
-            criticalChanceSpan.textContent = ' '+criticalChance+'%';
-          } else if (item.itemType === 'criticalDamage'){
-            criticalDamageSpan.textContent = ' '+criticalDamage+'%';
+          } else if (item.itemType === 'playerHealth') {
+            playerHealthBar.textContent = 'HP: ' + currentPlayerHealth + '/' + playerHealth;
+          } else if (item.itemType === 'criticalChance') {
+            criticalChanceSpan.textContent = ' ' + criticalChance + '%';
+          } else if (item.itemType === 'criticalDamage') {
+            criticalDamageSpan.textContent = ' ' + criticalDamage + '%';
           }
-          itemPrice.textContent = `Price: ${item.price} coins`;
-          purchaseButton.textContent = `Buy`;
+          itemPrice.textContent = `${item.price} coins`;
           purchaseButton.dataset.price = item.price;
         } else {
-            updateLog("You don't have enough money to buy this item.");
+          updateLog("You don't have enough money to buy this item.");
         }
       };
-
-      listItem.appendChild(purchaseButton);
-      shopList.appendChild(listItem);
     });
-    rightFoldableContainer.appendChild(shopList);
+  
+    rightFoldableContainer.innerHTML = '';
+    rightFoldableContainer.appendChild(firstColumn);
+    rightFoldableContainer.appendChild(secondColumn);
+  
     if (rightFoldableContainer.style.display === 'none') {
+      shopButton.innerHTML = 'Shop';
+    } else {
+      shopButton.innerHTML = 'Shop';
+    }
+    shopButton.addEventListener('click', () => {
+      if (rightFoldableContainer.style.display === 'none') {
+        rightFoldableContainer.style.display = 'grid';
         shopButton.innerHTML = 'Shop';
       } else {
+        rightFoldableContainer.style.display = 'none';
         shopButton.innerHTML = 'Shop';
       }
-      shopButton.addEventListener('click', () => {
-        if (rightFoldableContainer.style.display === 'none') {
-          rightFoldableContainer.style.display = 'block';
-          shopButton.innerHTML = 'Shop';
-        } else {
-          rightFoldableContainer.style.display = 'none';
-          shopButton.innerHTML = 'Shop';
-        }
-      });
+    });
   }
+  
 
   function updateMoneyCount(newMoneyCount) {
     moneyCount = newMoneyCount;

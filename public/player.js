@@ -40,6 +40,8 @@ function promotion() {
         playerImageElement.src = `sprites/${promotedVocationImagesData.alive}`;
         playerDeadImageElement.src = `sprites/${promotedVocationImagesData.dead}`;
       }
+      selectedVocation = promotedVocation;
+      localStorage.setItem('selectedVocation', selectedVocation);
     }
     moneyCount -= promotionValue;
     moneyCountSpan.textContent = moneyCount;

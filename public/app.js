@@ -15,6 +15,7 @@ let monsterKills = 0;
 let damageDealt = 0;
 let damageBlocked = 0;
 
+const menuDiv = document.getElementById('menu');
 const centerDiv = document.getElementById('center');
 const leftDiv = document.getElementById('left');
 const clickButton = document.getElementById('clickButton');
@@ -73,9 +74,6 @@ function saveData() {
     attack,
     defense,
     promotionValue,
-    selectedVocation,
-    playerImage,
-    playerDeadImage,
     shopItems: shopItems.map(item => ({ ...item, price: item.price }))
   };
 
@@ -104,8 +102,6 @@ function loadData() {
     attack = data.attack;
     defense = data.defense;
     promotionValue = data.promotionValue;
-    selectedVocation = data.selectedVocation;
-    
     shopItems.forEach((item, index) => {
       if (data.shopItems && data.shopItems[index]) {
         item.price = data.shopItems[index].price;
@@ -124,8 +120,6 @@ function loadData() {
     defenseSpan.textContent = defense;
     topDamageDealt.textContent = maxDamageDealt;
     topDamageTaken.textContent = maxDamageTaken;
-    playerImage = data.playerImage;
-    playerDeadImage = data.playerDeadImage
   }
 }
 
@@ -142,7 +136,7 @@ window.addEventListener("load", () => {
   spawnMonster();
   updatePlayerHealthBar();
   updateExperienceBar(experienceCount, levelUpExperience(level));
-  generateShopItems();
+  generateShopItems()
 });
 
 setInterval(saveData, 1 * 30 * 1000);
@@ -263,6 +257,7 @@ overlay.appendChild(hardRestoreHealthButton);
 
 // Define function to handle player death
 function handlePlayerDeath() {
+  menuDiv.style.display = 'none';
   leftDiv.style.display = 'none';
   centerDiv.style.display = 'none';
   hideShop.style.display = 'none';
@@ -288,6 +283,7 @@ restoreHealthButton.addEventListener('click', () => {
   experienceCount -= experienceLost;
   updatePlayerHealthBar();
   moneyCountSpan.textContent = moneyCount;
+  menuDiv.style.display = 'flex';
   leftDiv.style.display = 'flex';
   centerDiv.style.display = 'flex';
   hideShop.style.display = 'block';
@@ -311,6 +307,7 @@ hardRestoreHealthButton.addEventListener('click', () => {
   experienceCount -= hardExperienceLost;
   updatePlayerHealthBar();
   moneyCountSpan.textContent = moneyCount;
+  menuDiv.style.display = 'flex';
   leftDiv.style.display = 'flex';
   centerDiv.style.display = 'flex';
   hideShop.style.display = 'block';
