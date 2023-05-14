@@ -1,6 +1,6 @@
 let attack = 10;
 let defense = 10;
-let promotionValue = 10000;
+let promotionValue = 100;
 
 const promotionButton = document.getElementById('promotion');
 const attackSpan = document.getElementById('attack');
@@ -13,7 +13,7 @@ promotionButton.textContent = `Promote for ${promotionValue} coins`;
 function showOrHidePromotionButton(level) {
   const isPromoted = localStorage.getItem('isPromoted') === 'true';
 
-  if (level >= 20 && !isPromoted) {
+  if (level >= 2 && !isPromoted) {
     promotionButton.style.display = 'block';
   } else {
     promotionButton.style.display = 'none';
@@ -144,6 +144,7 @@ function updatePlayerHealthBar() {
         blockedMessage.textContent = 'Blocked!';
         blockedMessage.style.top = `calc(${randomY} * 100%)`;
         blockedMessage.style.left = `calc(${randomX} * 100%)`;
+        blockedMessage.style.color = 'blue';
     
         const gameContainer = document.getElementById('game-container2');
         gameContainer.appendChild(blockedMessage);

@@ -3,8 +3,6 @@ let experienceCount = 0;
 let totalExperienceCount = 0;
 let level = 1;
 let monsterHealth;
-let monsterHealthBonus;
-let playerHealthBonus;
 let currentMonsterHealth;
 let currentPlayerHealth;
 let playerHealth = 100;
@@ -44,6 +42,7 @@ const monsterKillSpan = document.getElementById('monsterKill');
 const experienceBar = document.getElementById('experienceBar');
 const levelUpExperienceSpan = document.getElementById('levelUpExperience');
 const playerHealthSpan = document.getElementById('playerHealth');
+const updateCurrentPlayerHealth = document.getElementById('currenPlayerHealth')
 
 criticalChanceSpan.textContent = criticalChance+ "%";
 criticalDamageSpan.textContent = criticalDamage+ "%";
@@ -52,6 +51,101 @@ hardRestoreHealthButton.style.display = 'none';
 playerImage.style.display = 'block';
 playerDeadImage.style.display = 'none';
 dead.style.display = 'none';
+
+function saveData() {
+  const savedData = {
+    moneyCount,
+    experienceCount,
+    totalExperienceCount,
+    level,
+    monsterHealth,
+    currentMonsterHealth,
+    currentPlayerHealth,
+    playerHealth,
+    deathCount,
+    criticalChance,
+    criticalDamage,
+    maxDamageDealt,
+    maxDamageTaken,
+    monsterKills,
+    damageDealt,
+    damageBlocked,
+    attack,
+    defense,
+    promotionValue,
+    selectedVocation,
+    playerImage,
+    playerDeadImage,
+    shopItems: shopItems.map(item => ({ ...item, price: item.price }))
+  };
+
+  localStorage.setItem("gameData", JSON.stringify(savedData));
+  console.log("Data saved.");
+}
+
+function loadData() {
+  const savedData = localStorage.getItem("gameData");
+  if (savedData) {
+    const data = JSON.parse(savedData);
+    moneyCount = data.moneyCount;
+    experienceCount = data.experienceCount;
+    totalExperienceCount = data.totalExperienceCount;
+    level = data.level;
+    playerHealth = data.playerHealth;
+    currentPlayerHealth = data.currentPlayerHealth;
+    deathCount = data.deathCount;
+    criticalChance = data.criticalChance;
+    criticalDamage = data.criticalDamage;
+    maxDamageDealt = data.maxDamageDealt;
+    maxDamageTaken = data.maxDamageTaken;
+    monsterKills = data.monsterKills;
+    damageDealt = data.damageDealt;
+    damageBlocked = data.damageBlocked;
+    attack = data.attack;
+    defense = data.defense;
+    promotionValue = data.promotionValue;
+    selectedVocation = data.selectedVocation;
+    
+    shopItems.forEach((item, index) => {
+      if (data.shopItems && data.shopItems[index]) {
+        item.price = data.shopItems[index].price;
+      }
+    });
+
+    moneyCountSpan.textContent = moneyCount;
+    experienceCountSpan.textContent = experienceCount + "/";
+    levelUpExperienceSpan.textContent = levelUpExperience(level);
+    levelSpan.textContent = level;
+    deathCountSpan.textContent = deathCount;
+    criticalChanceSpan.textContent = criticalChance + "%";
+    criticalDamageSpan.textContent = criticalDamage + "%";
+    monsterKillSpan.textContent = monsterKills;
+    attackSpan.textContent = attack;
+    defenseSpan.textContent = defense;
+    topDamageDealt.textContent = maxDamageDealt;
+    topDamageTaken.textContent = maxDamageTaken;
+    playerImage = data.playerImage;
+    playerDeadImage = data.playerDeadImage
+  }
+}
+
+function handleSaveButtonClick() {
+  saveData();
+}
+
+const saveButton = document.getElementById("save");
+
+saveButton.addEventListener("click", handleSaveButtonClick);
+
+window.addEventListener("load", () => {
+  loadData();
+  spawnMonster();
+  updatePlayerHealthBar();
+  updateExperienceBar(experienceCount, levelUpExperience(level));
+  generateShopItems();
+});
+
+setInterval(saveData, 1 * 30 * 1000);
 
 
   const vocationImages = {
@@ -187,7 +281,6 @@ function handlePlayerDeath() {
 }
 
 restoreHealthButton.addEventListener('click', () => {
-  updateExperienceBar(experienceCount, levelUpExperience(level));
   const reviveCost = 100;
   const experienceLost = experienceCount - Math.floor(experienceCount * 0.99);
   moneyCount -= reviveCost;
@@ -208,10 +301,10 @@ restoreHealthButton.addEventListener('click', () => {
   const overlay = document.getElementById('overlay');
   overlay.style.display = 'none';
   spawnMonster();
+  updateExperienceBar(experienceCount, levelUpExperience(level));
 });
 
 hardRestoreHealthButton.addEventListener('click', () => {
-  updateExperienceBar(experienceCount, levelUpExperience(level));
   const hardExperienceLost = experienceCount - Math.floor(experienceCount * 0.90);
   updateLog("You don't have enough money, so you will lose 10% of your experience!");
   currentPlayerHealth = playerHealth;
@@ -231,6 +324,7 @@ hardRestoreHealthButton.addEventListener('click', () => {
     const overlay = document.getElementById('overlay');
   overlay.style.display = 'none';  
   spawnMonster();   
+  updateExperienceBar(experienceCount, levelUpExperience(level));
 });
 
 // Check if the player has died

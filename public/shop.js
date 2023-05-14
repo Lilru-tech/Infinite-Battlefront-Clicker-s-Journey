@@ -137,5 +137,3 @@ const shop = {
     moneyCount = newMoneyCount;
     moneyCountSpan.textContent = moneyCount;
   }
-
-  generateShopItems();  

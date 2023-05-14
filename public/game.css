@@ -1,7 +1,17 @@
 body {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-  }
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  margin: 0;
+  padding: 0;
+}
+
+#menu {
+  grid-column: 1 / 4;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
   
   /* Styles for the left div */
   #left {
