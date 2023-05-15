@@ -4,19 +4,18 @@ body {
   padding: 0;
   align-items: center;
   margin-top: 10px;
-  background-image: linear-gradient(to bottom, #93E8F1, #FFFFFF);
+  background-image: linear-gradient(to bottom, #422800, #FFFFFF);
   background-size: cover;
   background-repeat: no-repeat;
   min-height: 80vh;
 }
 
-/* Set the game title style */
 h1 {
   font-size: 48px;
   font-weight: bold;
   text-align: center;
-  color: #ffd700; /* gold color */
-  text-shadow: 2px 2px #8b0000; /* red shadow */
+  color: #fbeee0;
+  text-shadow: 2px 2px #422800;
   margin-top: 10px;
 }
 
@@ -24,18 +23,23 @@ h2 {
   text-align: center;
   font-size: 28px;
   margin-bottom: 10px;
-  color: #ffd700;
-  text-shadow: 1px 1px #8b0000;
+  color: #fbeee0;
+  text-shadow: 2px 2px #422800;
   font-weight: bold;
 }
 
-.shop-item {
+.shop-stats-item {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
 }
 
-.shop-item legend {
+.shop-stats-item legend {
   margin-bottom: 10px;
 }
+
+.shop-items-item legend {
+  margin-bottom: 10px;
+}
+

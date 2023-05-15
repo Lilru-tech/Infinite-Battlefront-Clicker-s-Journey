@@ -14,6 +14,20 @@ let maxDamageTaken = 0;
 let monsterKills = 0;
 let damageDealt = 0;
 let damageBlocked = 0;
+let swordSkill = 0;
+let swordSkillPercentage = 0;
+let crossBowSkill = 0;
+let crossBowSkillPercentage = 0;
+let wandSkill = 0;
+let wandSkillPercentage = 0;
+let bowSkill = 0;
+let bowSkillPercentage = 0;
+let axeSkill = 0;
+let axeSkillPercentage = 0;
+let rodSkill = 0;
+let rodSkillPercentage = 0;
+let shieldingSkill = 0;
+let shieldingSkillPercentage = 0;
 
 const menuDiv = document.getElementById('menu');
 const centerDiv = document.getElementById('center');
@@ -33,7 +47,11 @@ const playerImage = document.getElementById('playerImage');
 const playerDeadImage = document.getElementById('playerDeadImage');
 const deathCountSpan = document.getElementById('deathCount');
 const statsButton = document.getElementById('statsButton');
+const combatStatsButton = document.getElementById('combatStatsButton');
+const skillsButton = document.getElementById('skillsButton');
 const leftFoldableContainer = document.getElementById('leftFoldableContainer');
+const leftFoldableContainer2 = document.getElementById('leftFoldableContainer2');
+const leftFoldableContainer3 = document.getElementById('leftFoldableContainer3');
 const logFoldableContainer = document.getElementById('logFoldableContainer');
 const criticalChanceSpan = document.getElementById('criticalChance');
 const criticalDamageSpan = document.getElementById('criticalDamage');
@@ -43,7 +61,21 @@ const monsterKillSpan = document.getElementById('monsterKill');
 const experienceBar = document.getElementById('experienceBar');
 const levelUpExperienceSpan = document.getElementById('levelUpExperience');
 const playerHealthSpan = document.getElementById('playerHealth');
-const updateCurrentPlayerHealth = document.getElementById('currenPlayerHealth')
+const updateCurrentPlayerHealth = document.getElementById('currenPlayerHealth');
+const swordSkillSpan = document.getElementById('swordSkill');
+const swordSkillPercentageSpan = document.getElementById('swordSkillPercentage');
+const crossBowSkillSpan = document.getElementById('crossBowSkill');
+const crossBowSkillPercentageSpan = document.getElementById('crossBowSkillPercentage');
+const wandSkillSpan = document.getElementById('wandSkill');
+const wandSkillPercentageSpan = document.getElementById('wandSkillPercentage');
+const bowSkillSpan = document.getElementById('bowSkill');
+const bowSkillPercentageSpan = document.getElementById('bowSkillPercentage');
+const axeSkillSpan = document.getElementById('axeSkill');
+const axeSkillPercentageSpan = document.getElementById('axeSkillPercentage');
+const rodSkillSpan = document.getElementById('rodSkill');
+const rodSkillPercentageSpan = document.getElementById('rodSkillPercentage');
+const shieldingSkillSpan = document.getElementById('shieldingSkill');
+const shieldingSkillPercentageSpan = document.getElementById('shieldingSkillPercentage');
 
 criticalChanceSpan.textContent = criticalChance+ "%";
 criticalDamageSpan.textContent = criticalDamage+ "%";
@@ -74,7 +106,29 @@ function saveData() {
     attack,
     defense,
     promotionValue,
-    shopItems: shopItems.map(item => ({ ...item, price: item.price }))
+    swordSkill,
+    swordSkillPercentage,
+    crossBowSkill,
+    crossBowSkillPercentage,
+    wandSkill,
+    wandSkillPercentage,
+    bowSkill,
+    bowSkillPercentage,
+    axeSkill,
+    axeSkillPercentage,
+    rodSkill,
+    rodSkillPercentage,
+    shieldingSkill,
+    shieldingSkillPercentage,
+    nextSwordSkill,
+    nextCrossBowSkill,
+    nextWandSkill,
+    nextBowSkill,
+    nextAxeSkill,
+    nextRodSkill,
+    nextShieldingSkill,
+    shopStatsItems: shopStatsItems.map(item => ({ ...item, price: item.price })),
+    shopItemsItems: shopItemsItems.map(item => ({ ...item, price: item.price }))
   };
 
   localStorage.setItem("gameData", JSON.stringify(savedData));
@@ -102,9 +156,35 @@ function loadData() {
     attack = data.attack;
     defense = data.defense;
     promotionValue = data.promotionValue;
-    shopItems.forEach((item, index) => {
-      if (data.shopItems && data.shopItems[index]) {
-        item.price = data.shopItems[index].price;
+    swordSkill = data.swordSkill;
+    swordSkillPercentage = data.swordSkillPercentage;
+    crossBowSkill = data.crossBowSkill;
+    crossBowSkillPercentage = data.crossBowSkillPercentage;
+    wandSkill = data.wandSkill;
+    wandSkillPercentage = data.wandSkillPercentage;
+    bowSkill = data.bowSkill;
+    bowSkillPercentage = data.bowSkillPercentage;
+    axeSkill = data.axeSkill;
+    axeSkillPercentage = data.axeSkillPercentage;
+    rodSkill = data.rodSkill;
+    rodSkillPercentage = data.rodSkillPercentage;
+    shieldingSkill = data.shieldingSkill;
+    shieldingSkillPercentage = data.shieldingSkillPercentage;
+    nextSwordSkill = data.nextSwordSkill;
+    nextCrossBowSkill = data.nextCrossBowSkill;
+    nextWandSkill = data.nextWandSkill;
+    nextBowSkill = data.nextBowSkill;
+    nextAxeSkill = data.nextAxeSkill;
+    nextRodSkill = data.nextRodSkill;
+    nextShieldingSkill = data.nextShieldingSkill;
+    shopStatsItems.forEach((item, index) => {
+      if (data.shopStatsItems && data.shopStatsItems[index]) {
+        item.price = data.shopStatsItems[index].price;
+      }
+    }),
+    shopItemsItems.forEach((item, index) => {
+      if (data.shopItemsItems && data.shopItemsItems[index]) {
+        item.price = data.shopItemsItems[index].price;
       }
     });
 
@@ -120,6 +200,13 @@ function loadData() {
     defenseSpan.textContent = defense;
     topDamageDealt.textContent = maxDamageDealt;
     topDamageTaken.textContent = maxDamageTaken;
+    swordSkillSpan.textContent = swordSkill;
+    crossBowSkillSpan.textContent = crossBowSkill;
+    wandSkillSpan.textContent = wandSkill;
+    bowSkillSpan.textContent = bowSkill;
+    axeSkillSpan.textContent = axeSkill;
+    rodSkillSpan.textContent = rodSkill;
+    shieldingSkillSpan.textContent = shieldingSkill;
   }
 }
 
@@ -136,7 +223,9 @@ window.addEventListener("load", () => {
   spawnMonster();
   updatePlayerHealthBar();
   updateExperienceBar(experienceCount, levelUpExperience(level));
-  generateShopItems()
+  generateShopStatsItems();
+  generateShopItemsItems();
+  skillsProgressBar();
 });
 
 setInterval(saveData, 1 * 30 * 1000);
@@ -194,8 +283,8 @@ setInterval(saveData, 1 * 30 * 1000);
 
   if (vocationImages.hasOwnProperty(selectedVocation)) {
     const vocationImagesData = vocationImages[selectedVocation];
-    playerImageElement.src = `sprites/${vocationImagesData.alive}`;
-    playerDeadImageElement.src = `sprites/${vocationImagesData.dead}`;
+    playerImageElement.src = `sprites/player/${vocationImagesData.alive}`;
+    playerDeadImageElement.src = `sprites/player/${vocationImagesData.dead}`;
   }
 
 if (leftFoldableContainer.style.display === 'block') {
@@ -209,6 +298,34 @@ statsButton.addEventListener('click', () => {
     leftFoldableContainer.style.display = 'block';
   } else {
     leftFoldableContainer.style.display = 'none';
+  }
+});
+
+if (leftFoldableContainer2.style.display === 'block') {
+  combatStatsButton.innerHTML = 'Combat Stats';
+} else {
+  combatStatsButton.innerHTML = 'Combat Stats';
+}
+
+combatStatsButton.addEventListener('click', () => {
+  if (leftFoldableContainer2.style.display === 'none') {
+    leftFoldableContainer2.style.display = 'block';
+  } else {
+    leftFoldableContainer2.style.display = 'none';
+  }
+});
+
+if (leftFoldableContainer3.style.display === 'block') {
+  skillsButton.innerHTML = 'Skills';
+} else {
+  skillsButton.innerHTML = 'Skills';
+}
+
+skillsButton.addEventListener('click', () => {
+  if (leftFoldableContainer3.style.display === 'none') {
+    leftFoldableContainer3.style.display = 'block';
+  } else {
+    leftFoldableContainer3.style.display = 'none';
   }
 });
 
@@ -260,8 +377,10 @@ function handlePlayerDeath() {
   menuDiv.style.display = 'none';
   leftDiv.style.display = 'none';
   centerDiv.style.display = 'none';
-  hideShop.style.display = 'none';
-  rightFoldableContainer.style.display = 'none';
+  hideShop1.style.display = 'none';
+  hideShop2.style.display = 'none';
+  rightFoldableContainer1.style.display = 'none';
+  rightFoldableContainer2.style.display = 'none';
   playerDeadImage.style.display = 'block';
 
   showDeadOverlay();
@@ -276,6 +395,7 @@ function handlePlayerDeath() {
 }
 
 restoreHealthButton.addEventListener('click', () => {
+  skillsLevelDown();
   const reviveCost = 100;
   const experienceLost = experienceCount - Math.floor(experienceCount * 0.99);
   moneyCount -= reviveCost;
@@ -284,14 +404,16 @@ restoreHealthButton.addEventListener('click', () => {
   updatePlayerHealthBar();
   moneyCountSpan.textContent = moneyCount;
   menuDiv.style.display = 'flex';
-  leftDiv.style.display = 'flex';
+  leftDiv.style.display = 'grid';
   centerDiv.style.display = 'flex';
-  hideShop.style.display = 'block';
-  rightFoldableContainer.style.display = 'block';
+  hideShop1.style.display = 'block';
+  hideShop2.style.display = 'block';
+  rightFoldableContainer1.style.display = 'grid';
+  rightFoldableContainer2.style.display = 'grid';
   restoreHealthButton.style.display = 'none';
   dead.style.display = 'none';
   playerDeadImage.style.display = 'none';
-  updateLog("You died, lost " + experienceLost + " experience points.\n");
+  updateLog("You died, lost " + experienceLost + " experience points\n");
   deathCount++;
   deathCountSpan.textContent = deathCount;        
   const overlay = document.getElementById('overlay');
@@ -308,14 +430,16 @@ hardRestoreHealthButton.addEventListener('click', () => {
   updatePlayerHealthBar();
   moneyCountSpan.textContent = moneyCount;
   menuDiv.style.display = 'flex';
-  leftDiv.style.display = 'flex';
+  leftDiv.style.display = 'grid';
   centerDiv.style.display = 'flex';
-  hideShop.style.display = 'block';
-  rightFoldableContainer.style.display = 'block';
+  hideShop1.style.display = 'block';
+  hideShop2.style.display = 'block';
+  rightFoldableContainer1.style.display = 'grid';
+  rightFoldableContainer2.style.display = 'grid';
   hardRestoreHealthButton.style.display = 'none';
   dead.style.display = 'none';
   playerDeadImage.style.display = 'none';
-  updateLog("You died, you lost " + hardExperienceLost + " experience points.\n");
+  updateLog("You died, you lost " + hardExperienceLost + " experience points\n");
   deathCount++;
   deathCountSpan.textContent = deathCount;   
     const overlay = document.getElementById('overlay');
@@ -324,7 +448,6 @@ hardRestoreHealthButton.addEventListener('click', () => {
   updateExperienceBar(experienceCount, levelUpExperience(level));
 });
 
-// Check if the player has died
 if (currentPlayerHealth <= 0) {
   updateLog("You have been killed by the monster!");
   handlePlayerDeath();
@@ -341,6 +464,13 @@ if (currentPlayerHealth <= 0) {
   // Update counters
   moneyCountSpan.textContent = moneyCount;
   monsterKillSpan.textContent = monsterKills;
+  swordSkillSpan.textContent = swordSkill;
+  crossBowSkillSpan.textContent = crossBowSkill;
+  wandSkillSpan.textContent = wandSkill;
+  bowSkillSpan.textContent = bowSkill;
+  axeSkillSpan.textContent = axeSkill;
+  rodSkillSpan.textContent = rodSkill;
+  shieldingSkillSpan.textContent = shieldingSkill;
 });
 
 function updateLog(message) {
