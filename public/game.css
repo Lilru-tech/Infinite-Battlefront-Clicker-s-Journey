@@ -3,6 +3,7 @@ body {
   grid-template-columns: 1fr 1fr 1fr;
   margin: 0;
   padding: 0;
+  align-items: flex-start;
 }
 
 #menu {
@@ -10,21 +11,22 @@ body {
   height: 50px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  gap: 20px;
 }
-  
-  /* Styles for the left div */
-  #left {
-    margin-left: 10px;
-    display: flex;
-    flex-direction: column;
-    margin-top: 20px;
-    height: 95%;
-    width: 95%;
-  }
-  
-  /* Styles for the center div */
+
+#left {
+  grid-column: 1 / 2;
+  margin-left: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 0;
+  width: 95%;
+}
+
   #center {
+    grid-column: 2 / 3;
     grid-template-columns: 1fr 1fr;
     display: flex;
     align-items: center;
@@ -33,9 +35,9 @@ body {
     height: 95%;
     width: 95%;
   }
-  
-  /* Styles for the right div */
+
   #right {
+    grid-column: 3 / 4;
     display: flex;
     align-items: right;
     flex-direction: column;
@@ -43,9 +45,22 @@ body {
     height: 95%;
     width: 95%;
   }
+
+  #leftMenu {
+    justify-self: start;
+  }
   
+  #centerMenu {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
   
-  /* Set max-width and center the game container */
+  #rightMenu {
+    justify-self: end;
+  }
+
   .container {
     max-width: 800px;
     margin: 0 auto;
@@ -83,20 +98,36 @@ body {
     cursor: pointer;
   }
   
-  #rightFoldableContainer {
+  #rightFoldableContainer1 {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
     min-height: 10%;
     width: 95%;
   }  
-  
+
+  #rightFoldableContainer2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    min-height: 10%;
+    width: 95%;
+  }  
+
   #leftFoldableContainer {
     display: flex;
     flex-direction: column;
     min-height: 10%;
-    width: 95%;
+    width: 100%;
   }
+  
+  #leftFoldableContainer2 {
+    display: flex;
+    flex-direction: column;
+    min-height: 10%;
+    width: 100%;
+  }
+  
   
   #dead {
     text-align: center;
@@ -113,6 +144,26 @@ body {
     100% {
       opacity: 1;
     }
+  }
+  
+  .button-container {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  @media (min-width: 768px) {
+    .button-container {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+  }  
+
+  #save {
+    margin-right: 10px;
   }
 
   .button {
@@ -242,7 +293,98 @@ body {
     text-align: center;
   }
   
-  .shop-list {
+  li {
     list-style-type: none;
     padding: 0;
+  }
+
+  .progress-red {
+    width: 300px;
+    height: 30px;
+    border-radius: 5px;
+    margin: 20px 10px;
+    border: 1px solid rgb(0, 0, 0);
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .swordProgressBar span {
+    height: 100%;
+    display: block;
+    width: 0;
+    color: rgb(255, 251, 251);
+    line-height: 30px;
+    position: absolute;
+    text-align: end;
+    padding-right: 5px;
+  }
+
+  .crossBowProgressBar span {
+    height: 100%;
+    display: block;
+    width: 0;
+    color: rgb(255, 251, 251);
+    line-height: 30px;
+    position: absolute;
+    text-align: end;
+    padding-right: 5px;
+  }
+
+  .wandProgressBar span {
+    height: 100%;
+    display: block;
+    width: 0;
+    color: rgb(255, 251, 251);
+    line-height: 30px;
+    position: absolute;
+    text-align: end;
+    padding-right: 5px;
+  }
+
+  .bowProgressBar span {
+    height: 100%;
+    display: block;
+    width: 0;
+    color: rgb(255, 251, 251);
+    line-height: 30px;
+    position: absolute;
+    text-align: end;
+    padding-right: 5px;
+  }
+
+  .axeProgressBar span {
+    height: 100%;
+    display: block;
+    width: 0;
+    color: rgb(255, 251, 251);
+    line-height: 30px;
+    position: absolute;
+    text-align: end;
+    padding-right: 5px;
+  }
+
+  .rodProgressBar span {
+    height: 100%;
+    display: block;
+    width: 0;
+    color: rgb(255, 251, 251);
+    line-height: 30px;
+    position: absolute;
+    text-align: end;
+    padding-right: 5px;
+  }
+
+  .shieldingProgressBar span {
+    height: 100%;
+    display: block;
+    width: 0;
+    color: rgb(255, 251, 251);
+    line-height: 30px;
+    position: absolute;
+    text-align: end;
+    padding-right: 5px;
+  }
+
+  .progress-red span {
+    background-color: red;
   }

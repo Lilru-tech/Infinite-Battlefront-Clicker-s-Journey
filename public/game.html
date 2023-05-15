@@ -22,29 +22,71 @@
     </div>
   </div>
   <div id="menu">
-    <button id="save" class ="button">Save</button>
+  <div id="leftMenu"></div>
+  <div id="centerMenu">
+    <button id="promotion" class="button" onclick="promotion()" title="Promotion will give you more stats and will change your player a bit"></button>
+  </div>
+  <div id="rightMenu">
+    <div class="button-container">
+      <button id="save" class="button">Save</button>
+    </div>
+  </div>  
   </div>
   <div id="left">
     <fieldset>
       <legend><h2 id="statsButton" class="foldable"></h2></legend>
-    <div id="leftFoldableContainer">
-      <fieldset>
-        <legend>Combat Stats</legend>
-        <p>Attack:<span id="attack"></span></p>
-        <p>Defense:<span id="defense"></span></p>
-        <p>Critical chance:<span id="criticalChance"></span></p>
-        <p>Critical damage:<span id="criticalDamage"></span></p>
-      </fieldset>
-      <p>Level: <span id="level">1</span></p>
-      <p>Money: <span id="moneyCount">0</span></p>
-      <p>Deaths: <span id="deathCount">0</span></p>
-      <p>Top damage dealt: <span id="topDamageDealt">0</span></p>
-      <p>Top damage taken: <span id="topDamageTaken">0</span></p>
-      <p>Monster killed: <span id="monsterKill">0</span></p>
+      <div id="leftFoldableContainer">
+        <p>Level: <span id="level">1</span></p>
+        <p>Money: <span id="moneyCount">0</span></p>
+        <p>Deaths: <span id="deathCount">0</span></p>
+        <p>Top damage dealt: <span id="topDamageDealt">0</span></p>
+        <p>Top damage taken: <span id="topDamageTaken">0</span></p>
+        <p>Monster killed: <span id="monsterKill">0</span></p>
+      </div>
     </fieldset>
-    <button id="promotion" class ="button" onclick="promotion()" title="Promotion will give you more stats and will change your player a bit"></button>
-    </div>
-  </div>
+    <fieldset>
+      <legend><h2 id="combatStatsButton" class="foldable"></h2></legend>
+      <div id="leftFoldableContainer2">
+        <p>Attack: <span id="attack"></span></p>
+        <p>Defense: <span id="defense"></span></p>
+        <p>Critical chance: <span id="criticalChance"></span></p>
+        <p>Critical damage: <span id="criticalDamage"></span></p>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend><h2 id="skillsButton" class="foldable">Skills</h2></legend>
+      <div id="leftFoldableContainer3">
+        <p>Sword:<span id="swordSkill" class ="attackSkill"></span>
+          <div class="swordProgressBar progress-red" id="skillProgress">
+          <span id="swordSkillPercentage" data-progress=""></span>
+        </div></p>
+        <p>Crossbow:<span id="crossBowSkill" class ="attackSkill"></span>
+          <div class="crossBowProgressBar progress-red">
+          <span id="crossBowSkillPercentage" data-progress=""></span>
+        </div></p>
+        <p>Wand:<span id="wandSkill" class ="attackSkill"></span>
+          <div class="wandProgressBar progress-red">
+          <span id="wandSkillPercentage" data-progress=""></span>
+        </div></p>
+        <p>Bow:<span id="bowSkill" class ="attackSkill"></span>
+          <div class="bowProgressBar progress-red">
+          <span id="bowSkillPercentage" data-progress=""></span>
+        </div></p>
+        <p>Axe:<span id="axeSkill" class ="attackSkill"></span>
+          <div class="axeProgressBar progress-red">
+          <span id="axeSkillPercentage" data-progress=""></span>
+        </div></p>
+        <p>Rod:<span id="rodSkill" class ="attackSkill"></span>
+          <div class="rodProgressBar progress-red">
+          <span id="rodSkillPercentage" data-progress=""></span>
+        </div></p>
+        <p>Shielding:<span id="shieldingSkill" class ="defenseSkill"></span>
+          <div class="shieldingProgressBar progress-red">
+          <span id="shieldingSkillPercentage" data-progress=""></span>
+        </div></p>
+      </div>
+    </fieldset>
+  </div>  
   <div id="center">
   <h1 id="title">Infinite Batelfront</h1>
     <div id="healthBarContainer">
@@ -54,7 +96,7 @@
     </div>
     <div id="game-container">  
       <span id="damage-number"></span>
-      <img id="monster" src="sprites/monster1.png">
+      <img id="monster" src="sprites/monster/monster1.png">
     </div> 
     <button id="clickButton"  class ="button">Attack!</button>
     <div id="healthBarContainer">
@@ -81,12 +123,18 @@
   </fieldset>
   </div>
   <div id="right">
-    <div id="shop">
-      <fieldset id="hideShop">
-      <legend><h2 id="shopButton" class="foldable"></h2></legend>
-      <div id="rightFoldableContainer"></div>
-    </div>
+    <div id="shopStats">
+      <fieldset id="hideShop1">
+      <legend><h2 id="shopStatsButton" class="foldable"></h2></legend>
+      <div id="rightFoldableContainer1"></div>
   </fieldset>
+</div>
+<div id="shopItems">
+  <fieldset id="hideShop2">
+  <legend><h2 id="shopItemsButton" class="foldable"></h2></legend>
+  <div id="rightFoldableContainer2"></div>
+</fieldset>
+</div>
 </div>
     <script src="app.js"></script>    
     <script src="monster.js"></script>
@@ -94,5 +142,6 @@
     <script src="shop.js"></script>
     <script src="level.js"></script>
     <script src="vocations.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </body>
 </html>
