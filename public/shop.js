@@ -143,8 +143,6 @@ const shopStats = {
             attackSpan.textContent = attack;
           } else if (item.itemType === 'defense') {
             defenseSpan.textContent = defense;
-          } else if (item.itemType === 'playerHealth') {
-            playerHealthBar.textContent = 'HP: ' + currentPlayerHealth + '/' + playerHealth;
           } else if (item.itemType === 'criticalChance') {
             criticalChanceSpan.textContent = ' ' + criticalChance + '%';
           } else if (item.itemType === 'criticalDamage') {
@@ -210,9 +208,6 @@ const shopStats = {
           item.effect();
           moneyCount -= price;
           updateMoneyCount(moneyCount);
-          if (item.itemType === 'health') {
-            playerHealthBar.textContent = `HP: ${currentPlayerHealth}/${playerHealth}`;
-          }
           itemPrice.textContent = `${item.price} coins`;
           purchaseButton.dataset.price = item.price;
         } else {

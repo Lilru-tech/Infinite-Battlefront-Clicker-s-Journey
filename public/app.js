@@ -33,7 +33,6 @@ const menuDiv = document.getElementById('menu');
 const centerDiv = document.getElementById('center');
 const leftDiv = document.getElementById('left');
 const rightDiv = document.getElementById('right');
-const clickButton = document.getElementById('clickButton');
 const moneyCountSpan = document.getElementById('moneyCount');
 const experienceCountSpan = document.getElementById('experienceCount');
 const levelSpan = document.getElementById('level');
