@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="player.css">
   <link rel="stylesheet" href="shop.css">
   <link rel="stylesheet" href="vocations.css">
+  <link rel="stylesheet" href="collapsible.css">
 </head>
 <body>
   <div class="overlay" id="overlay">
@@ -32,60 +33,61 @@
     </div>
   </div>  
   </div>
-  <div id="left">
-    <fieldset>
-      <legend><h2 id="statsButton" class="foldable"></h2></legend>
-      <div id="leftFoldableContainer">
-        <p>Level: <span id="level">1</span></p>
-        <p>Money: <span id="moneyCount">0</span></p>
-        <p>Deaths: <span id="deathCount">0</span></p>
-        <p>Top damage dealt: <span id="topDamageDealt">0</span></p>
-        <p>Top damage taken: <span id="topDamageTaken">0</span></p>
-        <p>Monster killed: <span id="monsterKill">0</span></p>
-      </div>
-    </fieldset>
-    <fieldset>
-      <legend><h2 id="combatStatsButton" class="foldable"></h2></legend>
-      <div id="leftFoldableContainer2">
-        <p>Attack: <span id="attack"></span></p>
-        <p>Defense: <span id="defense"></span></p>
-        <p>Critical chance: <span id="criticalChance"></span></p>
-        <p>Critical damage: <span id="criticalDamage"></span></p>
-      </div>
-    </fieldset>
-    <fieldset>
-      <legend><h2 id="skillsButton" class="foldable">Skills</h2></legend>
-      <div id="leftFoldableContainer3">
-        <p>Sword:<span id="swordSkill" class ="attackSkill"></span>
-          <div class="swordProgressBar progress-red" id="skillProgress">
-          <span id="swordSkillPercentage" data-progress=""></span>
-        </div></p>
-        <p>Crossbow:<span id="crossBowSkill" class ="attackSkill"></span>
-          <div class="crossBowProgressBar progress-red">
-          <span id="crossBowSkillPercentage" data-progress=""></span>
-        </div></p>
-        <p>Wand:<span id="wandSkill" class ="attackSkill"></span>
-          <div class="wandProgressBar progress-red">
-          <span id="wandSkillPercentage" data-progress=""></span>
-        </div></p>
-        <p>Bow:<span id="bowSkill" class ="attackSkill"></span>
-          <div class="bowProgressBar progress-red">
-          <span id="bowSkillPercentage" data-progress=""></span>
-        </div></p>
-        <p>Axe:<span id="axeSkill" class ="attackSkill"></span>
-          <div class="axeProgressBar progress-red">
-          <span id="axeSkillPercentage" data-progress=""></span>
-        </div></p>
-        <p>Rod:<span id="rodSkill" class ="attackSkill"></span>
-          <div class="rodProgressBar progress-red">
-          <span id="rodSkillPercentage" data-progress=""></span>
-        </div></p>
-        <p>Shielding:<span id="shieldingSkill" class ="defenseSkill"></span>
-          <div class="shieldingProgressBar progress-red">
-          <span id="shieldingSkillPercentage" data-progress=""></span>
-        </div></p>
-      </div>
-    </fieldset>
+  <div id="left" class ="left">
+    <li class="item" id="stats">
+        <a href="#stats" class="btn"><i class="far fa-user" aria-hidden="true"></i>Stats</a>
+        <div class="sleft">
+            <a>Level: <span id="level">1</span></a>
+            <a>Money: <span id="moneyCount">0</span></a>
+            <a>Deaths: <span id="deathCount">0</span></a>
+            <a>Top damage dealt: <span id="topDamageDealt">0</span></a>
+            <a>Top damage taken: <span id="topDamageTaken">0</span></a>
+            <a>Monster killed: <span id="monsterKill">0</span></a>
+        </div>
+    </li>
+    <li class="item" id="combatStats">
+        <a href="#combatStats" class="btn"> <i class="far fa-envelope" aria-hidden="true"></i>Combat Stats</a>
+        <div class="sleft">
+            <a>Attack: <span id="attack"></span></a>
+            <a>Defense: <span id="defense"></span></a>
+            <a>Critical chance: <span id="criticalChance"></span></a>
+            <a>Critical damage: <span id="criticalDamage"></span></a>
+        </div>
+    </li>
+    <li class="item" id="skills">
+        <a href="#skills" class="btn"><i class="fas fa-cog" aria-hidden="true"></i>Skills</a>
+        <div class="sleft">
+            <a>Sword:<span id="swordSkill" class ="attackSkill"></span>
+                <div class="swordProgressBar progress-red" id="skillProgress">
+                <span id="swordSkillPercentage" data-progress=""></span>
+              </div></a>
+              <a>Crossbow:<span id="crossBowSkill" class ="attackSkill"></span>
+                <div class="crossBowProgressBar progress-red">
+                <span id="crossBowSkillPercentage" data-progress=""></span>
+              </div></a>
+              <a>Wand:<span id="wandSkill" class ="attackSkill"></span>
+                <div class="wandProgressBar progress-red">
+                <span id="wandSkillPercentage" data-progress=""></span>
+              </div></a>
+              <a>Bow:<span id="bowSkill" class ="attackSkill"></span>
+                <div class="bowProgressBar progress-red">
+                <span id="bowSkillPercentage" data-progress=""></span>
+              </div></a>
+              <a>Axe:<span id="axeSkill" class ="attackSkill"></span>
+                <div class="axeProgressBar progress-red">
+                <span id="axeSkillPercentage" data-progress=""></span>
+              </div></a>
+              <a>Rod:<span id="rodSkill" class ="attackSkill"></span>
+                <div class="rodProgressBar progress-red">
+                <span id="rodSkillPercentage" data-progress=""></span>
+              </div></a>
+              <a>Shielding:<span id="shieldingSkill" class ="defenseSkill"></span>
+                <div class="shieldingProgressBar progress-red">
+                <span id="shieldingSkillPercentage" data-progress=""></span>
+              </div></a>
+        </div>
+    </li>
+</div>
   </div>  
   <div id="center">
   <h1 id="title">Infinite Batelfront</h1>
@@ -113,29 +115,28 @@
         <div id="experience"><span id="experienceCount"></span><span id="levelUpExperience"></span></div>
     </div>
     </div>
-    <fieldset>
-      <legend><h2 id="logStyle" class="foldable">Log</h2></legend>
-      <div id="logFoldableContainer">
-    <div id="log">
-      <p id="logContent"></p>
-    </div>
-    </div>
-  </fieldset>
   </div>
-  <div id="right">
-    <div id="shopStats">
-      <fieldset id="hideShop1">
-      <legend><h2 id="shopStatsButton" class="foldable"></h2></legend>
-      <div id="rightFoldableContainer1"></div>
-  </fieldset>
+<div id="right" class ="left">
+    <li class="item" id="shopStats">
+        <a href="#shopStats" class="btn"><i class="far fa-user" aria-hidden="true"></i>Stats Shop</a>
+        <div class="sleft">
+            <a id="rightFoldableContainer1"></a>
+        </div>
+    </li>
+    <li class="item" id="shopItems">
+        <a href="#shopItems" class="btn"><i class="far fa-envelope" aria-hidden="true"></i>Items Shop</a>
+        <div class="sleft">
+            <a id="rightFoldableContainer2"></a>
+        </div>
+    </li>
+    <li class="item" id="logStyle">
+      <a href="#logStyle" class="btn"><i class="far fa-envelope" aria-hidden="true"></i>Log</a>
+      <div class="sleft">
+          <a id="logContent"></a>
+      </div>
+  </li>
 </div>
-<div id="shopItems">
-  <fieldset id="hideShop2">
-  <legend><h2 id="shopItemsButton" class="foldable"></h2></legend>
-  <div id="rightFoldableContainer2"></div>
-</fieldset>
-</div>
-</div>
+  </div>
     <script src="app.js"></script>    
     <script src="monster.js"></script>
     <script src="player.js"></script>
@@ -143,5 +144,17 @@
     <script src="level.js"></script>
     <script src="vocations.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      window.onload = function() {
+        var items = document.querySelectorAll('#left .item a.btn, #right .item a.btn');
+        items.forEach(function(item) {
+          item.addEventListener('click', function(e) {
+            e.preventDefault();
+            var sleft = this.parentElement.querySelector('.sleft');
+            sleft.style.maxHeight = sleft.style.maxHeight === '0px' || !sleft.style.maxHeight ? '70em' : '0px';
+          });
+        });
+      }
+      </script>
 </body>
 </html>

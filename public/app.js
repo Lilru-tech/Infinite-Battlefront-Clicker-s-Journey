@@ -32,6 +32,7 @@ let shieldingSkillPercentage = 0;
 const menuDiv = document.getElementById('menu');
 const centerDiv = document.getElementById('center');
 const leftDiv = document.getElementById('left');
+const rightDiv = document.getElementById('right');
 const clickButton = document.getElementById('clickButton');
 const moneyCountSpan = document.getElementById('moneyCount');
 const experienceCountSpan = document.getElementById('experienceCount');
@@ -52,7 +53,6 @@ const skillsButton = document.getElementById('skillsButton');
 const leftFoldableContainer = document.getElementById('leftFoldableContainer');
 const leftFoldableContainer2 = document.getElementById('leftFoldableContainer2');
 const leftFoldableContainer3 = document.getElementById('leftFoldableContainer3');
-const logFoldableContainer = document.getElementById('logFoldableContainer');
 const criticalChanceSpan = document.getElementById('criticalChance');
 const criticalDamageSpan = document.getElementById('criticalDamage');
 const topDamageDealt = document.getElementById('topDamageDealt');
@@ -223,8 +223,8 @@ window.addEventListener("load", () => {
   spawnMonster();
   updatePlayerHealthBar();
   updateExperienceBar(experienceCount, levelUpExperience(level));
-  generateShopStatsItems();
   generateShopItemsItems();
+  generateShopStatsItems();
   skillsProgressBar();
 });
 
@@ -233,12 +233,12 @@ setInterval(saveData, 1 * 30 * 1000);
 
   const vocationImages = {
     Knight: {
-      alive: 'player.png',
-      dead: 'playerDead.png'
+      alive: 'player1.png',
+      dead: 'playerDead1.png'
     },
     'Elite Knight': { 
-      alive: 'playerPromoted.png', 
-      dead: 'playerPromotedDead.png' },
+      alive: 'playerPromoted1.png', 
+      dead: 'playerPromotedDead1.png' },
     Mage: {
       alive: 'player2.png',
       dead: 'playerDead2.png'
@@ -343,142 +343,12 @@ logStyle.addEventListener('click', () => {
   }
 });
 
-clickButton.addEventListener('click', function() {
-  calculateDamage(attack);
-  calculateDamageBlocked(defense);
-  updateExperienceBar(experienceCount, levelUpExperience(level));
-  updatePlayerHealthBar();
-  showOrHidePromotionButton(level);
-
-// Create the restoreHealthButton element
-const restoreHealthButton = document.createElement('button');
-restoreHealthButton.setAttribute('id', 'restoreHealthButton');
-restoreHealthButton.textContent = 'Restore Health (Cost: 100 Money and 1% of experience)';
-restoreHealthButton.style.display = 'none';
-
-// Create the hardRestoreHealthButton element
-const hardRestoreHealthButton = document.createElement('button');
-hardRestoreHealthButton.setAttribute('id', 'hardRestoreHealthButton');
-hardRestoreHealthButton.textContent = 'Restore Health (Cost: 10% of experience)';
-hardRestoreHealthButton.style.display = 'none';
-
-function showDeadOverlay() {
-  const overlay = document.getElementById('overlay');
-  overlay.style.display = 'flex';
-}
-
-document.body.appendChild(restoreHealthButton);
-document.body.appendChild(hardRestoreHealthButton);
-overlay.appendChild(restoreHealthButton);
-overlay.appendChild(hardRestoreHealthButton);
-
-// Define function to handle player death
-function handlePlayerDeath() {
-  menuDiv.style.display = 'none';
-  leftDiv.style.display = 'none';
-  centerDiv.style.display = 'none';
-  hideShop1.style.display = 'none';
-  hideShop2.style.display = 'none';
-  rightFoldableContainer1.style.display = 'none';
-  rightFoldableContainer2.style.display = 'none';
-  playerDeadImage.style.display = 'block';
-
-  showDeadOverlay();
-
-  const reviveCost = 100;
-
-  if (moneyCount >= reviveCost) {
-    restoreHealthButton.style.display = 'block';
-  } else {
-    hardRestoreHealthButton.style.display = 'block';
-  }
-}
-
-restoreHealthButton.addEventListener('click', () => {
-  skillsLevelDown();
-  const reviveCost = 100;
-  const experienceLost = experienceCount - Math.floor(experienceCount * 0.99);
-  moneyCount -= reviveCost;
-  currentPlayerHealth = playerHealth;
-  experienceCount -= experienceLost;
-  updatePlayerHealthBar();
-  moneyCountSpan.textContent = moneyCount;
-  menuDiv.style.display = 'flex';
-  leftDiv.style.display = 'grid';
-  centerDiv.style.display = 'flex';
-  hideShop1.style.display = 'block';
-  hideShop2.style.display = 'block';
-  rightFoldableContainer1.style.display = 'grid';
-  rightFoldableContainer2.style.display = 'grid';
-  restoreHealthButton.style.display = 'none';
-  dead.style.display = 'none';
-  playerDeadImage.style.display = 'none';
-  updateLog("You died, lost " + experienceLost + " experience points\n");
-  deathCount++;
-  deathCountSpan.textContent = deathCount;        
-  const overlay = document.getElementById('overlay');
-  overlay.style.display = 'none';
-  spawnMonster();
-  updateExperienceBar(experienceCount, levelUpExperience(level));
-});
-
-hardRestoreHealthButton.addEventListener('click', () => {
-  const hardExperienceLost = experienceCount - Math.floor(experienceCount * 0.90);
-  updateLog("You don't have enough money, so you will lose 10% of your experience!");
-  currentPlayerHealth = playerHealth;
-  experienceCount -= hardExperienceLost;
-  updatePlayerHealthBar();
-  moneyCountSpan.textContent = moneyCount;
-  menuDiv.style.display = 'flex';
-  leftDiv.style.display = 'grid';
-  centerDiv.style.display = 'flex';
-  hideShop1.style.display = 'block';
-  hideShop2.style.display = 'block';
-  rightFoldableContainer1.style.display = 'grid';
-  rightFoldableContainer2.style.display = 'grid';
-  hardRestoreHealthButton.style.display = 'none';
-  dead.style.display = 'none';
-  playerDeadImage.style.display = 'none';
-  updateLog("You died, you lost " + hardExperienceLost + " experience points\n");
-  deathCount++;
-  deathCountSpan.textContent = deathCount;   
-    const overlay = document.getElementById('overlay');
-  overlay.style.display = 'none';  
-  spawnMonster();   
-  updateExperienceBar(experienceCount, levelUpExperience(level));
-});
-
-if (currentPlayerHealth <= 0) {
-  updateLog("You have been killed by the monster!");
-  handlePlayerDeath();
-  updateExperienceBar(experienceCount, levelUpExperience(level));
-}
-
-
-  if (currentMonsterHealth <= 0) {
-    defeatMonster();
-    monsterKills++;
-    updateExperienceBar(experienceCount, levelUpExperience(level));
-  }
-
-  // Update counters
-  moneyCountSpan.textContent = moneyCount;
-  monsterKillSpan.textContent = monsterKills;
-  swordSkillSpan.textContent = swordSkill;
-  crossBowSkillSpan.textContent = crossBowSkill;
-  wandSkillSpan.textContent = wandSkill;
-  bowSkillSpan.textContent = bowSkill;
-  axeSkillSpan.textContent = axeSkill;
-  rodSkillSpan.textContent = rodSkill;
-  shieldingSkillSpan.textContent = shieldingSkill;
-});
-
 function updateLog(message) {
   const logContent = document.getElementById('logContent');
   const newMessage = document.createElement('p');
   newMessage.textContent = message;
   logContent.insertBefore(newMessage, logContent.firstChild);
-  if (logContent.childNodes.length > 25) {
+  if (logContent.childNodes.length > 10) {
     logContent.removeChild(logContent.lastChild);
   }
 }

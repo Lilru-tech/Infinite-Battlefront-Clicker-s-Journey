@@ -9,50 +9,51 @@ const vocations = [
       description: 'The Warrior is a battle-hardened fighter with exceptional combat skills and unwavering determination. They specialize in various weapon styles and excel in the art of warfare. Warriors are known for their physical strength, endurance, and resilience, often leading the charge in battles and inspiring their allies through their bravery.'},
     { name: 'Druid',
       description: 'The Druid is a compassionate individual with the ability to mend wounds, cure ailments, and restore vitality to others. They possess extensive knowledge of restorative magic and medicinal arts. Healers are indispensable in any adventuring party, ensuring the well-being of their companions and providing vital support during battles.'},
-      { name: 'Paladin', 
+    { name: 'Paladin', 
       description: 'The Paladin is a holy warrior blessed with divine powers. They combine martial skills with potent spells to uphold justice and smite evil. Paladins are renowned for their unwavering faith, their ability to heal wounds, and their proficiency in banishing dark creatures. They are often seen as beacons of hope in times of darkness.'}
   ];
   
-  const vocationContainer = document.getElementById('vocation-container');
+const vocationContainer = document.getElementById('vocation-container');
 
-  vocations.forEach((vocation, index) => {
-    const card = document.createElement('div');
-    card.className = 'card flex-row';
+window.onload = function() {
+    var pages = document.getElementById('pages');
   
-    const img = document.createElement('img');
-    img.className = 'book';
-    img.src = `sprites/player/player${index + 1}.png`;
+    vocations.forEach((vocation, index) => {
+      const page = document.createElement('div');
+      page.className = 'page';
+      page.style.zIndex = (vocations.length - index) * 2;
   
-    const info = document.createElement('div');
-    info.className = 'flex-column info';
+      const title = document.createElement('h1');
+      title.textContent = vocation.name;
+      title.addEventListener('click', pageFlip);
+      page.appendChild(title);
   
-    const title = document.createElement('div');
-    title.className = 'title';
-    title.textContent = vocation.name;
+      const img = document.createElement('img');
+      img.src = `sprites/player/player${index + 1}.png`;
+      img.className = 'img-small';
+      img.addEventListener('click', pageFlip);
+      page.appendChild(img);
   
-    const summary = document.createElement('div');
-    summary.className = 'hidden bottom summary';
-    summary.textContent = vocation.description;
+      const summary = document.createElement('p');
+      summary.textContent = vocation.description;
+      summary.addEventListener('click', pageFlip);
+      page.appendChild(summary);
   
-    info.appendChild(title);
-    info.appendChild(summary);
+      const joinButton = document.createElement('button');
+      joinButton.className = 'simple hidden bottom';
+      joinButton.textContent = 'Start!';
+      joinButton.addEventListener('click', (e) => {
+        e.stopPropagation();
+        localStorage.setItem('selectedVocation', vocation.name);
+        localStorage.setItem('isPromoted', 'false');
+        setPlayerImages(vocation.name);
+        window.location.href = 'game.html';
+      });
+      page.appendChild(joinButton);
   
-    const joinButton = document.createElement('button');
-    joinButton.className = 'simple hidden bottom';
-    joinButton.textContent = 'Start!';
-    joinButton.addEventListener('click', () => {
-      localStorage.setItem('selectedVocation', vocation.name);
-      localStorage.setItem('isPromoted', 'false');
-      setPlayerImages(vocation.name);
-      window.location.href = 'game.html';
+      pages.appendChild(page);
     });
-  
-    card.appendChild(img);
-    card.appendChild(info);
-    card.appendChild(joinButton);
-  
-    vocationContainer.appendChild(card);
-  });
+  } 
 
 function setPlayerImages(selectedVocation) {
   let playerImage = 'player1.png';
