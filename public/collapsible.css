@@ -52,7 +52,7 @@
 }
 
 .sleft {
-    background: #000000;
+    background: #232121;
     overflow: hidden;
     max-height: 0;
     transition: max-height 0.3s ease;

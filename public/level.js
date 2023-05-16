@@ -1,4 +1,4 @@
-clickButton.addEventListener('click', () => {
+setInterval(() => {
     if (experienceCount >= levelUpExperience(level)) {
       levelUp();
       totalExperienceCount += levelUpExperience;
@@ -7,9 +7,9 @@ clickButton.addEventListener('click', () => {
         levelDown();
       }
     }
-    experienceCountSpan.textContent = experienceCount + "/";
+    experienceCountSpan.textContent = experienceCount;
     levelUpExperienceSpan.textContent = levelUpExperience(level);
-  });
+  }, 2000);
 
   const levelUpExperience = function(level) {
     if (level === 1){
@@ -164,15 +164,17 @@ clickButton.addEventListener('click', () => {
   function updateExperienceBar(experienceCount, levelUpExperience) {
     let displayedExperience = experienceCount;
     if (experienceCount > levelUpExperience) {
-      displayedExperience = `${experienceCount}/${levelUpExperience}`;
+      displayedExperience = levelUpExperience;
     }
     const expPercentage = (experienceCount / levelUpExperience) * 100;
-    if (expPercentage > 100) {
-      experienceBar.style.width = `${expPercentage - 100}%`;
+    if (expPercentage>100){
+      const spareExpPercentage = expPercentage - 100;
+      experienceBar.style.width = `${spareExpPercentage}%`;
     } else {
       experienceBar.style.width = `${expPercentage}%`;
     }
-  }
+    document.querySelector('#experience').textContent = `${displayedExperience} / ${levelUpExperience}`;
+  }  
   
   updateExperienceBar(experienceCount, levelUpExperience(level));
   

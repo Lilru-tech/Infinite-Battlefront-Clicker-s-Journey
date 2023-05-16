@@ -69,28 +69,60 @@ function promotion() {
   }
 }
 
+const healingRates = {
+  'Knight': { healthRate: 2, interval: 2000 },
+  'Elite Knight': { healthRate: 4, interval: 1500 },
+  'Paladin': { healthRate: 1, interval: 2000 },
+  'Holy Paladin': { healthRate: 3, interval: 2000 },
+  'Mage': { healthRate: 1, interval: 3000 },
+  'Archmage': { healthRate: 2, interval: 2500 },
+  'Elf': { healthRate: 2, interval: 2000 },
+  'Elder Elf': { healthRate: 3, interval: 1500 },
+  'Warrior': { healthRate: 2, interval: 2000 },
+  'Warlord': { healthRate: 4, interval: 1600 },
+  'Druid': { healthRate: 1, interval: 3000 },
+  'Archdruid': { healthRate: 2, interval: 2500 }
+};
+
+function startHealthRegeneration() {
+  const playerVocation = localStorage.getItem('selectedVocation');
+  const { healthRate, interval } = healingRates[playerVocation];
+  setInterval(() => {
+    if (currentPlayerHealth < playerHealth) {
+      currentPlayerHealth += healthRate;
+      currentPlayerHealth = Math.min(currentPlayerHealth, playerHealth);
+      updatePlayerHealthBar();
+    }
+  }, interval);
+}
+
+startHealthRegeneration();
+
+
 promotionButton.addEventListener('click', promotion);
 
 function updatePlayerHealthBar() {
-    if (currentPlayerHealth <= 0) {
-      playerHealthBar.style.width = `0%`;
-      playerHealthBar.textContent = '';
-      dead.style.display = 'block';
-    } else {
-      const playerHealthPercentage = (currentPlayerHealth / playerHealth) * 100;
-      playerHealthBar.style.width = `${playerHealthPercentage}%`;
-      if (playerHealthPercentage > 70) {
-        playerHealthBar.style.backgroundColor = 'green';
-      } else if (playerHealthPercentage > 50) {
-        playerHealthBar.style.backgroundColor = 'orange';
-      } else if (playerHealthPercentage > 30) {
-        playerHealthBar.style.backgroundColor = '#d8fb17'
-      } else if (playerHealthPercentage > 5) {
-        playerHealthBar.style.backgroundColor = '#9b2c2c'
-      }
-      playerHealthBar.textContent = `HP: ${currentPlayerHealth}/${playerHealth}`;
+  if (currentPlayerHealth <= 0) {
+    playerHealthBar.style.width = `0%`;
+    playerHealthBar.textContent = '';
+    dead.style.display = 'block';
+  } else {
+    const playerHealthPercentage = (currentPlayerHealth / playerHealth) * 100;
+    playerHealthBar.style.width = `${playerHealthPercentage}%`;
+    if (playerHealthPercentage > 70) {
+      playerHealthBar.style.backgroundColor = 'green';
+    } else if (playerHealthPercentage > 50) {
+      playerHealthBar.style.backgroundColor = 'orange';
+    } else if (playerHealthPercentage > 30) {
+      playerHealthBar.style.backgroundColor = '#d8fb17'
+    } else if (playerHealthPercentage > 5) {
+      playerHealthBar.style.backgroundColor = '#9b2c2c'
     }
+    document.querySelector('#currentPlayerHealth').textContent = currentPlayerHealth;
+    document.querySelector('#maxPlayerHealth').textContent = playerHealth;
   }
+}
+
     
     function getPlayerHealth (){
       playerHealth = 100;
@@ -219,7 +251,7 @@ function updatePlayerHealthBar() {
         }, animationDuration * 1000);
       }
     }
-    clickButton.addEventListener('click', function() {
+    setInterval(() =>{
       if (swordSkillPercentage >= 100) {
         swordSkillLevelUp();
       }
@@ -298,7 +330,7 @@ function updatePlayerHealthBar() {
         axeSkillSpan.textContent = axeSkill;
         rodSkillSpan.textContent = rodSkill;
         shieldingSkillSpan.textContent = shieldingSkill;
-    });
+    }, 2000);
 
     function showDeadOverlay() {
       const overlay = document.getElementById('overlay');

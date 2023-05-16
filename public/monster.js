@@ -1,21 +1,22 @@
 const damageNumber = document.getElementById('damage-number');
 
 function updateHealthBar() {
-    const healthPercentage = (currentMonsterHealth / (monsterHealth + healthBonus)) * 100;
-    healthBar.style.width = `${healthPercentage}%`;
-    if (healthPercentage > 70) {
-      healthBar.style.backgroundColor = 'green';
-    } else if (healthPercentage > 50) {
-      healthBar.style.backgroundColor = 'orange';
-    } else if (healthPercentage > 30){
-        healthBar.style.backgroundColor = '#d8fb17'
-    } else if (healthPercentage > 5){
-        healthBar.style.backgroundColor = '#9b2c2c'
-    } else {
-      healthBar.style.backgroundColor = 'black';
-    }
-    healthBar.textContent = `HP: ${currentMonsterHealth}/${monsterHealth + healthBonus}`;
+  const healthPercentage = (currentMonsterHealth / (monsterHealth + healthBonus)) * 100;
+  healthBar.style.width = `${healthPercentage}%`;
+  if (healthPercentage > 70) {
+    healthBar.style.backgroundColor = 'green';
+  } else if (healthPercentage > 50) {
+    healthBar.style.backgroundColor = 'orange';
+  } else if (healthPercentage > 30){
+    healthBar.style.backgroundColor = '#d8fb17'
+  } else if (healthPercentage > 5){
+    healthBar.style.backgroundColor = '#9b2c2c'
+  } else {
+    healthBar.style.backgroundColor = 'black';
   }
+  document.getElementById('currentMonsterHealth').textContent = currentMonsterHealth;
+  document.getElementById('maxMonsterHealth').textContent = monsterHealth + healthBonus;
+}
 
   function getRandomMonsterHealth() {
     return Math.floor(Math.random() * 20) + 1;
@@ -35,7 +36,7 @@ function updateHealthBar() {
     spawnMonster();
 
     // Gain experience and money
-const experience = Math.floor(Math.random() * 100) + 1;
+const experience = Math.floor(Math.random() * 200) + 1;
 experienceCount += experience;
 experienceCountSpan.textContent = experienceCount+"/";
 levelUpExperienceSpan.textContent = levelUpExperience(level);

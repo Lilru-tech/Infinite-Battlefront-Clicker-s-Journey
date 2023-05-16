@@ -1,7 +1,13 @@
 ponernombre repo git
-Last Version: 1.4.1
+Last Version: 1.4.2
 
 Version history
+*1.4.2
+Erased Attack button to make it Idle
+Implemented health restore per second
+Fixed bug with text for every Bar
+Minor fixes
+
 *1.4.1
 Changed Vocations.html visual aspect
 Changed Stats and shop display to make it collapsible elements
@@ -9,7 +15,7 @@ Fixed the behaviour of vocations.html so if you already picked a vocation you ca
 
 *1.4.0
 Added Skills
-Added shop for items
+Added Shop for items
 Changed sprites directory to order it
 
 *1.3.0
