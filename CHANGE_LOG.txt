@@ -15,7 +15,7 @@ Fixed the behaviour of vocations.html so if you already picked a vocation you ca
 
 *1.4.0
 Added Skills
-Added shop for items
+Added Shop for items
 Changed sprites directory to order it
 
 *1.3.0
