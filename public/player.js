@@ -61,9 +61,9 @@ function promotion() {
     }
     moneyCount -= promotionValue;
     moneyCountSpan.textContent = moneyCount;
+    updateLog("Congratulations! You have been promoted!");
     promotionButton.style.display = 'none';
     localStorage.setItem('isPromoted', 'true');
-    updateLog("Congratulations! You have been promoted!");
   } else {
     updateLog("You don't have enough coins for promotion.");
   }
@@ -256,13 +256,125 @@ function updatePlayerHealthBar() {
       getAxeSkillPercentage();
       getRodSkillPercentage();
       getShieldingSkillPercentage();
-      console.log(nextSwordSkill)
-      console.log(nextCrossBowSkill)
-      console.log(nextWandSkill)
-      console.log(nextBowSkill)
-      console.log(nextAxeSkill)
-      console.log(nextRodSkill)
-      console.log(nextShieldingSkill)
+        calculateDamage(attack);
+        calculateDamageBlocked(defense);
+        updateExperienceBar(experienceCount, levelUpExperience(level));
+        updatePlayerHealthBar();
+        showOrHidePromotionButton(level);
+      
+      // Create the restoreHealthButton element
+      const restoreHealthButton = document.createElement('button');
+      restoreHealthButton.setAttribute('id', 'restoreHealthButton');
+      restoreHealthButton.textContent = 'Restore Health (Cost: 100 Money and 1% of experience)';
+      restoreHealthButton.style.display = 'none';
+      
+      // Create the hardRestoreHealthButton element
+      const hardRestoreHealthButton = document.createElement('button');
+      hardRestoreHealthButton.setAttribute('id', 'hardRestoreHealthButton');
+      hardRestoreHealthButton.textContent = 'Restore Health (Cost: 10% of experience)';
+      hardRestoreHealthButton.style.display = 'none';
+    
+      
+      if (currentPlayerHealth <= 0) {
+        updateLog("You have been killed by the monster!");
+        handlePlayerDeath();
+        updateExperienceBar(experienceCount, levelUpExperience(level));
+      }
+      
+      
+        if (currentMonsterHealth <= 0) {
+          defeatMonster();
+          monsterKills++;
+          updateExperienceBar(experienceCount, levelUpExperience(level));
+        }
+      
+        // Update counters
+        moneyCountSpan.textContent = moneyCount;
+        monsterKillSpan.textContent = monsterKills;
+        swordSkillSpan.textContent = swordSkill;
+        crossBowSkillSpan.textContent = crossBowSkill;
+        wandSkillSpan.textContent = wandSkill;
+        bowSkillSpan.textContent = bowSkill;
+        axeSkillSpan.textContent = axeSkill;
+        rodSkillSpan.textContent = rodSkill;
+        shieldingSkillSpan.textContent = shieldingSkill;
+    });
+
+    function showDeadOverlay() {
+      const overlay = document.getElementById('overlay');
+      overlay.style.display = 'flex';
+    }
+    
+    document.body.appendChild(restoreHealthButton);
+    document.body.appendChild(hardRestoreHealthButton);
+    overlay.appendChild(restoreHealthButton);
+    overlay.appendChild(hardRestoreHealthButton);
+    
+    // Define function to handle player death
+    function handlePlayerDeath() {
+      menuDiv.style.display = 'none';
+      leftDiv.style.display = 'none';
+      centerDiv.style.display = 'none';
+      rightDiv.style.display = 'none';
+      playerDeadImage.style.display = 'block';
+    
+      showDeadOverlay();
+    
+      const reviveCost = 100;
+    
+      if (moneyCount >= reviveCost) {
+        restoreHealthButton.style.display = 'block';
+      } else {
+        hardRestoreHealthButton.style.display = 'block';
+      }
+    }
+    
+    restoreHealthButton.addEventListener('click', () => {
+      skillsLevelDown();
+      const reviveCost = 100;
+      const experienceLost = experienceCount - Math.floor(experienceCount * 0.99);
+      moneyCount -= reviveCost;
+      currentPlayerHealth = playerHealth;
+      experienceCount -= experienceLost;
+      updatePlayerHealthBar();
+      moneyCountSpan.textContent = moneyCount;
+      menuDiv.style.display = 'flex';
+      leftDiv.style.display = 'grid';
+      centerDiv.style.display = 'flex';
+      rightDiv.style.display = 'flex';
+      restoreHealthButton.style.display = 'none';
+      dead.style.display = 'none';
+      playerDeadImage.style.display = 'none';
+      updateLog("You died, lost " + experienceLost + " experience points\n");
+      deathCount++;
+      deathCountSpan.textContent = deathCount;        
+      const overlay = document.getElementById('overlay');
+      overlay.style.display = 'none';
+      spawnMonster();
+      updateExperienceBar(experienceCount, levelUpExperience(level));
+    });
+    
+    hardRestoreHealthButton.addEventListener('click', () => {
+      const hardExperienceLost = experienceCount - Math.floor(experienceCount * 0.90);
+      updateLog("You don't have enough money, so you will lose 10% of your experience!");
+      currentPlayerHealth = playerHealth;
+      experienceCount -= hardExperienceLost;
+      updatePlayerHealthBar();
+      moneyCountSpan.textContent = moneyCount;
+      menuDiv.style.display = 'flex';
+      leftDiv.style.display = 'grid';
+      centerDiv.style.display = 'flex';
+      rightDiv.style.display = 'flex';
+      hardRestoreHealthButton.style.display = 'none';
+      dead.style.display = 'none';
+      playerDeadImage.style.display = 'none';
+      updateLog("You died, you lost " + hardExperienceLost + " experience points\n");
+      deathCount++;
+      deathCountSpan.textContent = deathCount;   
+        const overlay = document.getElementById('overlay');
+      overlay.style.display = 'none';  
+      spawnMonster();   
+      updateExperienceBar(experienceCount, levelUpExperience(level));
     });
 
     function getSwordSkillPercentage() {

@@ -162,20 +162,6 @@ const shopStats = {
     rightFoldableContainer1.appendChild(firstColumn);
     rightFoldableContainer1.appendChild(secondColumn);
   
-    if (rightFoldableContainer1.style.display === 'none') {
-      shopStatsButton.innerHTML = 'Stats Shop';
-    } else {
-      shopStatsButton.innerHTML = 'Stats Shop';
-    }
-    shopStatsButton.addEventListener('click', () => {
-      if (rightFoldableContainer1.style.display === 'none') {
-        rightFoldableContainer1.style.display = 'grid';
-        shopStatsButton.innerHTML = 'Stats Shop';
-      } else {
-        rightFoldableContainer1.style.display = 'none';
-        shopStatsButton.innerHTML = 'Stats Shop';
-      }
-    });
   }
 
   function generateShopItemsItems() {
@@ -238,21 +224,6 @@ const shopStats = {
     rightFoldableContainer2.innerHTML = '';
     rightFoldableContainer2.appendChild(firstColumn);
     rightFoldableContainer2.appendChild(secondColumn);
-  
-    if (rightFoldableContainer2.style.display === 'none') {
-      shopItemsButton.innerHTML = 'Items Shop';
-    } else {
-      shopItemsButton.innerHTML = 'Items Shop';
-    }
-    shopItemsButton.addEventListener('click', () => {
-      if (rightFoldableContainer2.style.display === 'none') {
-        rightFoldableContainer2.style.display = 'grid';
-        shopItemsButton.innerHTML = 'Items Shop';
-      } else {
-        rightFoldableContainer2.style.display = 'none';
-        shopItemsButton.innerHTML = 'Items Shop';
-      }
-    });
   }
   
 

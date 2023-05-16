@@ -1,7 +1,12 @@
 ponernombre repo git
-Last Version: 1.4.0
+Last Version: 1.4.1
 
 Version history
+*1.4.1
+Changed Vocations.html visual aspect
+Changed Stats and shop display to make it collapsible elements
+Fixed the behaviour of vocations.html so if you already picked a vocation you cant enter again
+
 *1.4.0
 Added Skills
 Added shop for items
