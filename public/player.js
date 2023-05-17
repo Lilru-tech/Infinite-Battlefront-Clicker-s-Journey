@@ -84,6 +84,21 @@ const healingRates = {
   'Archdruid': { healthRate: 2, interval: 2500 }
 };
 
+const manaRates = {
+  'Knight': { manaRate: 1, interval: 3000 },
+  'Elite Knight': { manaRate: 2, interval: 2500 },
+  'Paladin': { manaRate: 2, interval: 2500 },
+  'Holy Paladin': { manaRate: 3, interval: 2000 },
+  'Mage': { manaRate: 4, interval: 2000 },
+  'Archmage': { manaRate: 6, interval: 1500 },
+  'Elf': { manaRate: 3, interval: 2500 },
+  'Elder Elf': { manaRate: 4, interval: 2000 },
+  'Warrior': { manaRate: 1, interval: 2800 },
+  'Warlord': { manaRate: 2, interval: 2400 },
+  'Druid': { manaRate: 4, interval: 2000 },
+  'Archdruid': { manaRate: 6, interval: 1500 }
+};
+
 function startHealthRegeneration() {
   const playerVocation = localStorage.getItem('selectedVocation');
   const { healthRate, interval } = healingRates[playerVocation];
@@ -97,6 +112,20 @@ function startHealthRegeneration() {
 }
 
 startHealthRegeneration();
+
+function startManaRegeneration() {
+  const playerVocation = localStorage.getItem('selectedVocation');
+  const { manaRate, interval } = manaRates[playerVocation];
+  setInterval(() => {
+    if (currentPlayerMana < playerMana) {
+      currentPlayerMana += manaRate;
+      currentPlayerMana = Math.min(currentPlayerMana, playerMana);
+      updatePlayerManaBar();
+    }
+  }, interval);
+}
+
+startManaRegeneration();
 
 
 promotionButton.addEventListener('click', promotion);
@@ -123,6 +152,19 @@ function updatePlayerHealthBar() {
   }
 }
 
+function updatePlayerManaBar() {
+  if (currentPlayerMana <= 0) {
+    playerManaBar.style.width = `0%`;
+    playerManaBar.textContent = '';
+    dead.style.display = 'block';
+  } else {
+    const playerManaPercentage = (currentPlayerMana / playerMana) * 100;
+    playerManaBar.style.width = `${playerManaPercentage}%`;
+    document.querySelector('#currentPlayerMana').textContent = currentPlayerMana;
+    document.querySelector('#maxPlayerMana').textContent = playerMana;
+  }
+}
+
     
     function getPlayerHealth (){
       playerHealth = 100;
@@ -130,6 +172,12 @@ function updatePlayerHealthBar() {
       updatePlayerHealthBar();
     }
     getPlayerHealth();
+    function getPlayerMana (){
+      playerMana = 50;
+      currentPlayerMana = playerMana;
+      updatePlayerManaBar();
+    }
+    updatePlayerManaBar();
 
     function calculateDamage(attack) {
       if (selectedVocation === 'Knight' || selectedVocation === 'Elite Knight'){
@@ -292,6 +340,7 @@ function updatePlayerHealthBar() {
         calculateDamageBlocked(defense);
         updateExperienceBar(experienceCount, levelUpExperience(level));
         updatePlayerHealthBar();
+        updatePlayerManaBar();
         showOrHidePromotionButton(level);
       
       // Create the restoreHealthButton element

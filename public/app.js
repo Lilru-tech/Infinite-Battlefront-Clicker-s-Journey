@@ -5,7 +5,9 @@ let level = 1;
 let monsterHealth;
 let currentMonsterHealth;
 let currentPlayerHealth;
+let currentPlayerMana;
 let playerHealth = 100;
+let playerMana = 50;
 let deathCount = 0;
 let criticalChance = 0;
 let criticalDamage = 100;
@@ -41,6 +43,7 @@ const healthBar = document.getElementById('healthBar');
 const healthBarContainer = document.getElementById('healthBarContainer');
 const logDiv = document.getElementById('log');
 const playerHealthBar = document.getElementById('playerHealthBar');
+const playerManaBar = document.getElementById('playerManaBar');
 const restoreHealthButton = document.getElementById('restoreHealthButton');
 const hardRestoreHealthButton = document.getElementById('hardRestoreHealthButton');
 const playerImage = document.getElementById('playerImage');
@@ -60,7 +63,9 @@ const monsterKillSpan = document.getElementById('monsterKill');
 const experienceBar = document.getElementById('experienceBar');
 const levelUpExperienceSpan = document.getElementById('levelUpExperience');
 const playerHealthSpan = document.getElementById('playerHealth');
+const playerManaSpan = document.getElementById('playerMana');
 const updateCurrentPlayerHealth = document.getElementById('currenPlayerHealth');
+const updateCurrentPlayerMana = document.getElementById('currenPlayerMana');
 const swordSkillSpan = document.getElementById('swordSkill');
 const swordSkillPercentageSpan = document.getElementById('swordSkillPercentage');
 const crossBowSkillSpan = document.getElementById('crossBowSkill');
@@ -94,6 +99,8 @@ function saveData() {
     currentMonsterHealth,
     currentPlayerHealth,
     playerHealth,
+    currentPlayerMana,
+    playerMana,
     deathCount,
     criticalChance,
     criticalDamage,
@@ -144,6 +151,8 @@ function loadData() {
     level = data.level;
     playerHealth = data.playerHealth;
     currentPlayerHealth = data.currentPlayerHealth;
+    playerMana = data.playerMana;
+    currentPlayerMana = data.currentPlayerMana;
     deathCount = data.deathCount;
     criticalChance = data.criticalChance;
     criticalDamage = data.criticalDamage;
@@ -221,6 +230,7 @@ window.addEventListener("load", () => {
   loadData();
   spawnMonster();
   updatePlayerHealthBar();
+  updatePlayerManaBar();
   updateExperienceBar(experienceCount, levelUpExperience(level));
   generateShopItemsItems();
   generateShopStatsItems();

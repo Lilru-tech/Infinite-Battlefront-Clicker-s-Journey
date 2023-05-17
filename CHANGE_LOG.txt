@@ -1,7 +1,10 @@
 ponernombre repo git
-Last Version: 1.4.2
+Last Version: 1.5.0
 
 Version history
+*1.5.0
+Added mana sistem
+
 *1.4.2
 Erased Attack button to make it Idle
 Implemented health restore per second
