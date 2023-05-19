@@ -187,11 +187,22 @@
       </script>
 <script>
   $( function() {
-      $( "#sortable1, #sortable2" ).sortable({
-          connectWith: ".left ul"
-      }).disableSelection();
-  } );
-  </script>
+    $( "#sortable1, #sortable2" ).sortable({
+      connectWith: ".left ul",
+      start: function(event, ui) {
+        var origin = ui.item.parent();
+        ui.item.data('origin', origin);
+      },
+      over: function(event, ui) {
+        var origin = ui.item.data('origin');
+        if (origin.children().length <= 1) {
+          origin.sortable('cancel');
+        }
+      }
+    }).disableSelection();
+  });
+</script>
+
   <script>
   $(document).ready(function() {
       $("#bottom").draggable();
