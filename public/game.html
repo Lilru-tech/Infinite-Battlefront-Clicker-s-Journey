@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="shop.css">
   <link rel="stylesheet" href="vocations.css">
   <link rel="stylesheet" href="collapsible.css">
+  <link rel="stylesheet" href="spells.css">
 </head>
 <body>
   <div class="overlay" id="overlay">
@@ -34,10 +35,10 @@
   </div>  
   </div>
   <div id="left" class ="left">
-    <li class="item" id="stats">
+    <ul id="sortable1">
+    <li class="item sortable-item" id="stats">
         <a href="#stats" class="btn"><i class="far fa-user" aria-hidden="true"></i>Stats</a>
         <div class="sleft">
-            <a>Level: <span id="level">1</span></a>
             <a>Money: <span id="moneyCount">0</span></a>
             <a>Deaths: <span id="deathCount">0</span></a>
             <a>Top damage dealt: <span id="topDamageDealt">0</span></a>
@@ -45,7 +46,7 @@
             <a>Monster killed: <span id="monsterKill">0</span></a>
         </div>
     </li>
-    <li class="item" id="combatStats">
+    <li class="item sortable-item" id="combatStats">
         <a href="#combatStats" class="btn"> <i class="far fa-envelope" aria-hidden="true"></i>Combat Stats</a>
         <div class="sleft">
             <a>Attack: <span id="attack"></span></a>
@@ -54,9 +55,22 @@
             <a>Critical damage: <span id="criticalDamage"></span></a>
         </div>
     </li>
-    <li class="item" id="skills">
+    <li class="item sortable-item" id="skills">
         <a href="#skills" class="btn"><i class="fas fa-cog" aria-hidden="true"></i>Skills</a>
         <div class="sleft">
+          <a>Level: <span id="level">1</span>
+          <div id="experienceBarContainer">
+            <div id="experienceBar" class="player-experience">
+              <div id="experience" title ="Experience">
+                <span id="experienceCount"></span><span id="levelUpExperience"></span>
+              </div>
+            </div>
+          </div> 
+        </a>
+          <a>Magic Level:<span id="magicSkill" class ="attackSkill"></span>
+            <div class="magicProgressBar progress-red" id="skillProgress">
+            <span id="magicSkillPercentage" data-progress=""></span>
+          </div></a>
             <a>Sword:<span id="swordSkill" class ="attackSkill"></span>
                 <div class="swordProgressBar progress-red" id="skillProgress">
                 <span id="swordSkillPercentage" data-progress=""></span>
@@ -87,6 +101,7 @@
               </div></a>
         </div>
     </li>
+  </ul>
 </div>
   </div>  
   <div id="center">
@@ -103,37 +118,50 @@
       <div id="playerHealthBar" class="player-health"></div>
         <div id="playerHealth">HP: <span id="currentPlayerHealth"></span>/<span id="maxPlayerHealth"></span></div>
     </div>  
+    <div id="healthBarContainer">
+      <div id="playerManaBar" class="player-mana"></div>
+        <div id="playerMana">Mana: <span id="currentPlayerMana"></span>/<span id="maxPlayerMana"></span></div>
+    </div>  
     <div id="game-container2">  
       <span id="damage-number"></span>
     <img id="playerImage" src="" alt="Player Image">
-  </div> 
-  <div id="experienceBarContainer">
-    <div id="experienceBar" class="player-experience">
-      <div id="experience" title ="Experience"><span id="experienceCount"></span><span id="levelUpExperience"></span></div>
-    </div>
   </div>  
   </div>
 <div id="right" class ="left">
-    <li class="item" id="shopStats">
+  <ul id="sortable2">
+    <li class="item sortable-item" id="shopStats">
         <a href="#shopStats" class="btn"><i class="far fa-user" aria-hidden="true"></i>Stats Shop</a>
         <div class="sleft">
             <a id="rightFoldableContainer1"></a>
         </div>
     </li>
-    <li class="item" id="shopItems">
+    <li class="item sortable-item" id="shopItems">
         <a href="#shopItems" class="btn"><i class="far fa-envelope" aria-hidden="true"></i>Items Shop</a>
         <div class="sleft">
             <a id="rightFoldableContainer2"></a>
         </div>
     </li>
-    <li class="item" id="logStyle">
+    <li class="item sortable-item" id="spellsContainer">
+      <a href="#spellsContainer" class="btn"><i class="far fa-envelope" aria-hidden="true"></i>Spells Shop</a>
+      <div class="sleft">
+          <a id="spellsContent"></a>
+      </div>
+  </li>
+    <li class="item sortable-item" id="logStyle">
       <a href="#logStyle" class="btn"><i class="far fa-envelope" aria-hidden="true"></i>Log</a>
       <div class="sleft">
           <a id="logContent"></a>
       </div>
   </li>
+</ul>
 </div>
-  </div>
+<div id="bottom" class ="left">
+  <li class="item" id="spellsAvailables">
+    <a href="#spellsAvailables" class="btn"><i class="far fa-envelope" aria-hidden="true"></i>Spells</a>
+    <div class="sleft">
+        <a id="spellsBought"></a>
+</li>
+</div>
     <script src="app.js"></script>    
     <script src="monster.js"></script>
     <script src="player.js"></script>
@@ -141,6 +169,10 @@
     <script src="level.js"></script>
     <script src="vocations.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="spells.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
       window.onload = function() {
         var items = document.querySelectorAll('#left .item a.btn, #right .item a.btn');
@@ -153,5 +185,28 @@
         });
       }
       </script>
+<script>
+  $( function() {
+    $( "#sortable1, #sortable2" ).sortable({
+      connectWith: ".left ul",
+      start: function(event, ui) {
+        var origin = ui.item.parent();
+        ui.item.data('origin', origin);
+      },
+      over: function(event, ui) {
+        var origin = ui.item.data('origin');
+        if (origin.children().length <= 1) {
+          origin.sortable('cancel');
+        }
+      }
+    }).disableSelection();
+  });
+</script>
+
+  <script>
+  $(document).ready(function() {
+      $("#bottom").draggable();
+    });
+  </script>
 </body>
 </html>

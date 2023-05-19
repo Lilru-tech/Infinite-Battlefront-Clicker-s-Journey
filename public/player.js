@@ -10,6 +10,7 @@ let axeAttackTimes = 0;
 let rodAttackTimes = 0;
 let defenseTimes = 0;
 let attacksEachPercentage = 0;
+let nextMagicSkill = 100;
 let nextSwordSkill = 100;
 let nextCrossBowSkill = 100;
 let nextWandSkill = 100;
@@ -84,6 +85,21 @@ const healingRates = {
   'Archdruid': { healthRate: 2, interval: 2500 }
 };
 
+const manaRates = {
+  'Knight': { manaRate: 1, interval: 3000 },
+  'Elite Knight': { manaRate: 2, interval: 2500 },
+  'Paladin': { manaRate: 2, interval: 2500 },
+  'Holy Paladin': { manaRate: 3, interval: 2000 },
+  'Mage': { manaRate: 4, interval: 2000 },
+  'Archmage': { manaRate: 6, interval: 1500 },
+  'Elf': { manaRate: 3, interval: 2500 },
+  'Elder Elf': { manaRate: 4, interval: 2000 },
+  'Warrior': { manaRate: 1, interval: 2800 },
+  'Warlord': { manaRate: 2, interval: 2400 },
+  'Druid': { manaRate: 4, interval: 2000 },
+  'Archdruid': { manaRate: 6, interval: 1500 }
+};
+
 function startHealthRegeneration() {
   const playerVocation = localStorage.getItem('selectedVocation');
   const { healthRate, interval } = healingRates[playerVocation];
@@ -97,6 +113,20 @@ function startHealthRegeneration() {
 }
 
 startHealthRegeneration();
+
+function startManaRegeneration() {
+  const playerVocation = localStorage.getItem('selectedVocation');
+  const { manaRate, interval } = manaRates[playerVocation];
+  setInterval(() => {
+    if (currentPlayerMana < playerMana) {
+      currentPlayerMana += manaRate;
+      currentPlayerMana = Math.min(currentPlayerMana, playerMana);
+      updatePlayerManaBar();
+    }
+  }, interval);
+}
+
+startManaRegeneration();
 
 
 promotionButton.addEventListener('click', promotion);
@@ -123,6 +153,19 @@ function updatePlayerHealthBar() {
   }
 }
 
+function updatePlayerManaBar() {
+  if (currentPlayerMana <= 0) {
+    playerManaBar.style.width = `0%`;
+    playerManaBar.textContent = '';
+    dead.style.display = 'block';
+  } else {
+    const playerManaPercentage = (currentPlayerMana / playerMana) * 100;
+    playerManaBar.style.width = `${playerManaPercentage}%`;
+    document.querySelector('#currentPlayerMana').textContent = currentPlayerMana;
+    document.querySelector('#maxPlayerMana').textContent = playerMana;
+  }
+}
+
     
     function getPlayerHealth (){
       playerHealth = 100;
@@ -130,6 +173,12 @@ function updatePlayerHealthBar() {
       updatePlayerHealthBar();
     }
     getPlayerHealth();
+    function getPlayerMana (){
+      playerMana = 50;
+      currentPlayerMana = playerMana;
+      updatePlayerManaBar();
+    }
+    getPlayerMana();
 
     function calculateDamage(attack) {
       if (selectedVocation === 'Knight' || selectedVocation === 'Elite Knight'){
@@ -252,6 +301,9 @@ function updatePlayerHealthBar() {
       }
     }
     setInterval(() =>{
+      if (magicSkillPercentage >= 100) {
+        magicSkillLevelUp();
+      }
       if (swordSkillPercentage >= 100) {
         swordSkillLevelUp();
       }
@@ -281,6 +333,7 @@ function updatePlayerHealthBar() {
       rodAttackTimes++;
       defenseTimes++;
       skillsProgressBar();
+      getMagicSkillPercentage();
       getSwordSkillPercentage();
       getCrossBowSkillPercentage();
       getWandSkillPercentage();
@@ -288,11 +341,12 @@ function updatePlayerHealthBar() {
       getAxeSkillPercentage();
       getRodSkillPercentage();
       getShieldingSkillPercentage();
-        calculateDamage(attack);
-        calculateDamageBlocked(defense);
-        updateExperienceBar(experienceCount, levelUpExperience(level));
-        updatePlayerHealthBar();
-        showOrHidePromotionButton(level);
+      calculateDamage(attack);
+      calculateDamageBlocked(defense);
+      updateExperienceBar(experienceCount, levelUpExperience(level));
+      updatePlayerHealthBar();
+      updatePlayerManaBar();
+      showOrHidePromotionButton(level);
       
       // Create the restoreHealthButton element
       const restoreHealthButton = document.createElement('button');
@@ -323,6 +377,7 @@ function updatePlayerHealthBar() {
         // Update counters
         moneyCountSpan.textContent = moneyCount;
         monsterKillSpan.textContent = monsterKills;
+        magicSkillSpan.textContent = magicSkill;
         swordSkillSpan.textContent = swordSkill;
         crossBowSkillSpan.textContent = crossBowSkill;
         wandSkillSpan.textContent = wandSkill;
@@ -348,6 +403,7 @@ function updatePlayerHealthBar() {
       leftDiv.style.display = 'none';
       centerDiv.style.display = 'none';
       rightDiv.style.display = 'none';
+      bottomDiv.style.display = 'none';
       playerDeadImage.style.display = 'block';
     
       showDeadOverlay();
@@ -367,13 +423,16 @@ function updatePlayerHealthBar() {
       const experienceLost = experienceCount - Math.floor(experienceCount * 0.99);
       moneyCount -= reviveCost;
       currentPlayerHealth = playerHealth;
+      currentPlayerMana = playerMana;
       experienceCount -= experienceLost;
       updatePlayerHealthBar();
+      updatePlayerManaBar();
       moneyCountSpan.textContent = moneyCount;
       menuDiv.style.display = 'flex';
       leftDiv.style.display = 'grid';
       centerDiv.style.display = 'flex';
       rightDiv.style.display = 'flex';
+      bottomDiv.style.display = 'flex';
       restoreHealthButton.style.display = 'none';
       dead.style.display = 'none';
       playerDeadImage.style.display = 'none';
@@ -390,13 +449,16 @@ function updatePlayerHealthBar() {
       const hardExperienceLost = experienceCount - Math.floor(experienceCount * 0.90);
       updateLog("You don't have enough money, so you will lose 10% of your experience!");
       currentPlayerHealth = playerHealth;
+      currentPlayerMana = playerMana;
       experienceCount -= hardExperienceLost;
       updatePlayerHealthBar();
+      updatePlayerManaBar();
       moneyCountSpan.textContent = moneyCount;
       menuDiv.style.display = 'flex';
       leftDiv.style.display = 'grid';
       centerDiv.style.display = 'flex';
       rightDiv.style.display = 'flex';
+      bottomDiv.style.display = 'flex';
       hardRestoreHealthButton.style.display = 'none';
       dead.style.display = 'none';
       playerDeadImage.style.display = 'none';
@@ -408,7 +470,16 @@ function updatePlayerHealthBar() {
       spawnMonster();   
       updateExperienceBar(experienceCount, levelUpExperience(level));
     });
-
+   
+    function getMagicSkillPercentage() {
+      const requiredManaWaste = nextMagicSkill;
+      const manaWasteEachPercentage = Math.floor(requiredManaWaste / 100);
+      if (wastedMana>manaWasteEachPercentage){
+        magicSkillPercentage = magicSkillPercentage + Math.floor(wastedMana/manaWasteEachPercentage);
+        wastedMana=0;
+      }
+    }
+    
     function getSwordSkillPercentage() {
       const requiredSwordAttacks = nextSwordSkill;
       const swordAttacksEachPercentage = Math.floor(requiredSwordAttacks / 100);
@@ -498,6 +569,37 @@ function updatePlayerHealthBar() {
         defenseTimes = 0;
       }
     }  
+
+    function magicSkillLevelUp(){
+      magicSkillPercentage = 0;
+      magicSkill++;
+      magicSkillSpan.textContent = magicSkill;
+      if (selectedVocation === 'Knight'){
+        nextMagicSkill *= 2;
+      } else if (selectedVocation === 'Elite Knight'){
+        nextMagicSkill *= 1.9;
+      } else if (selectedVocation === 'Paladin'){
+        nextMagicSkill *= 1.6;
+      } else if (selectedVocation === 'Holy Paladin'){
+        nextMagicSkill *= 1.5;
+      } else if (selectedVocation === 'Mage'){
+        nextMagicSkill *= 1.1;
+      } else if (selectedVocation === 'Archmage'){
+        nextMagicSkill *= 1.05;
+      } else if (selectedVocation === 'Elf'){
+        nextMagicSkill *= 1.6;
+      } else if (selectedVocation === 'Elder Elf'){
+        nextMagicSkill *= 1.5;
+      } else if (selectedVocation === 'Warrior'){
+        nextMagicSkill *= 1.95;
+      } else if (selectedVocation === 'Warlord'){
+        nextMagicSkill *= 1.85;
+      } else if (selectedVocation === 'Druid'){
+        nextMagicSkill *= 1.1;
+      } else if (selectedVocation === 'Archdruid'){
+        nextMagicSkill *= 1.05;
+      }
+    }
 
     function swordSkillLevelUp(){
       swordSkillPercentage = 0;
@@ -722,7 +824,20 @@ function updatePlayerHealthBar() {
       }
     }  
 
+    
     function skillsLevelDown() {
+      let magicSkillPercentageLost = Math.round(magicSkill / 3);
+      if (magicSkillPercentageLost < 1) {
+        magicSkillPercentageLost = 1;
+      }
+      const magicPercentageDemote = magicSkillPercentage - magicSkillPercentageLost;
+      if (magicPercentageDemote <= 0) {
+        if (magicSkill > 0) {
+          magicSkill--;
+        }
+      } else {
+        magicSkillPercentage = magicSkillPercentage - magicSkillPercentageLost;
+      }
       let swordSkillPercentageLost = Math.round(swordSkill / 3);
       if (swordSkillPercentageLost < 1) {
         swordSkillPercentageLost = 1;
@@ -814,6 +929,7 @@ function updatePlayerHealthBar() {
         shieldingSkillPercentage = shieldingSkillPercentage - shieldingSkillPercentageLost;
       }
     
+      magicSkillSpan.textContent = magicSkill;
       swordSkillSpan.textContent = swordSkill;
       crossBowSkillSpan.textContent = crossBowSkill;
       wandSkillSpan.textContent = wandSkill;
@@ -826,6 +942,7 @@ function updatePlayerHealthBar() {
     }    
     
     function skillsProgressBar() {
+      const magicProgressBar = document.querySelector(".magicProgressBar span");
       const swordProgressBar = document.querySelector(".swordProgressBar span");
       const crossBowProgressBar = document.querySelector(".crossBowProgressBar span");
       const wandProgressBar = document.querySelector(".wandProgressBar span");
@@ -833,6 +950,9 @@ function updatePlayerHealthBar() {
       const axeProgressBar = document.querySelector(".axeProgressBar span");
       const rodProgressBar = document.querySelector(".rodProgressBar span");
       const shieldingProgressBar = document.querySelector(".shieldingProgressBar span");
+
+      magicProgressBar.style.width = magicSkillPercentage + "%";
+      magicProgressBar.textContent = magicSkillPercentage + "%";
     
       swordProgressBar.style.width = swordSkillPercentage + "%";
       swordProgressBar.textContent = swordSkillPercentage + "%";
@@ -857,6 +977,13 @@ function updatePlayerHealthBar() {
     }
     
     skillsProgressBar();
+
+    while (magicSkillPercentage >= 100) {
+      magicSkillLevelUp();
+      magicSkillSpan.textContent = magicSkill;
+      skillsProgressBar();
+      wastedMana = 0;
+    }
 
     while (swordSkillPercentage >= 100) {
       swordSkillLevelUp();
@@ -907,6 +1034,13 @@ function updatePlayerHealthBar() {
       defenseTimes = 0;
     }
     
+    if (magicSkill >= 1) {
+      while (magicSkillPercentage <= 0) {
+        skillsLevelDown();
+        magicSkillSpan.textContent = magicSkill;
+        skillsProgressBar();
+      }
+    }
   
     if (swordSkill >= 1) {
       while (swordSkillPercentage <= 0) {

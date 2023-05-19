@@ -5,7 +5,9 @@ let level = 1;
 let monsterHealth;
 let currentMonsterHealth;
 let currentPlayerHealth;
+let currentPlayerMana;
 let playerHealth = 100;
+let playerMana = 50;
 let deathCount = 0;
 let criticalChance = 0;
 let criticalDamage = 100;
@@ -14,6 +16,8 @@ let maxDamageTaken = 0;
 let monsterKills = 0;
 let damageDealt = 0;
 let damageBlocked = 0;
+let magicSkill = 0;
+let magicSkillPercentage = 0;
 let swordSkill = 0;
 let swordSkillPercentage = 0;
 let crossBowSkill = 0;
@@ -33,6 +37,7 @@ const menuDiv = document.getElementById('menu');
 const centerDiv = document.getElementById('center');
 const leftDiv = document.getElementById('left');
 const rightDiv = document.getElementById('right');
+const bottomDiv = document.getElementById('bottom');
 const moneyCountSpan = document.getElementById('moneyCount');
 const experienceCountSpan = document.getElementById('experienceCount');
 const levelSpan = document.getElementById('level');
@@ -41,6 +46,7 @@ const healthBar = document.getElementById('healthBar');
 const healthBarContainer = document.getElementById('healthBarContainer');
 const logDiv = document.getElementById('log');
 const playerHealthBar = document.getElementById('playerHealthBar');
+const playerManaBar = document.getElementById('playerManaBar');
 const restoreHealthButton = document.getElementById('restoreHealthButton');
 const hardRestoreHealthButton = document.getElementById('hardRestoreHealthButton');
 const playerImage = document.getElementById('playerImage');
@@ -60,9 +66,13 @@ const monsterKillSpan = document.getElementById('monsterKill');
 const experienceBar = document.getElementById('experienceBar');
 const levelUpExperienceSpan = document.getElementById('levelUpExperience');
 const playerHealthSpan = document.getElementById('playerHealth');
+const playerManaSpan = document.getElementById('playerMana');
 const updateCurrentPlayerHealth = document.getElementById('currenPlayerHealth');
+const updateCurrentPlayerMana = document.getElementById('currenPlayerMana');
 const swordSkillSpan = document.getElementById('swordSkill');
 const swordSkillPercentageSpan = document.getElementById('swordSkillPercentage');
+const magicSkillSpan = document.getElementById('magicSkill');
+const magicSkillPercentageSpan = document.getElementById('magicSkillPercentage');
 const crossBowSkillSpan = document.getElementById('crossBowSkill');
 const crossBowSkillPercentageSpan = document.getElementById('crossBowSkillPercentage');
 const wandSkillSpan = document.getElementById('wandSkill');
@@ -94,6 +104,8 @@ function saveData() {
     currentMonsterHealth,
     currentPlayerHealth,
     playerHealth,
+    currentPlayerMana,
+    playerMana,
     deathCount,
     criticalChance,
     criticalDamage,
@@ -107,6 +119,8 @@ function saveData() {
     promotionValue,
     swordSkill,
     swordSkillPercentage,
+    magicSkill,
+    magicSkillPercentage,
     crossBowSkill,
     crossBowSkillPercentage,
     wandSkill,
@@ -119,6 +133,7 @@ function saveData() {
     rodSkillPercentage,
     shieldingSkill,
     shieldingSkillPercentage,
+    nextMagicSkill,
     nextSwordSkill,
     nextCrossBowSkill,
     nextWandSkill,
@@ -126,8 +141,13 @@ function saveData() {
     nextAxeSkill,
     nextRodSkill,
     nextShieldingSkill,
+    spellsBought: spellsContainer.boughtItems,
+    cooldowns: {},
     shopStatsItems: shopStatsItems.map(item => ({ ...item, price: item.price })),
-    shopItemsItems: shopItemsItems.map(item => ({ ...item, price: item.price }))
+    shopItemsItems: shopItemsItems.map(item => ({ ...item, price: item.price })),
+    items: $('.sortable-item').map(function() { 
+      return {id: this.id, parent: $(this).parent().attr('id')}; 
+    }).get()
   };
 
   localStorage.setItem("gameData", JSON.stringify(savedData));
@@ -144,6 +164,8 @@ function loadData() {
     level = data.level;
     playerHealth = data.playerHealth;
     currentPlayerHealth = data.currentPlayerHealth;
+    playerMana = data.playerMana;
+    currentPlayerMana = data.currentPlayerMana;
     deathCount = data.deathCount;
     criticalChance = data.criticalChance;
     criticalDamage = data.criticalDamage;
@@ -155,6 +177,8 @@ function loadData() {
     attack = data.attack;
     defense = data.defense;
     promotionValue = data.promotionValue;
+    magicSkill = data.magicSkill;
+    magicSkillPercentage = data.magicSkillPercentage;
     swordSkill = data.swordSkill;
     swordSkillPercentage = data.swordSkillPercentage;
     crossBowSkill = data.crossBowSkill;
@@ -169,6 +193,7 @@ function loadData() {
     rodSkillPercentage = data.rodSkillPercentage;
     shieldingSkill = data.shieldingSkill;
     shieldingSkillPercentage = data.shieldingSkillPercentage;
+    nextMagicSkill = data.nextMagicSkill;
     nextSwordSkill = data.nextSwordSkill;
     nextCrossBowSkill = data.nextCrossBowSkill;
     nextWandSkill = data.nextWandSkill;
@@ -176,11 +201,12 @@ function loadData() {
     nextAxeSkill = data.nextAxeSkill;
     nextRodSkill = data.nextRodSkill;
     nextShieldingSkill = data.nextShieldingSkill;
+
     shopStatsItems.forEach((item, index) => {
       if (data.shopStatsItems && data.shopStatsItems[index]) {
         item.price = data.shopStatsItems[index].price;
       }
-    }),
+    });
     shopItemsItems.forEach((item, index) => {
       if (data.shopItemsItems && data.shopItemsItems[index]) {
         item.price = data.shopItemsItems[index].price;
@@ -199,6 +225,7 @@ function loadData() {
     defenseSpan.textContent = defense;
     topDamageDealt.textContent = maxDamageDealt;
     topDamageTaken.textContent = maxDamageTaken;
+    magicSkillSpan.textContent = magicSkill;
     swordSkillSpan.textContent = swordSkill;
     crossBowSkillSpan.textContent = crossBowSkill;
     wandSkillSpan.textContent = wandSkill;
@@ -206,8 +233,39 @@ function loadData() {
     axeSkillSpan.textContent = axeSkill;
     rodSkillSpan.textContent = rodSkill;
     shieldingSkillSpan.textContent = shieldingSkill;
+    
+    spellsContainer.boughtItems = data.spellsBought || [];
+    spellsContainer.boughtItems.forEach(boughtItem => {
+      const originalItem = spellsItems.find(item => item.name === boughtItem.name);
+      if (originalItem) {
+        boughtItem.effect = originalItem.effect;
+        if (boughtItem.hasOwnProperty('onCooldown') && data.cooldowns && data.cooldowns[boughtItem.name]) {
+          boughtItem.onCooldown = data.cooldowns[boughtItem.name]; // Set the cooldown state for each bought spell item
+        } else {
+          boughtItem.onCooldown = false; // Set default cooldown state if not found in saved data
+        }
+      }
+    });
+
+    // Removed the line that was emptying the lists
+    // Load item order and parent list
+    if (data.items) {
+      data.items.forEach(function(item) {
+        const parent = $("#" + item.parent);
+        const itemElem = $("#" + item.id);
+      
+        // Temporarily detach the item from the DOM
+        itemElem.detach();
+
+        // Append it to its original parent
+        parent.append(itemElem);
+      });
+    }
+
+    generateSpellsItems();
   }
 }
+
 
 function handleSaveButtonClick() {
   saveData();
@@ -221,9 +279,11 @@ window.addEventListener("load", () => {
   loadData();
   spawnMonster();
   updatePlayerHealthBar();
+  updatePlayerManaBar();
   updateExperienceBar(experienceCount, levelUpExperience(level));
   generateShopItemsItems();
   generateShopStatsItems();
+  generateSpellsItems();
   skillsProgressBar();
 });
 
@@ -325,20 +385,6 @@ skillsButton.addEventListener('click', () => {
     leftFoldableContainer3.style.display = 'block';
   } else {
     leftFoldableContainer3.style.display = 'none';
-  }
-});
-
-if (logFoldableContainer.style.display === 'block') {
-  logStyle.innerHTML = 'Log';
-} else {
-  logStyle.innerHTML = 'Log';
-}
-
-logStyle.addEventListener('click', () => {
-  if (logFoldableContainer.style.display === 'none') {
-    logFoldableContainer.style.display = 'block';
-  } else {
-    logFoldableContainer.style.display = 'none';
   }
 });
 
