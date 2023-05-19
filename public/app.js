@@ -144,7 +144,10 @@ function saveData() {
     spellsBought: spellsContainer.boughtItems,
     cooldowns: {},
     shopStatsItems: shopStatsItems.map(item => ({ ...item, price: item.price })),
-    shopItemsItems: shopItemsItems.map(item => ({ ...item, price: item.price }))
+    shopItemsItems: shopItemsItems.map(item => ({ ...item, price: item.price })),
+    items: $('.sortable-item').map(function() { 
+      return {id: this.id, parent: $(this).parent().attr('id')}; 
+    }).get()
   };
 
   localStorage.setItem("gameData", JSON.stringify(savedData));
@@ -198,11 +201,12 @@ function loadData() {
     nextAxeSkill = data.nextAxeSkill;
     nextRodSkill = data.nextRodSkill;
     nextShieldingSkill = data.nextShieldingSkill;
+
     shopStatsItems.forEach((item, index) => {
       if (data.shopStatsItems && data.shopStatsItems[index]) {
         item.price = data.shopStatsItems[index].price;
       }
-    }),
+    });
     shopItemsItems.forEach((item, index) => {
       if (data.shopItemsItems && data.shopItemsItems[index]) {
         item.price = data.shopItemsItems[index].price;
@@ -229,6 +233,7 @@ function loadData() {
     axeSkillSpan.textContent = axeSkill;
     rodSkillSpan.textContent = rodSkill;
     shieldingSkillSpan.textContent = shieldingSkill;
+    
     spellsContainer.boughtItems = data.spellsBought || [];
     spellsContainer.boughtItems.forEach(boughtItem => {
       const originalItem = spellsItems.find(item => item.name === boughtItem.name);
@@ -241,9 +246,26 @@ function loadData() {
         }
       }
     });
-      generateSpellsItems();
+
+    // Removed the line that was emptying the lists
+    // Load item order and parent list
+    if (data.items) {
+      data.items.forEach(function(item) {
+        const parent = $("#" + item.parent);
+        const itemElem = $("#" + item.id);
+      
+        // Temporarily detach the item from the DOM
+        itemElem.detach();
+
+        // Append it to its original parent
+        parent.append(itemElem);
+      });
+    }
+
+    generateSpellsItems();
+  }
 }
-}
+
 
 function handleSaveButtonClick() {
   saveData();

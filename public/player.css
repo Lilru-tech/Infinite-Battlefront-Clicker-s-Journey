@@ -71,47 +71,42 @@
   }
 
   #experienceBarContainer {
-    border: 2px solid #000;
-    border-radius: 5px;
-    width: 80%;
+    width: 300px;
     height: 20px;
-    background-color: #d1bebe;
+    border-radius: 5px;
+    margin: 5px 5px;
+    border: 1px solid rgb(0, 0, 0);
+    overflow: hidden;
     position: relative;
-    padding: 0;
-    margin: 0;
-  }
+}
+
+
+.player-experience {
+  height: 100%;
+  display: block;
+  width: 0;
+  color: rgb(255, 251, 251);
+  line-height: 20px;
+  position: absolute;
+  text-align: end;
+  padding-right: 5px;
+}
+
+#experience {
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+}
+
   
   #experienceBar {
     width: 80%;
     height: 100%;
-    background-color: #3d84e8;
+    background-color: red;
     overflow: hidden;
     padding: 0;
     margin: 0;
   }
-  
-  #experience {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .player-experience {
-    height: 100%;
-    background-color: #2ecc71;
-    border-radius: 5px;
-    transition: width 0.5s ease-in-out;
-  }  
 
   #game-container2 {
     position: relative;

@@ -5,6 +5,8 @@ Version history
 *1.5.0
 Added mana sistem
 Added Spells
+Made collapsible items dragables 
+Moved Level progress bar to skills container
 Minor fixes
 
 *1.4.2

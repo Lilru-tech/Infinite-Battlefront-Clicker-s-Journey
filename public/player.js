@@ -476,10 +476,6 @@ function updatePlayerManaBar() {
       const manaWasteEachPercentage = Math.floor(requiredManaWaste / 100);
       if (wastedMana>manaWasteEachPercentage){
         magicSkillPercentage = magicSkillPercentage + Math.floor(wastedMana/manaWasteEachPercentage);
-        const wastedManaLeftOver = wastedMana-manaWasteEachPercentage;
-        if (wastedManaLeftOver>manaWasteEachPercentage){
-          magicSkillPercentage = magicSkillPercentage + Math.floor(wastedManaLeftOver/manaWasteEachPercentage);
-        }
         wastedMana=0;
       }
     }

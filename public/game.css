@@ -66,7 +66,6 @@ body {
     flex-direction: column;
     margin-top: 25px;
     width: 95%; 
-    position: sticky; /* Set the position to sticky */
     bottom: 300px;
   }
   

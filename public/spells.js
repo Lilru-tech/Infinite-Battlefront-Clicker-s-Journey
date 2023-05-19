@@ -129,7 +129,7 @@ const spellsItems = [
                 const randomX = Math.random();
                 const randomY = Math.random();
                 const attackNumber = document.createElement('span');
-                attackNumber.classList.add('damage-number'); // Use 'damage-number' instead of 'heal-number'
+                attackNumber.classList.add('damage-number');
                 attackNumber.textContent = attackSpellAmount;
                 attackNumber.style.top = `calc(${randomY} * 100%)`;
                 attackNumber.style.left = `calc(${randomX} * 100%)`;
@@ -225,10 +225,8 @@ const spellsItems = [
                     if (!item.onCooldown) {
                         item.onCooldown = true;
             
-                        // start the cooldown animation
-                        coolDownOverlay.style.display = "block";  // Add this line
+                        coolDownOverlay.style.display = "block"; 
             
-                        // show and start the cooldown timer
                         coolDownTimer.textContent = item.coolDown;
                         coolDownTimer.style.display = "block";
             
@@ -241,10 +239,9 @@ const spellsItems = [
                                 coolDownTimer.style.display = "none";
                                 setTimeout(() => {
                                     item.onCooldown = false;
-                                    // remove the cooldown animation
                                     coolDownOverlay.style.animation = "";
-                                    coolDownOverlay.style.display = "none";  // Add this line
-                                }, 1000); // wait for the transition to end
+                                    coolDownOverlay.style.display = "none";
+                                }, 1000);
                             }
                         }, 1000);
             
@@ -300,12 +297,9 @@ const spellsItems = [
                 console.log(`Total wasted mana: ${wastedMana}`);
                 item.effect();
                 updatePlayerManaBar();
-                
-                // start the cooldown animation
                 coolDownOverlay.style.animation = `cooldown-effect ${item.coolDown}s linear forwards`;
                 coolDownOverlay.style.display = "block";
           
-                // show and start the cooldown timer
                 coolDownTimer.textContent = item.coolDown;
                 coolDownTimer.style.display = "block";
           
