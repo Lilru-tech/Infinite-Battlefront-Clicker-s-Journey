@@ -20,6 +20,7 @@ setInterval(() => {
   };
 
   const levelUp = function() {
+    generateSpellsItems();
     level++;
     let attackIncrease = 0;
     let defenseIncrease = 0;
@@ -105,6 +106,7 @@ setInterval(() => {
     updatePlayerHealthBar();
     updatePlayerManaBar();
     updateExperienceBar(experienceCount, levelUpExperience(level))
+    updateSpells();
   };
 
   const levelDown = function(){

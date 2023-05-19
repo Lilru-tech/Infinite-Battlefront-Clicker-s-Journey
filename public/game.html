@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="shop.css">
   <link rel="stylesheet" href="vocations.css">
   <link rel="stylesheet" href="collapsible.css">
+  <link rel="stylesheet" href="spells.css">
 </head>
 <body>
   <div class="overlay" id="overlay">
@@ -57,6 +58,10 @@
     <li class="item" id="skills">
         <a href="#skills" class="btn"><i class="fas fa-cog" aria-hidden="true"></i>Skills</a>
         <div class="sleft">
+          <a>Magic Level:<span id="magicSkill" class ="attackSkill"></span>
+            <div class="magicProgressBar progress-red" id="skillProgress">
+            <span id="magicSkillPercentage" data-progress=""></span>
+          </div></a>
             <a>Sword:<span id="swordSkill" class ="attackSkill"></span>
                 <div class="swordProgressBar progress-red" id="skillProgress">
                 <span id="swordSkillPercentage" data-progress=""></span>
@@ -105,7 +110,7 @@
     </div>  
     <div id="healthBarContainer">
       <div id="playerManaBar" class="player-mana"></div>
-        <div id="playerMana">HP: <span id="currentPlayerMana"></span>/<span id="maxPlayerMana"></span></div>
+        <div id="playerMana">Mana: <span id="currentPlayerMana"></span>/<span id="maxPlayerMana"></span></div>
     </div>  
     <div id="game-container2">  
       <span id="damage-number"></span>
@@ -130,6 +135,12 @@
             <a id="rightFoldableContainer2"></a>
         </div>
     </li>
+    <li class="item" id="spellsContainer">
+      <a href="#spellsContainer" class="btn"><i class="far fa-envelope" aria-hidden="true"></i>Spells Shop</a>
+      <div class="sleft">
+          <a id="spellsContent"></a>
+      </div>
+  </li>
     <li class="item" id="logStyle">
       <a href="#logStyle" class="btn"><i class="far fa-envelope" aria-hidden="true"></i>Log</a>
       <div class="sleft">
@@ -137,7 +148,13 @@
       </div>
   </li>
 </div>
-  </div>
+<div id="bottom" class ="left">
+  <li class="item" id="spellsAvailables">
+    <a href="#spellsAvailables" class="btn"><i class="far fa-envelope" aria-hidden="true"></i>Spells</a>
+    <div class="sleft">
+        <a id="spellsBought"></a>
+</li>
+</div>
     <script src="app.js"></script>    
     <script src="monster.js"></script>
     <script src="player.js"></script>
@@ -145,6 +162,7 @@
     <script src="level.js"></script>
     <script src="vocations.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="spells.js"></script>
     <script>
       window.onload = function() {
         var items = document.querySelectorAll('#left .item a.btn, #right .item a.btn');

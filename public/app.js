@@ -16,6 +16,8 @@ let maxDamageTaken = 0;
 let monsterKills = 0;
 let damageDealt = 0;
 let damageBlocked = 0;
+let magicSkill = 0;
+let magicSkillPercentage = 0;
 let swordSkill = 0;
 let swordSkillPercentage = 0;
 let crossBowSkill = 0;
@@ -35,6 +37,7 @@ const menuDiv = document.getElementById('menu');
 const centerDiv = document.getElementById('center');
 const leftDiv = document.getElementById('left');
 const rightDiv = document.getElementById('right');
+const bottomDiv = document.getElementById('bottom');
 const moneyCountSpan = document.getElementById('moneyCount');
 const experienceCountSpan = document.getElementById('experienceCount');
 const levelSpan = document.getElementById('level');
@@ -68,6 +71,8 @@ const updateCurrentPlayerHealth = document.getElementById('currenPlayerHealth');
 const updateCurrentPlayerMana = document.getElementById('currenPlayerMana');
 const swordSkillSpan = document.getElementById('swordSkill');
 const swordSkillPercentageSpan = document.getElementById('swordSkillPercentage');
+const magicSkillSpan = document.getElementById('magicSkill');
+const magicSkillPercentageSpan = document.getElementById('magicSkillPercentage');
 const crossBowSkillSpan = document.getElementById('crossBowSkill');
 const crossBowSkillPercentageSpan = document.getElementById('crossBowSkillPercentage');
 const wandSkillSpan = document.getElementById('wandSkill');
@@ -114,6 +119,8 @@ function saveData() {
     promotionValue,
     swordSkill,
     swordSkillPercentage,
+    magicSkill,
+    magicSkillPercentage,
     crossBowSkill,
     crossBowSkillPercentage,
     wandSkill,
@@ -126,6 +133,7 @@ function saveData() {
     rodSkillPercentage,
     shieldingSkill,
     shieldingSkillPercentage,
+    nextMagicSkill,
     nextSwordSkill,
     nextCrossBowSkill,
     nextWandSkill,
@@ -133,6 +141,8 @@ function saveData() {
     nextAxeSkill,
     nextRodSkill,
     nextShieldingSkill,
+    spellsBought: spellsContainer.boughtItems,
+    cooldowns: {},
     shopStatsItems: shopStatsItems.map(item => ({ ...item, price: item.price })),
     shopItemsItems: shopItemsItems.map(item => ({ ...item, price: item.price }))
   };
@@ -164,6 +174,8 @@ function loadData() {
     attack = data.attack;
     defense = data.defense;
     promotionValue = data.promotionValue;
+    magicSkill = data.magicSkill;
+    magicSkillPercentage = data.magicSkillPercentage;
     swordSkill = data.swordSkill;
     swordSkillPercentage = data.swordSkillPercentage;
     crossBowSkill = data.crossBowSkill;
@@ -178,6 +190,7 @@ function loadData() {
     rodSkillPercentage = data.rodSkillPercentage;
     shieldingSkill = data.shieldingSkill;
     shieldingSkillPercentage = data.shieldingSkillPercentage;
+    nextMagicSkill = data.nextMagicSkill;
     nextSwordSkill = data.nextSwordSkill;
     nextCrossBowSkill = data.nextCrossBowSkill;
     nextWandSkill = data.nextWandSkill;
@@ -208,6 +221,7 @@ function loadData() {
     defenseSpan.textContent = defense;
     topDamageDealt.textContent = maxDamageDealt;
     topDamageTaken.textContent = maxDamageTaken;
+    magicSkillSpan.textContent = magicSkill;
     swordSkillSpan.textContent = swordSkill;
     crossBowSkillSpan.textContent = crossBowSkill;
     wandSkillSpan.textContent = wandSkill;
@@ -215,7 +229,20 @@ function loadData() {
     axeSkillSpan.textContent = axeSkill;
     rodSkillSpan.textContent = rodSkill;
     shieldingSkillSpan.textContent = shieldingSkill;
-  }
+    spellsContainer.boughtItems = data.spellsBought || [];
+    spellsContainer.boughtItems.forEach(boughtItem => {
+      const originalItem = spellsItems.find(item => item.name === boughtItem.name);
+      if (originalItem) {
+        boughtItem.effect = originalItem.effect;
+        if (boughtItem.hasOwnProperty('onCooldown') && data.cooldowns && data.cooldowns[boughtItem.name]) {
+          boughtItem.onCooldown = data.cooldowns[boughtItem.name]; // Set the cooldown state for each bought spell item
+        } else {
+          boughtItem.onCooldown = false; // Set default cooldown state if not found in saved data
+        }
+      }
+    });
+      generateSpellsItems();
+}
 }
 
 function handleSaveButtonClick() {
@@ -234,6 +261,7 @@ window.addEventListener("load", () => {
   updateExperienceBar(experienceCount, levelUpExperience(level));
   generateShopItemsItems();
   generateShopStatsItems();
+  generateSpellsItems();
   skillsProgressBar();
 });
 
@@ -335,20 +363,6 @@ skillsButton.addEventListener('click', () => {
     leftFoldableContainer3.style.display = 'block';
   } else {
     leftFoldableContainer3.style.display = 'none';
-  }
-});
-
-if (logFoldableContainer.style.display === 'block') {
-  logStyle.innerHTML = 'Log';
-} else {
-  logStyle.innerHTML = 'Log';
-}
-
-logStyle.addEventListener('click', () => {
-  if (logFoldableContainer.style.display === 'none') {
-    logFoldableContainer.style.display = 'block';
-  } else {
-    logFoldableContainer.style.display = 'none';
   }
 });
 

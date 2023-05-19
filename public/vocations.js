@@ -21,7 +21,7 @@ const vocations = [
   
     const img = document.createElement('img');
     img.className = 'book';
-    img.src = `sprites/player/player${index + 1}.png`;
+    img.src = `sprites/player/sample${index + 1}.png`;
   
     const info = document.createElement('div');
     info.className = 'flex-column info';
@@ -92,5 +92,3 @@ function setPlayerImages(selectedVocation) {
   localStorage.setItem('playerImage', playerImage);
   localStorage.setItem('playerDeadImage', playerDeadImage);
 }
-
-  
