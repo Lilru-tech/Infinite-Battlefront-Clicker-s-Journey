@@ -197,69 +197,20 @@ const spellsItems = [
           purchaseButton.onclick = () => {
             const price = parseInt(purchaseButton.dataset.price, 10);
             if (moneyCount >= price) {
-              updateLog("You bought " + item.name + " spell for " + item.price + " coins");
-              moneyCount -= price;
-              updateMoneyCount(moneyCount);
-          
-              spellsContainer.boughtItems.push(item);
-              spellsContainer.items.splice(index, 1);
-          
-              generateSpellsItems();
-              itemPrice.textContent = `${item.price} coins`;
-              purchaseButton.dataset.price = item.price;
-          
-              listItem.removeChild(purchaseButton);
-              const spellsBought = document.getElementById('spellsBought');
-              const boughtItem = document.createElement('button');
-              const spellImage = document.createElement('img');
-              spellImage.src = `/sprites/spells/${item.image}`;
-              spellImage.alt = item.name;
-              spellImage.width = '50';
-              spellImage.height = '50';
-              boughtItem.appendChild(spellImage);
-              spellsBought.appendChild(boughtItem);
-              spellImage.addEventListener('click', () => {
-                if (currentPlayerMana < item.manaCost) {
-                    updateLog("You don't have enough Mana.");
-                } else {
-                    if (!item.onCooldown) {
-                        item.onCooldown = true;
-            
-                        coolDownOverlay.style.display = "block"; 
-            
-                        coolDownTimer.textContent = item.coolDown;
-                        coolDownTimer.style.display = "block";
-            
-                        let countDown = item.coolDown;
-                        let countDownInterval = setInterval(() => {
-                            countDown--;
-                            coolDownTimer.textContent = countDown;
-                            if (countDown === 0) {
-                                clearInterval(countDownInterval);
-                                coolDownTimer.style.display = "none";
-                                setTimeout(() => {
-                                    item.onCooldown = false;
-                                    coolDownOverlay.style.animation = "";
-                                    coolDownOverlay.style.display = "none";
-                                }, 1000);
-                            }
-                        }, 1000);
-            
-                        currentPlayerMana -= item.manaCost;
-                        wastedMana += item.manaCost;
-                        item.effect();
-                        updatePlayerManaBar();
-                        getMagicSkillPercentage();
-                    } else {
-                        updateLog("Spell is on cooldown.");
-                    }
-                }
-            });
-            
+                updateLog("You bought " + item.name + " spell for " + item.price + " coins");
+                moneyCount -= price;
+                updateMoneyCount(moneyCount);
+                spellsContainer.boughtItems.push(item);
+                spellsContainer.items.splice(index, 1);
+                generateSpellsItems();
+                itemPrice.textContent = `${item.price} coins`;
+                purchaseButton.dataset.price = item.price;
+                listItem.removeChild(purchaseButton);
             } else {
-              updateLog("You don't have enough money to buy this spell.");
+                updateLog("You don't have enough money to buy this spell.");
             }
-          };
+        };
+        
           
         }
       }
