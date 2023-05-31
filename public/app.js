@@ -141,6 +141,7 @@ function saveData() {
     nextAxeSkill,
     nextRodSkill,
     nextShieldingSkill,
+    achievements,
     spellsBought: spellsContainer.boughtItems,
     cooldowns: {},
     shopStatsItems: shopStatsItems.map(item => ({ ...item, price: item.price })),
@@ -261,8 +262,22 @@ function loadData() {
         parent.append(itemElem);
       });
     }
-
     generateSpellsItems();
+    if (data.achievements) {
+      achievements = data.achievements;
+      const achievementsDiv = document.querySelector('#achievements .sleft');
+      achievements.forEach(({ name, description }) => {
+          const achievementDiv = document.createElement('div');
+          achievementDiv.classList.add('achievement');
+
+          const achievementName = document.createElement('a');
+          achievementName.textContent = name;
+          achievementName.title = description;
+
+          achievementDiv.appendChild(achievementName);
+          achievementsDiv.appendChild(achievementDiv);
+      });
+  }
   }
 }
 

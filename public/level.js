@@ -1,4 +1,7 @@
 setInterval(() => {
+  if (currentPlayerHealth <= 0) {
+    return;
+  }
     if (experienceCount >= levelUpExperience(level)) {
       levelUp();
       totalExperienceCount += levelUpExperience;
@@ -9,6 +12,7 @@ setInterval(() => {
     }
     experienceCountSpan.textContent = experienceCount;
     levelUpExperienceSpan.textContent = levelUpExperience(level);
+    attackAchievements();
   }, 2000);
 
   const levelUpExperience = function(level) {
@@ -20,8 +24,9 @@ setInterval(() => {
   };
 
   const levelUp = function() {
-    generateSpellsItems();
     level++;
+    onLevelUp();
+    generateSpellsItems();
     let attackIncrease = 0;
     let defenseIncrease = 0;
     let playerHealthIncrease = 0;
