@@ -53,6 +53,6 @@ if (Math.random() <= 1.0) {
 updateLog(experienceMessage + moneyMessage);
 
   // Load new random monster image
-  const monsterNum = Math.floor(Math.random() * 81) + 1;
+  const monsterNum = Math.floor(Math.random() * 80) + 1;
   monsterImage.src = `sprites/monster/monster${monsterNum}.png`;
 }

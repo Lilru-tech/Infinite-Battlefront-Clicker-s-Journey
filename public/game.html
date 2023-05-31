@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="vocations.css">
   <link rel="stylesheet" href="collapsible.css">
   <link rel="stylesheet" href="spells.css">
+  <link rel="stylesheet" href="achievements.css">
 </head>
 <body>
   <div class="overlay" id="overlay">
@@ -101,6 +102,13 @@
               </div></a>
         </div>
     </li>
+    <li class="item sortable-item" id="achievements">
+      <a href="#achievements" class="btn"> <i class="far fa-envelope" aria-hidden="true"></i>Achievements</a>
+      <div class="sleft">
+        <div class="achievement">
+        </div>
+      </div>
+    </li>
   </ul>
 </div>
   </div>  
@@ -162,6 +170,13 @@
         <a id="spellsBought"></a>
 </li>
 </div>
+<div id="achievement-popup" class="modal">
+  <div class="modal-content">
+      <span id="close-popup" class="close-popup">&times;</span>
+      <h3 id="achievement-popup-title"></h3>
+      <p id="achievement-popup-message"></p>
+  </div>
+</div>
     <script src="app.js"></script>    
     <script src="monster.js"></script>
     <script src="player.js"></script>
@@ -173,6 +188,7 @@
     <script src="spells.js"></script>
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="achievements.js"></script>
     <script>
       window.onload = function() {
         var items = document.querySelectorAll('#left .item a.btn, #right .item a.btn');

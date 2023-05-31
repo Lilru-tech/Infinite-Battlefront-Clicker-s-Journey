@@ -301,6 +301,9 @@ function updatePlayerManaBar() {
       }
     }
     setInterval(() =>{
+      if (currentPlayerHealth <= 0) {
+        return;
+      }
       if (magicSkillPercentage >= 100) {
         magicSkillLevelUp();
       }
@@ -372,6 +375,7 @@ function updatePlayerManaBar() {
           defeatMonster();
           monsterKills++;
           updateExperienceBar(experienceCount, levelUpExperience(level));
+          onMonsterKilled();
         }
       
         // Update counters
@@ -385,6 +389,7 @@ function updatePlayerManaBar() {
         axeSkillSpan.textContent = axeSkill;
         rodSkillSpan.textContent = rodSkill;
         shieldingSkillSpan.textContent = shieldingSkill;
+        console.log(monsterKills);
     }, 2000);
 
     function showDeadOverlay() {
@@ -828,15 +833,16 @@ function updatePlayerManaBar() {
     function skillsLevelDown() {
       let magicSkillPercentageLost = Math.round(magicSkill / 3);
       if (magicSkillPercentageLost < 1) {
-        magicSkillPercentageLost = 1;
+          magicSkillPercentageLost = 1;
       }
-      const magicPercentageDemote = magicSkillPercentage - magicSkillPercentageLost;
-      if (magicPercentageDemote <= 0) {
-        if (magicSkill > 0) {
-          magicSkill--;
-        }
+      let magicPercentageDemote = magicSkillPercentage - magicSkillPercentageLost;
+      if (magicPercentageDemote < 0) {
+          if (magicSkill > 0) {
+              magicSkill--;
+              magicSkillPercentage = 100 + magicPercentageDemote; // add to 100 the remaining (negative) value
+          }
       } else {
-        magicSkillPercentage = magicSkillPercentage - magicSkillPercentageLost;
+          magicSkillPercentage = magicPercentageDemote;
       }
       let swordSkillPercentageLost = Math.round(swordSkill / 3);
       if (swordSkillPercentageLost < 1) {

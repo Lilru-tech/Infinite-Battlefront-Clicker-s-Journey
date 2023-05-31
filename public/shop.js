@@ -80,6 +80,20 @@ const shopStatsItems = [
         }
         updatePlayerHealthBar();
       }
+    },
+    {
+      name: 'Small Mana Potion',
+      description: 'It heals you 100 mana points',
+      itemType: 'mana',
+      price: 100,
+      effect: () => {
+        if (currentPlayerMana+100>playerMana){
+          currentPlayerMana = playerMana;
+        } else {
+          currentPlayerMana = currentPlayerMana+100;
+        }
+        updatePlayerManaBar();
+      }
     }
   ];
 

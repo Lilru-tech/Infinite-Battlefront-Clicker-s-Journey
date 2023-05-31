@@ -1,7 +1,13 @@
 ponernombre repo git
-Last Version: 1.5.0
+Last Version: 1.5.1
 
 Version history
+*1.5.1
+Added Achievements
+Fixed Skills down when you die
+Fixed a bug where monsters where beign killed even tho we are dead
+Added small mana potions
+
 *1.5.0
 Added mana sistem
 Added Spells
