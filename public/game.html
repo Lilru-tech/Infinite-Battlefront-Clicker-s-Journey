@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="collapsible.css">
   <link rel="stylesheet" href="spells.css">
   <link rel="stylesheet" href="achievements.css">
+  <link rel="stylesheet" href="options.css">
 </head>
 <body>
   <div class="overlay" id="overlay">
@@ -31,10 +32,36 @@
   </div>
   <div id="rightMenu">
     <div class="button-container">
+      <button id="options" class="button">Options</button>
       <button id="save" class="button">Save</button>
     </div>
   </div>  
   </div>
+<div id="optionsModal" class="modalOptions">
+  <div class="modal-options-content">
+    <span class="close">&times;</span>
+    <h2>Options</h2>
+    <h3>Visual Options</h3>
+    <div>
+      <input type="checkbox" id="enableDamage" checked>
+      <label for="enableDamage">Enable Damage Dealt</label>
+    </div>
+    <div>
+      <input type="checkbox" id="enableDamageTaken" checked>
+      <label for="enableDamageTaken">Enable Damage Taken</label>
+    </div>
+    <div>
+      <input type="checkbox" id="enableSpellDamage" checked>
+      <label for="enableSpellDamage">Enable Spell Damage</label>
+    </div>
+    <div>
+      <input type="checkbox" id="enableSpellHeal" checked>
+      <label for="enableSpellHeal">Enable Spell Heal</label>
+    </div>
+    <h3>Spell Key Assignments</h3>
+    <div id="keyAssignments"></div>
+  </div>
+</div>
   <div id="left" class ="left">
     <ul id="sortable1">
     <li class="item sortable-item" id="stats">
@@ -189,6 +216,7 @@
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="achievements.js"></script>
+    <script src="options.js"></script>
     <script>
       window.onload = function() {
         var items = document.querySelectorAll('#left .item a.btn, #right .item a.btn');

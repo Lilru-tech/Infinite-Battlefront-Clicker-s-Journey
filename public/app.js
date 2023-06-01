@@ -142,7 +142,11 @@ function saveData() {
     nextRodSkill,
     nextShieldingSkill,
     achievements,
-    spellsBought: spellsContainer.boughtItems,
+    isDamageEnabled,
+    isDamageTakenEnabled,
+    isSpellDamageEnabled,
+    isHealNumberEnabled,
+    spellsBought: spellsContainer.boughtItems.map(item => ({...item, assignedKey: item.key})),
     cooldowns: {},
     shopStatsItems: shopStatsItems.map(item => ({ ...item, price: item.price })),
     shopItemsItems: shopItemsItems.map(item => ({ ...item, price: item.price })),
@@ -202,6 +206,10 @@ function loadData() {
     nextAxeSkill = data.nextAxeSkill;
     nextRodSkill = data.nextRodSkill;
     nextShieldingSkill = data.nextShieldingSkill;
+    isDamageEnabled = data.isDamageEnabled;
+    isDamageTakenEnabled = data.isDamageTakenEnabled;
+    isSpellDamageEnabled = data.isSpellDamageEnabled;
+    isHealNumberEnabled = data.isHealNumberEnabled;
 
     shopStatsItems.forEach((item, index) => {
       if (data.shopStatsItems && data.shopStatsItems[index]) {
@@ -234,19 +242,28 @@ function loadData() {
     axeSkillSpan.textContent = axeSkill;
     rodSkillSpan.textContent = rodSkill;
     shieldingSkillSpan.textContent = shieldingSkill;
+    enableDamageElement.checked = isDamageEnabled;
+    enableDamageTakenElement.checked = isDamageTakenEnabled;
+    enableSpellDamageElement.checked = isSpellDamageEnabled;
+    enableSpellHealElement.checked = isHealNumberEnabled;
+
     
     spellsContainer.boughtItems = data.spellsBought || [];
-    spellsContainer.boughtItems.forEach(boughtItem => {
+    spellsContainer.boughtItems.forEach((boughtItem, index) => {
       const originalItem = spellsItems.find(item => item.name === boughtItem.name);
       if (originalItem) {
         boughtItem.effect = originalItem.effect;
+        boughtItem.key = boughtItem.assignedKey || `${index + 1}`;
         if (boughtItem.hasOwnProperty('onCooldown') && data.cooldowns && data.cooldowns[boughtItem.name]) {
-          boughtItem.onCooldown = data.cooldowns[boughtItem.name]; // Set the cooldown state for each bought spell item
+          boughtItem.onCooldown = data.cooldowns[boughtItem.name];
         } else {
-          boughtItem.onCooldown = false; // Set default cooldown state if not found in saved data
+          boughtItem.onCooldown = false;
         }
       }
     });
+    if (data.spellsBought) {
+      spellsContainer.boughtItems = data.spellsBought.map(item => ({ ...item, key: item.assignedKey }));
+    }
 
     // Removed the line that was emptying the lists
     // Load item order and parent list
