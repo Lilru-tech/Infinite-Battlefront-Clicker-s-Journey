@@ -19,6 +19,7 @@
     padding: 20px;
     border: 1px solid #888;
     width: 20%; 
+    border-radius: 8px;
   }
   
   .close {
@@ -34,6 +35,7 @@
     text-decoration: none;
     cursor: pointer;
   }
+
   #damage-number {
     display: block; /* or 'inline', or another value as appropriate */
   }
