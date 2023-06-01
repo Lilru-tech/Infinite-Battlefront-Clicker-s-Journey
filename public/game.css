@@ -52,10 +52,15 @@ body {
     align-items: right;
     flex-direction: column;
     margin-top: 20px;
-    height: 100%;
     width: 95%;
     overflow-y: auto; /* Add a vertical scrollbar if the contents exceed the div's height */
-
+    max-height: calc(100vh - 100px); /* Adjusts the max height so the #left div doesn't exceed the viewport. 70px is arbitrary, adjust as needed. */
+    scrollbar-width: none; /* For Firefox */
+  }
+  
+  ::-webkit-scrollbar {
+    width: 0;
+    background-color: transparent;
   }
 
   #bottom {

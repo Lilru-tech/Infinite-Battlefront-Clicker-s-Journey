@@ -104,6 +104,9 @@ function startHealthRegeneration() {
   const playerVocation = localStorage.getItem('selectedVocation');
   const { healthRate, interval } = healingRates[playerVocation];
   setInterval(() => {
+    if (currentPlayerHealth <= 0) {
+      return;
+    }
     if (currentPlayerHealth < playerHealth) {
       currentPlayerHealth += healthRate;
       currentPlayerHealth = Math.min(currentPlayerHealth, playerHealth);
@@ -118,6 +121,9 @@ function startManaRegeneration() {
   const playerVocation = localStorage.getItem('selectedVocation');
   const { manaRate, interval } = manaRates[playerVocation];
   setInterval(() => {
+    if (currentPlayerHealth <= 0) {
+      return;
+    }
     if (currentPlayerMana < playerMana) {
       currentPlayerMana += manaRate;
       currentPlayerMana = Math.min(currentPlayerMana, playerMana);
@@ -194,7 +200,7 @@ function updatePlayerManaBar() {
       } else if (selectedVocation === 'Druid' || selectedVocation === 'Archdruid'){
         totalAttack = attack + Math.round(rodSkill + 1.25);
       }
-      const normalDamageDealt = Math.floor(Math.random() * 8) + totalAttack - 5
+      const normalDamageDealt = Math.floor(Math.random() * 8) + totalAttack - 5;
       let isCritical = false;    
       if (criticalChance >= Math.random() * 100) {
         const criticalDamageDealt = normalDamageDealt + Math.floor(Math.random() * (normalDamageDealt * criticalDamage) / 100 + 20);
@@ -203,26 +209,28 @@ function updatePlayerManaBar() {
       } else {
         damageDealt = normalDamageDealt;
       }
-      const randomX = Math.random();
-      const randomY = Math.random();
-      const damageContainer = document.createElement('div');
-      damageContainer.classList.add('damage-container');
-      const damageNumber = document.createElement('span');
-      damageNumber.classList.add('damage-number');
-      if (isCritical) {
-        damageNumber.classList.add('critical');
+    
+      if (isDamageEnabled) {
+        const randomX = Math.random();
+        const randomY = Math.random();
+        const damageNumber = document.createElement('span');
+        damageNumber.classList.add('damage-number');
+        if (isCritical) {
+          damageNumber.classList.add('critical');
+        }
+        damageNumber.textContent = damageDealt;
+        damageNumber.style.top = `calc(${randomY} * 100%)`;
+        damageNumber.style.left = `calc(${randomX} * 100%)`;
+        const gameContainer = document.getElementById('game-container');
+        gameContainer.appendChild(damageNumber);
+        const animationDuration = Math.random() * 2 + 1;
+        damageNumber.style.animationDuration = `${animationDuration}s`;
+        setTimeout(() => {
+          damageNumber.remove();
+        }, animationDuration * 1000);
       }
-      damageNumber.textContent = damageDealt;
-      damageNumber.style.top = `calc(${randomY} * 100%)`;
-      damageNumber.style.left = `calc(${randomX} * 100%)`;
-      const gameContainer = document.getElementById('game-container');
-      gameContainer.appendChild(damageNumber);
-      const animationDuration = Math.random() * 2 + 1;
-      damageNumber.style.animationDuration = `${animationDuration}s`;
-      setTimeout(() => {
-        damageNumber.remove();
-      }, animationDuration * 1000);
     }
+    
     
     
     damageNumber.addEventListener('animationend', () => {
@@ -260,47 +268,52 @@ function updatePlayerManaBar() {
       }
       currentPlayerHealth -= damageTaken;
     
-      if (damageTaken === 0) {
-        const randomX = Math.random();
-        const randomY = Math.random();
-        const blockedMessage = document.createElement('span');
-        blockedMessage.classList.add('damage-number');
-        blockedMessage.classList.add('blocked');
-        blockedMessage.textContent = 'Blocked!';
-        blockedMessage.style.top = `calc(${randomY} * 100%)`;
-        blockedMessage.style.left = `calc(${randomX} * 100%)`;
-        blockedMessage.style.color = 'blue';
-    
-        const gameContainer = document.getElementById('game-container2');
-        gameContainer.appendChild(blockedMessage);
-    
-        const animationDuration = Math.random() * 2 + 1;
-        blockedMessage.style.animationDuration = `${animationDuration}s`;
-    
-        setTimeout(() => {
-          blockedMessage.remove();
-        }, animationDuration * 1000);
-      } else {
-        const randomX = Math.random();
-        const randomY = Math.random();
-        const damageNumber = document.createElement('span');
-        damageNumber.classList.add('damage-number');
-        damageNumber.textContent = damageTaken;
-        damageNumber.style.top = `calc(${randomY} * 100%)`;
-        damageNumber.style.left = `calc(${randomX} * 100%)`;
-    
-        const gameContainer = document.getElementById('game-container2');
-        gameContainer.appendChild(damageNumber);
-    
-        const animationDuration = Math.random() * 2 + 1;
-        damageNumber.style.animationDuration = `${animationDuration}s`;
-    
-        setTimeout(() => {
-          damageNumber.remove();
-        }, animationDuration * 1000);
+      if (isDamageTakenEnabled) {
+        if (damageTaken === 0) {
+          const randomX = Math.random();
+          const randomY = Math.random();
+          const blockedMessage = document.createElement('span');
+          blockedMessage.classList.add('damage-number');
+          blockedMessage.classList.add('blocked');
+          blockedMessage.textContent = 'Blocked!';
+          blockedMessage.style.top = `calc(${randomY} * 100%)`;
+          blockedMessage.style.left = `calc(${randomX} * 100%)`;
+          blockedMessage.style.color = 'blue';
+        
+          const gameContainer = document.getElementById('game-container2');
+          gameContainer.appendChild(blockedMessage);
+        
+          const animationDuration = Math.random() * 2 + 1;
+          blockedMessage.style.animationDuration = `${animationDuration}s`;
+        
+          setTimeout(() => {
+            blockedMessage.remove();
+          }, animationDuration * 1000);
+        } else {
+          const randomX = Math.random();
+          const randomY = Math.random();
+          const damageNumber = document.createElement('span');
+          damageNumber.classList.add('damage-number');
+          damageNumber.textContent = damageTaken;
+          damageNumber.style.top = `calc(${randomY} * 100%)`;
+          damageNumber.style.left = `calc(${randomX} * 100%)`;
+        
+          const gameContainer = document.getElementById('game-container2');
+          gameContainer.appendChild(damageNumber);
+        
+          const animationDuration = Math.random() * 2 + 1;
+          damageNumber.style.animationDuration = `${animationDuration}s`;
+        
+          setTimeout(() => {
+            damageNumber.remove();
+          }, animationDuration * 1000);
+        }
       }
     }
     setInterval(() =>{
+      if (currentPlayerHealth <= 0) {
+        return;
+      }
       if (currentPlayerHealth <= 0) {
         return;
       }

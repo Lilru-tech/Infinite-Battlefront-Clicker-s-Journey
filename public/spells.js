@@ -49,7 +49,7 @@ const spellsItems = [
           healingAmount = calculateSpellEffect();
           currentPlayerHealth = currentPlayerHealth + healingAmount;
         }
-      
+        if (isHealNumberEnabled) {
         const randomX = Math.random();
         const randomY = Math.random();
         const healNumber = document.createElement('span');
@@ -64,6 +64,7 @@ const spellsItems = [
         setTimeout(() => {
           healNumber.remove();
         }, animationDuration * 1000);
+      }
       
         updatePlayerHealthBar();
       }      
@@ -80,15 +81,16 @@ const spellsItems = [
         coolDown: 4,
         onCooldown: false,
         effect: () => {
-            let healingAmount;
-            if ((currentPlayerHealth + (calculateSpellEffect() * 1.8)) > playerHealth) {
-              healingAmount = playerHealth - currentPlayerHealth;
-              currentPlayerHealth = playerHealth;
-            } else {
-              healingAmount = calculateSpellEffect();
-              currentPlayerHealth = currentPlayerHealth + healingAmount;
-            }
-          
+          let healingAmount;
+          if ((currentPlayerHealth + (calculateSpellEffect() * 1.8)) > playerHealth) {
+            healingAmount = playerHealth - currentPlayerHealth;
+            currentPlayerHealth = playerHealth;
+          } else {
+            healingAmount = calculateSpellEffect();
+            currentPlayerHealth = currentPlayerHealth + healingAmount;
+          }
+        
+          if (isHealNumberEnabled) {
             const randomX = Math.random();
             const randomY = Math.random();
             const healNumber = document.createElement('span');
@@ -103,9 +105,10 @@ const spellsItems = [
             setTimeout(() => {
               healNumber.remove();
             }, animationDuration * 1000);
-          
-            updatePlayerHealthBar();
           }
+        
+          updatePlayerHealthBar();
+        }        
         },
         {
             name: 'Exori',
@@ -119,13 +122,15 @@ const spellsItems = [
             coolDown: 3.5,
             onCooldown: false,
             effect: () => {
-                let attackSpellAmount;
-                attackSpellAmount = calculateSpellEffect();
-                currentMonsterHealth -= attackSpellAmount;
-                if (currentMonsterHealth<= 0){
-                    defeatMonster();
-                }
-                updateHealthBar();
+              let attackSpellAmount;
+              attackSpellAmount = calculateSpellEffect();
+              currentMonsterHealth -= attackSpellAmount;
+              if (currentMonsterHealth<= 0){
+                defeatMonster();
+              }
+              updateHealthBar();
+            
+              if (isSpellDamageEnabled) {
                 const randomX = Math.random();
                 const randomY = Math.random();
                 const attackNumber = document.createElement('span');
@@ -138,10 +143,11 @@ const spellsItems = [
                 const animationDuration = Math.random() * 2 + 1;
                 attackNumber.style.animationDuration = `${animationDuration}s`;
                 setTimeout(() => {
-                    attackNumber.remove();
+                  attackNumber.remove();
                 }, animationDuration * 1000);
+              }
             }
-        }            
+          }            
     ];
 
   const spellsContainer = {
@@ -197,21 +203,19 @@ const spellsItems = [
           purchaseButton.onclick = () => {
             const price = parseInt(purchaseButton.dataset.price, 10);
             if (moneyCount >= price) {
-                updateLog("You bought " + item.name + " spell for " + item.price + " coins");
-                moneyCount -= price;
-                updateMoneyCount(moneyCount);
-                spellsContainer.boughtItems.push(item);
-                spellsContainer.items.splice(index, 1);
-                generateSpellsItems();
-                itemPrice.textContent = `${item.price} coins`;
-                purchaseButton.dataset.price = item.price;
-                listItem.removeChild(purchaseButton);
+              updateLog("You bought " + item.name + " spell for " + item.price + " coins");
+              moneyCount -= price;
+              updateMoneyCount(moneyCount);
+              spellsContainer.boughtItems.push(item);
+              spellsContainer.items.splice(index, 1);
+              generateSpellsItems();
+              itemPrice.textContent = `${item.price} coins`;
+              purchaseButton.dataset.price = item.price;
+              listItem.removeChild(purchaseButton);
             } else {
-                updateLog("You don't have enough money to buy this spell.");
+              updateLog("You don't have enough money to buy this spell.");
             }
-        };
-        
-          
+          };
         }
       }
     });
@@ -222,55 +226,130 @@ const spellsItems = [
   
     const spellsBought = document.getElementById('spellsBought');
     spellsBought.innerHTML = '';
-    spellsContainer.boughtItems.forEach(item => {
-        const boughtItem = document.createElement('div');
-        boughtItem.className = 'bought-item';
-        const spellImage = document.createElement('img');
-        spellImage.src = `/sprites/spells/${item.image}`;
-        spellImage.alt = item.name;
-        spellImage.className = 'spell-img';
-      
-        const coolDownOverlay = document.createElement('div');
-        coolDownOverlay.className = 'cooldown-overlay';
-        
-        const coolDownTimer = document.createElement('span');
-        coolDownTimer.className = 'cooldown-timer';
-      
-        boughtItem.append(spellImage, coolDownOverlay, coolDownTimer);
-        spellsBought.appendChild(boughtItem);
-        boughtItem.onclick = () => {
-            if(currentPlayerMana < item.manaCost) {
-              updateLog("You don't have enough Mana.");
-            } else {
-              if (!item.onCooldown) {
-                currentPlayerMana -= item.manaCost;
-                wastedMana += item.manaCost;
-                console.log(`Total wasted mana: ${wastedMana}`);
-                item.effect();
-                updatePlayerManaBar();
-                coolDownOverlay.style.animation = `cooldown-effect ${item.coolDown}s linear forwards`;
-                coolDownOverlay.style.display = "block";
-          
-                coolDownTimer.textContent = item.coolDown;
-                coolDownTimer.style.display = "block";
-          
-                let countDown = item.coolDown;
-                let countDownInterval = setInterval(() => {
-                  countDown--;
-                  coolDownTimer.textContent = countDown;
-                  if (countDown <= 0) {
-                    clearInterval(countDownInterval);
-                    coolDownOverlay.style.display = "none";
-                    coolDownTimer.style.display = "none";
-                    coolDownOverlay.style.animation = "";
-                    item.onCooldown = false;
-                  }
-                }, 1000);
-                
-                item.onCooldown = true;
-              } else {
-                updateLog("Spell is on cooldown.");
+  
+    spellsContainer.boughtItems.forEach((item, index) => {
+      const boughtItem = document.createElement('div');
+      boughtItem.className = 'bought-item';
+      boughtItem.dataset.index = index;
+      boughtItem.style.display = 'flex';
+      boughtItem.style.flexDirection = 'column';
+      boughtItem.style.justifyContent = 'center';
+      boughtItem.style.alignItems = 'center';
+      item.key = item.key || `${index + 1}`; // Use saved key or assign a default key
+      boughtItem.dataset.key = item.key;
+  
+      const spellImage = document.createElement('img');
+      spellImage.src = `/sprites/spells/${item.image}`;
+      spellImage.alt = item.name;
+      spellImage.className = 'spell-img';
+      spellImage.style.marginTop = '15px';
+  
+      const assignedKey = document.createElement('div');
+      assignedKey.textContent = item.key; // Keys are 1-indexed
+      assignedKey.style.fontSize = '14px'; // Adjust font size as needed
+      assignedKey.style.color = '#fff'; // Adjust color as needed
+  
+      const coolDownOverlay = document.createElement('div');
+      coolDownOverlay.className = 'cooldown-overlay';
+  
+      const coolDownTimer = document.createElement('span');
+      coolDownTimer.className = 'cooldown-timer';
+  
+      boughtItem.append(spellImage, assignedKey, coolDownOverlay, coolDownTimer);
+      spellsBought.appendChild(boughtItem);
+  
+      boughtItem.onclick = () => {
+        if (currentPlayerMana < item.manaCost) {
+          updateLog("You don't have enough Mana.");
+        } else {
+          if (!item.onCooldown) {
+            currentPlayerMana -= item.manaCost;
+            wastedMana += item.manaCost;
+            console.log(`Total wasted mana: ${wastedMana}`);
+            item.effect();
+            updatePlayerManaBar();
+            coolDownOverlay.style.animation = `cooldown-effect ${item.coolDown}s linear forwards`;
+            coolDownOverlay.style.display = "block";
+  
+            coolDownTimer.textContent = item.coolDown;
+            coolDownTimer.style.display = "block";
+  
+            let countDown = item.coolDown;
+            let countDownInterval = setInterval(() => {
+              countDown--;
+              coolDownTimer.textContent = countDown;
+              if (countDown <= 0) {
+                clearInterval(countDownInterval);
+                coolDownOverlay.style.display = "none";
+                coolDownTimer.style.display = "none";
+                coolDownOverlay.style.animation = "";
+                item.onCooldown = false;
               }
-            }
-          };
-          })}
+            }, 1000);
+  
+            item.onCooldown = true;
+          } else {
+            updateLog("Spell is on cooldown.");
+          }
+        }
+      };
+    });
+  
+    // Retrieve saved key assignments and update the displayed keys
+    const keyAssignmentsContainer = document.getElementById('keyAssignments');
+    keyAssignmentsContainer.innerHTML = ''; // Clear previous inputs
+  
+    spellsContainer.boughtItems.forEach((item, index) => {
+      const keyAssignmentDiv = document.createElement('div');
+  
+      const label = document.createElement('label');
+      label.textContent = `Key for ${item.name}: `;
+      keyAssignmentDiv.appendChild(label);
+  
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.value = item.key; // Current key assignment
+      input.dataset.index = index; // Store index of spell this input corresponds to
+      input.addEventListener('change', function() {
+        const newKey = this.value;
+        if (newKey.length !== 1) {
+          alert('Invalid key assignment. Please enter a single character.');
+          this.value = item.key; // Reset to current key assignment
+        } else {
+          // Update key assignment
+          item.key = newKey;
+  
+          // Update key displayed under spell image
+          const boughtItems = document.getElementsByClassName('bought-item');
+          boughtItems[index].children[1].textContent = newKey;
+  
+          // Update dataset property
+          boughtItems[index].dataset.key = newKey;
+        }
+      });
+  
+      keyAssignmentDiv.appendChild(input);
+  
+      keyAssignmentsContainer.appendChild(keyAssignmentDiv);
+    });
+  }
+  
+  window.addEventListener('keydown', function(event) {
+    const key = event.key;
+    const activeElement = document.activeElement;
+    const isInputFocused = activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA';
+  
+    if (!isInputFocused) {
+      // Find the bought spell that is assigned to this key
+      const spellElement = Array.from(document.getElementsByClassName('bought-item')).find(
+        element => element.dataset.key === key
+      );
+  
+      // If a spell is found, simulate a click event on the spell
+      if (spellElement) {
+        spellElement.click();
+      }
+    }
+  });
+  
+  

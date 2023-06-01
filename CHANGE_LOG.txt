@@ -1,7 +1,12 @@
 ponernombre repo git
-Last Version: 1.5.1
+Last Version: 1.5.2
 
 Version history
+*1.5.2
+Added Options
+Asigned Spells to Keys
+Minor fixes
+
 *1.5.1
 Added Achievements
 Fixed Skills down when you die
