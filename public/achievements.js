@@ -56,11 +56,24 @@ function addAchievement(name, description) {
 
 function onMonsterKilled() {
     if (monsterKills === 10) {
-        addAchievement('Monster Slayer', 'Killed 10 monsters.');
+      addAchievement('Monster Slayer', 'Killed 10 monsters.');
     } else if (monsterKills === 20) {
-        addAchievement('Monster Slayer II', 'Killed 20 monsters.');
+      addAchievement('Monster Slayer II', 'Killed 20 monsters.');
     }
-}
+  
+    if (bossKills === 1) {
+      addAchievement('Boss Bane', 'Killed your first boss.');
+    } else if (bossKills === 10) {
+      addAchievement('Boss Bane II', 'Killed 10 bosses.');
+    }
+  
+    if (grandBossKills === 1) {
+      addAchievement('Grand Boss Vanquisher', 'Killed your first Grand Boss.');
+    } else if (grandBossKills === 10) {
+      addAchievement('Grand Boss Vanquisher II', 'Killed 10 Grand Bosses.');
+    }
+  }
+  
 
 function onLevelUp() {
     if (level === 3) {

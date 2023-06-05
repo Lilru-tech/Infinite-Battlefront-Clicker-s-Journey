@@ -1,7 +1,12 @@
 ponernombre repo git
-Last Version: 1.5.2
+Last Version: 1.5.3
 
 Version history
+*1.5.3
+Added bosses and grand bosses
+Added 40 new monsters
+Added 2 new spells
+
 *1.5.2
 Added Options
 Asigned Spells to Keys

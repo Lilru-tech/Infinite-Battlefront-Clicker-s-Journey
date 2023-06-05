@@ -7,20 +7,25 @@ function calculateSpellEffect() {
     
     switch (selectedVocation) {
       case 'Knight':
-      case 'Elite Knight':
         return base;
-      case 'Warrior':
-      case 'Warlord':
+      case 'Elite Knight':
         return Math.round(base * 1.1);
+      case 'Warrior':
+        return base;
+      case 'Warlord':
+        return Math.round(base * 1.2);
       case 'Paladin':
+        return Math.round(base * 1.2);
       case 'Holy Paladin':
         return Math.round(base * 1.3);
       case 'Elf':
+        return Math.round(base * 1.4);
       case 'Elder Elf':
         return Math.round(base * 1.5);
       case 'Mage':
-      case 'Archmage':
       case 'Druid':
+      return Math.round(base * 1.6);
+      case 'Archmage':
       case 'Archdruid':
         return Math.round(base * 1.8);
       default:
@@ -30,7 +35,7 @@ function calculateSpellEffect() {
 
 const spellsItems = [
     {
-      name: 'Exura',
+      name: 'Luminura',
       description: 'It heals you a bit of health points, depending on your Magic level',
       spellType: 'health',
       price: 100,
@@ -70,7 +75,7 @@ const spellsItems = [
       }      
     },
     {
-        name: 'Exura Gran',
+        name: 'Mediura',
         description: 'It heals you a bit of health points, depending on your Magic level',
         spellType: 'health',
         price: 100,
@@ -111,7 +116,7 @@ const spellsItems = [
         }        
         },
         {
-            name: 'Exori',
+            name: 'Levitori',
             description: 'It heals you a bit of health points, depending on your Magic level',
             spellType: 'attack',
             price: 100,
@@ -130,6 +135,110 @@ const spellsItems = [
               }
               updateHealthBar();
             
+              if (isSpellDamageEnabled) {
+                const randomX = Math.random();
+                const randomY = Math.random();
+                const attackNumber = document.createElement('span');
+                attackNumber.classList.add('damage-number');
+                attackNumber.textContent = attackSpellAmount;
+                attackNumber.style.top = `calc(${randomY} * 100%)`;
+                attackNumber.style.left = `calc(${randomX} * 100%)`;
+                const gameContainer = document.getElementById('game-container');
+                gameContainer.appendChild(attackNumber);
+                const animationDuration = Math.random() * 2 + 1;
+                attackNumber.style.animationDuration = `${animationDuration}s`;
+                setTimeout(() => {
+                  attackNumber.remove();
+                }, animationDuration * 1000);
+              }
+            }
+          },
+          {
+            name: 'Ignisori',
+            description: 'It ignites the monster, causing damage every 2 seconds, depending on your Magic level',
+            spellType: 'attack',
+            price: 100,
+            level: 4,
+            vocation: ['Holy Paladin', 'Mage', 'Archmage', 'Elder Elf', 'Druid', 'Archdruid'],
+            manaCost: 35,
+            image: 'smallIgnite.png',
+            coolDown: 14,
+            onCooldown: false,
+            effect: () => {
+              let attackSpellAmount = Math.floor(calculateSpellEffect()/6); // Use Math.floor to round down and remove decimals
+              let hitCount = 0;
+              const intervalId = setInterval(() => {
+                currentMonsterHealth -= attackSpellAmount;
+                if (currentMonsterHealth <= 0) {
+                  defeatMonster();
+                  clearInterval(intervalId);
+                }
+                updateHealthBar();
+                hitCount++;
+                if(hitCount === 5) {
+                  clearInterval(intervalId);
+                }
+          
+                // Move the damage display code into the interval function
+                if (isSpellDamageEnabled) {
+                  const randomX = Math.random();
+                  const randomY = Math.random();
+                  const attackNumber = document.createElement('span');
+                  attackNumber.classList.add('damage-number');
+                  attackNumber.textContent = attackSpellAmount;
+                  attackNumber.style.color = 'orange'; // Make the damage numbers orange
+                  attackNumber.style.top = `calc(${randomY} * 100%)`;
+                  attackNumber.style.left = `calc(${randomX} * 100%)`;
+                  const gameContainer = document.getElementById('game-container');
+                  gameContainer.appendChild(attackNumber);
+                  const animationDuration = Math.random() * 2 + 1;
+                  attackNumber.style.animationDuration = `${animationDuration}s`;
+                  setTimeout(() => {
+                    attackNumber.remove();
+                  }, animationDuration * 1000);
+                }
+                
+              }, 2000); // Apply damage every 2 seconds
+            }
+          },
+          {
+            name: 'Lumito',
+            description: 'It heals you a bit of health points, depending on your Magic level',
+            spellType: 'attack',
+            price: 100,
+            level: 5,
+            vocation: [ 'Knight', 'Elite Knight', 'Holy Paladin', 'Elder Elf'],
+            manaCost: 40,
+            image: 'smallEnforcement.png',
+            coolDown: 60,
+            onCooldown: false,
+            effect: () => {
+              let attackSpellAmount;
+              attackSpellAmount = calculateSpellEffect();
+              currentMonsterHealth -= attackSpellAmount;
+              if (currentMonsterHealth<= 0){
+                defeatMonster();
+              }
+              updateHealthBar();
+            
+              // Increase skills by 5
+              swordSkill += 5;
+              crossBowSkill += 5;
+              wandSkill += 5;
+              bowSkill += 5;
+              axeSkill += 5;
+              rodSkill += 5;
+          
+              // After 1 minute, decrease the skills by 5 again
+              setTimeout(() => {
+                swordSkill -= 5;
+                crossBowSkill -= 5;
+                wandSkill -= 5;
+                bowSkill -= 5;
+                axeSkill -= 5;
+                rodSkill -= 5;
+              }, 20000);
+          
               if (isSpellDamageEnabled) {
                 const randomX = Math.random();
                 const randomY = Math.random();
@@ -265,7 +374,6 @@ const spellsItems = [
           if (!item.onCooldown) {
             currentPlayerMana -= item.manaCost;
             wastedMana += item.manaCost;
-            console.log(`Total wasted mana: ${wastedMana}`);
             item.effect();
             updatePlayerManaBar();
             coolDownOverlay.style.animation = `cooldown-effect ${item.coolDown}s linear forwards`;

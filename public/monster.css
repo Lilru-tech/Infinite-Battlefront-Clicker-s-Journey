@@ -77,3 +77,13 @@
       transform: translate(-50%, -200%) scale(1.5);
     }
   }
+
+  #monster.boss {
+    border: 5px solid red;
+    border-radius: 5px;
+  }
+  
+  #monster.grandBoss {
+    border: 5px solid yellow;
+    border-radius: 5px;
+  }
