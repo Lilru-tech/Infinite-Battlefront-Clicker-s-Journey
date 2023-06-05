@@ -14,6 +14,8 @@ let criticalDamage = 100;
 let maxDamageDealt = 0;
 let maxDamageTaken = 0;
 let monsterKills = 0;
+let bossKills = 0;
+let grandBossKills = 0;
 let damageDealt = 0;
 let damageBlocked = 0;
 let magicSkill = 0;
@@ -63,6 +65,8 @@ const criticalDamageSpan = document.getElementById('criticalDamage');
 const topDamageDealt = document.getElementById('topDamageDealt');
 const topDamageTaken = document.getElementById('topDamageTaken');
 const monsterKillSpan = document.getElementById('monsterKill');
+const bossKillSpan = document.getElementById('bossKill');
+const grandBossKillSpan = document.getElementById('grandBossKill');
 const experienceBar = document.getElementById('experienceBar');
 const levelUpExperienceSpan = document.getElementById('levelUpExperience');
 const playerHealthSpan = document.getElementById('playerHealth');
@@ -112,6 +116,8 @@ function saveData() {
     maxDamageDealt,
     maxDamageTaken,
     monsterKills,
+    bossKills,
+    grandBossKills,
     damageDealt,
     damageBlocked,
     attack,
@@ -177,6 +183,8 @@ function loadData() {
     maxDamageDealt = data.maxDamageDealt;
     maxDamageTaken = data.maxDamageTaken;
     monsterKills = data.monsterKills;
+    bossKills = data.bossKills;
+    grandBossKills = data.grandBossKills;
     damageDealt = data.damageDealt;
     damageBlocked = data.damageBlocked;
     attack = data.attack;
@@ -230,6 +238,8 @@ function loadData() {
     criticalChanceSpan.textContent = criticalChance + "%";
     criticalDamageSpan.textContent = criticalDamage + "%";
     monsterKillSpan.textContent = monsterKills;
+    bossKillSpan.textContent = bossKills;
+    grandBossKillSpan.textContent = grandBossKills;
     attackSpan.textContent = attack;
     defenseSpan.textContent = defense;
     topDamageDealt.textContent = maxDamageDealt;

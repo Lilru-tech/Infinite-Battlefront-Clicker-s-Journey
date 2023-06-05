@@ -251,9 +251,15 @@ function updatePlayerManaBar() {
       } else if (selectedVocation === 'Druid' || selectedVocation === 'Archdruid'){
         totalAttack = attack + Math.round(shieldingSkill + 0.5);
       }
-      const monsterAttack = Math.floor(Math.random() * 50) + 1;
-      const damageTaken = Math.max(0, monsterAttack - damageBlocked);
-      damageBlocked = Math.floor(Math.random() * (defense / 2)) + (defense / 2);
+      let damageTaken = Math.max(0, monsterAttack - damageBlocked);
+      // If the monster is a boss, triple the damage
+      if (isBoss) {
+        damageTaken *= 3;
+      } else if (isGrandBoss) {
+        damageTaken *= 10;
+      }
+      damageBlocked = Math.floor(Math.random() * (defense / 2));
+      
     
       if (damageDealt > maxDamageDealt) {
         maxDamageDealt = damageDealt;
@@ -384,16 +390,38 @@ function updatePlayerManaBar() {
       }
       
       
-        if (currentMonsterHealth <= 0) {
-          defeatMonster();
+      if (currentMonsterHealth <= 0) {
+        let wasBoss = isBoss;
+        let wasGrandBoss = isGrandBoss;
+        defeatMonster();
+      
+        if (wasBoss){
+          bossKills++;
+        } else if (wasGrandBoss){
+          grandBossKills++;
+        } else {
           monsterKills++;
-          updateExperienceBar(experienceCount, levelUpExperience(level));
+        }
+      
+        updateExperienceBar(experienceCount, levelUpExperience(level));
+      
+        if (wasBoss){
+          isBoss = false;
+          onBossKilled();
+        } else if (wasGrandBoss){
+          isGrandBoss = false;
+          onGrandBossKilled();
+        } else {
           onMonsterKilled();
         }
+      }
+      
       
         // Update counters
         moneyCountSpan.textContent = moneyCount;
         monsterKillSpan.textContent = monsterKills;
+        bossKillSpan.textContent = bossKills;
+        grandBossKillSpan.textContent = grandBossKills;
         magicSkillSpan.textContent = magicSkill;
         swordSkillSpan.textContent = swordSkill;
         crossBowSkillSpan.textContent = crossBowSkill;
@@ -402,7 +430,6 @@ function updatePlayerManaBar() {
         axeSkillSpan.textContent = axeSkill;
         rodSkillSpan.textContent = rodSkill;
         shieldingSkillSpan.textContent = shieldingSkill;
-        console.log(monsterKills);
     }, 2000);
 
     function showDeadOverlay() {
