@@ -383,7 +383,6 @@ function loadData() {
   }
 }
 
-
 function handleSaveButtonClick() {
   saveData();
 }
