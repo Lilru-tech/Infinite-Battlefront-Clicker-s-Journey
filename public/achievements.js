@@ -91,6 +91,20 @@ function attackAchievements() {
     }
 }
 
+function questsAchievements(){
+  if (questsDone >= 1) {
+    addAchievement('Initiation Complete!', 'You ve embarked on your journey and completed your first quest. Keep it up!');
+  } else if (questsDone >= 10) {
+    addAchievement('Decade of Daring', 'Ten quests down, many more to conquer. Youre making a name for yourself in this world. Keep pushing the boundaries!');
+  }
+}
+
+function backPackAchievement(){
+  if (backpackSize >= 20) {
+    addAchievement('Backpack Barron!', 'Youve maximized your carrying capacity, proving your readiness for any adventure that comes your way!');
+  }
+}
+
 function showPopup(name, message) {
     // Get the title and message elements of the modal
     var title = document.getElementById('achievement-popup-title');
@@ -104,5 +118,5 @@ function showPopup(name, message) {
     modal.style.display = "block";
 
     // Hide the modal after 5 seconds
-    setTimeout(hidePopup, 5000);
+    setTimeout(hidePopup, 10000);
 }

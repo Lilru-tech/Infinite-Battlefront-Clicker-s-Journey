@@ -45,7 +45,7 @@ const spellsItems = [
       image: 'smallHealing.png',
       coolDown: 2,
       onCooldown: false,
-      effect: () => {
+      spellEffect: () => {
         let healingAmount;
         if ((currentPlayerHealth + calculateSpellEffect()) > playerHealth) {
           healingAmount = playerHealth - currentPlayerHealth;
@@ -85,7 +85,7 @@ const spellsItems = [
         image: 'mediumHealing.png',
         coolDown: 4,
         onCooldown: false,
-        effect: () => {
+        spellEffect: () => {
           let healingAmount;
           if ((currentPlayerHealth + (calculateSpellEffect() * 1.8)) > playerHealth) {
             healingAmount = playerHealth - currentPlayerHealth;
@@ -126,7 +126,7 @@ const spellsItems = [
             image: 'smallAttack.png',
             coolDown: 3.5,
             onCooldown: false,
-            effect: () => {
+            spellEffect: () => {
               let attackSpellAmount;
               attackSpellAmount = calculateSpellEffect();
               currentMonsterHealth -= attackSpellAmount;
@@ -164,7 +164,7 @@ const spellsItems = [
             image: 'smallIgnite.png',
             coolDown: 14,
             onCooldown: false,
-            effect: () => {
+            spellEffect: () => {
               let attackSpellAmount = Math.floor(calculateSpellEffect()/6); // Use Math.floor to round down and remove decimals
               let hitCount = 0;
               const intervalId = setInterval(() => {
@@ -212,7 +212,7 @@ const spellsItems = [
             image: 'smallEnforcement.png',
             coolDown: 60,
             onCooldown: false,
-            effect: () => {
+            spellEffect: () => {
               let attackSpellAmount;
               attackSpellAmount = calculateSpellEffect();
               currentMonsterHealth -= attackSpellAmount;
@@ -374,7 +374,7 @@ const spellsItems = [
           if (!item.onCooldown) {
             currentPlayerMana -= item.manaCost;
             wastedMana += item.manaCost;
-            item.effect();
+            item.spellEffect();
             updatePlayerManaBar();
             coolDownOverlay.style.animation = `cooldown-effect ${item.coolDown}s linear forwards`;
             coolDownOverlay.style.display = "block";

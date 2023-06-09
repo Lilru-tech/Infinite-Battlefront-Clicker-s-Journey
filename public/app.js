@@ -152,18 +152,43 @@ function saveData() {
     isDamageTakenEnabled,
     isSpellDamageEnabled,
     isHealNumberEnabled,
+    quests,
+    questPoints,
+    activeQuest,
+    questsDone,
+    backpackSize,
     spellsBought: spellsContainer.boughtItems.map(item => ({...item, assignedKey: item.key})),
     cooldowns: {},
     shopStatsItems: shopStatsItems.map(item => ({ ...item, price: item.price })),
     shopItemsItems: shopItemsItems.map(item => ({ ...item, price: item.price })),
+    shopItemsItems: shopItemsItems.map(item => ({ ...item, effect: item.effect })),
     items: $('.sortable-item').map(function() { 
       return {id: this.id, parent: $(this).parent().attr('id')}; 
     }).get()
   };
 
+  const backpackSlots = Array.from(document.getElementsByClassName('backpack-slot'));
+  const backpackItems = backpackSlots.map(slot => {
+    if (slot.firstChild) {
+      const itemImg = slot.firstChild;
+      const itemCount = slot.getElementsByClassName('item-count')[0];
+      return {
+        img: itemImg.src,
+        count: itemImg.dataset.count,
+        itemType: itemImg.dataset.itemType,
+        name: itemImg.title
+      }
+    } else {
+      return null;
+    }
+  });
+  
+  savedData.backpackItems = backpackItems;
+  
   localStorage.setItem("gameData", JSON.stringify(savedData));
   console.log("Data saved.");
 }
+
 
 function loadData() {
   const savedData = localStorage.getItem("gameData");
@@ -218,7 +243,11 @@ function loadData() {
     isDamageTakenEnabled = data.isDamageTakenEnabled;
     isSpellDamageEnabled = data.isSpellDamageEnabled;
     isHealNumberEnabled = data.isHealNumberEnabled;
-
+    backpackSize = data.backpackSize || 10; 
+    backpack.innerHTML = '';
+    for (let i = 0; i < backpackSize; i++) {
+      addBackpackSlot();
+    }
     shopStatsItems.forEach((item, index) => {
       if (data.shopStatsItems && data.shopStatsItems[index]) {
         item.price = data.shopStatsItems[index].price;
@@ -227,6 +256,7 @@ function loadData() {
     shopItemsItems.forEach((item, index) => {
       if (data.shopItemsItems && data.shopItemsItems[index]) {
         item.price = data.shopItemsItems[index].price;
+        item.effect = data.shopItemsItems[index].effect;
       }
     });
 
@@ -256,13 +286,15 @@ function loadData() {
     enableDamageTakenElement.checked = isDamageTakenEnabled;
     enableSpellDamageElement.checked = isSpellDamageEnabled;
     enableSpellHealElement.checked = isHealNumberEnabled;
-
-    
+    quests = data.quests;
+    questPoints = data.questPoints;
+    activeQuest = data.activeQuest;
+    questsDone = data.questsDone;
     spellsContainer.boughtItems = data.spellsBought || [];
     spellsContainer.boughtItems.forEach((boughtItem, index) => {
       const originalItem = spellsItems.find(item => item.name === boughtItem.name);
       if (originalItem) {
-        boughtItem.effect = originalItem.effect;
+        boughtItem.spellEffect = originalItem.spellEffect;
         boughtItem.key = boughtItem.assignedKey || `${index + 1}`;
         if (boughtItem.hasOwnProperty('onCooldown') && data.cooldowns && data.cooldowns[boughtItem.name]) {
           boughtItem.onCooldown = data.cooldowns[boughtItem.name];
@@ -289,6 +321,47 @@ function loadData() {
         parent.append(itemElem);
       });
     }
+    const backpackSlots = Array.from(document.getElementsByClassName('backpack-slot'));
+    data.backpackItems.forEach((item, i) => {
+      if (item && i < backpackSize) {
+      if (item) {
+            const img = document.createElement('img');
+            img.src = item.img;
+            img.title = item.name;
+            img.width = 50;
+            img.height = 50;
+            img.dataset.count = item.count;
+            img.dataset.itemType = item.itemType;
+    
+            const itemCountDiv = document.createElement('div');
+            itemCountDiv.className = 'item-count';
+            itemCountDiv.textContent = item.count;
+    
+            const backpackSlot = backpackSlots[i];
+            backpackSlot.appendChild(img);
+            backpackSlot.appendChild(itemCountDiv);
+            
+            const originalEffect = originalEffects.get(item.itemType);
+            if (originalEffect) {
+              img.onclick = () => {
+                originalEffect();
+                let count = parseInt(img.dataset.count, 10);
+                if (count > 1) {
+                  img.dataset.count = count - 1;
+                  itemCountDiv.textContent = count - 1;
+                } else {
+                  backpackSlot.removeChild(itemCountDiv);
+                  backpackSlot.removeChild(img);
+                }
+              };
+            } else {
+              console.log(`No effect found for itemType: ${item.itemType}`);
+            }
+
+        }
+      }
+    });
+
     generateSpellsItems();
     if (data.achievements) {
       achievements = data.achievements;
@@ -305,9 +378,10 @@ function loadData() {
           achievementsDiv.appendChild(achievementDiv);
       });
   }
+  generateQuestsHtml();
+  updateQuestPointsDisplay();
   }
 }
-
 
 function handleSaveButtonClick() {
   saveData();

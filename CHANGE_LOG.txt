@@ -1,7 +1,13 @@
 ponernombre repo git
-Last Version: 1.5.3
+Last Version: 1.6.0
 
 Version history
+*1.6.0
+Added backpack system
+Changed the way potions are bought and consumed
+Added Quests
+Added 41 new monsters
+
 *1.5.3
 Added bosses and grand bosses
 Added 40 new monsters
