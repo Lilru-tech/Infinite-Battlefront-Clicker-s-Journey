@@ -109,7 +109,13 @@ function updateHealthBar() {
     spawnMonster(); // Moved this line to the end
     
     // Load new random monster image
-    const monsterNum = Math.floor(Math.random() * 120) + 1;
+    const monsterNum = Math.floor(Math.random() * 162) + 1;
     monsterImage.src = `sprites/monster/monster${monsterNum}.png`;
+    for (let quest of quests) {
+      if (quest.active && !quest.completed && quest.id === 1) { // for "Kill 10 monsters" quest
+          quest.questProgress++;
+          updateQuests(); // check if the quest has been completed after each monster kill
+      }
+  }
   }
   

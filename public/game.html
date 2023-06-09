@@ -13,7 +13,10 @@
   <link rel="stylesheet" href="spells.css">
   <link rel="stylesheet" href="achievements.css">
   <link rel="stylesheet" href="options.css">
-</head>
+  <link rel="stylesheet" href="inventory.css">
+  <link rel="stylesheet" href="backpack.css">
+  <link rel="stylesheet" href="quests.css">
+  </head>
 <body>
   <div class="overlay" id="overlay">
     <div id="buttonsContainer">
@@ -58,6 +61,10 @@
       <input type="checkbox" id="enableSpellHeal" checked>
       <label for="enableSpellHeal">Enable Spell Heal</label>
     </div>
+    <div>
+      <input type="checkbox" id="showCompletedQuests" checked>
+      <label for="showCompletedQuests">Show Completed Quests</label>
+    </div>    
     <h3>Spell Key Assignments</h3>
     <div id="keyAssignments"></div>
   </div>
@@ -74,6 +81,7 @@
             <a>Monster killed: <span id="monsterKill">0</span></a>
             <a>Boss killed: <span id="bossKill">0</span></a>
             <a>Grand Boss killed: <span id="grandBossKill">0</span></a>
+            <a>Quests points: <span id="questPoints">0</span></a>
         </div>
     </li>
     <li class="item sortable-item" id="combatStats">
@@ -138,6 +146,13 @@
         </div>
       </div>
     </li>
+    <li class="item sortable-item" id="quests">
+      <a href="#quests" class="btn"> <i class="far fa-envelope" aria-hidden="true"></i>Quests</a>
+      <div class="sleft">
+        <div class="quests">
+        </div>
+      </div>
+    </li>
   </ul>
 </div>
   </div>  
@@ -190,6 +205,18 @@
           <a id="logContent"></a>
       </div>
   </li>
+  <li class="item sortable-item" id="backPack">
+    <a href="#backPack" class="btn"><i class="far fa-envelope" aria-hidden="true"></i>Back Pack</a>
+    <div class="sleft">
+        <a id="backpack-items"></a>
+    </div>
+</li>
+<li class="item sortable-item" id="inventory">
+  <a href="#inventory" class="btn"><i class="far fa-envelope" aria-hidden="true"></i>Inventory</a>
+  <div class="sleft">
+      <a id="inventory-list"></a>
+  </div>
+</li> 
 </ul>
 </div>
 <div id="bottom" class ="left">
@@ -219,6 +246,9 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="achievements.js"></script>
     <script src="options.js"></script>
+    <script src="inventory.js"></script>
+    <script src="backpack.js"></script>
+    <script src="quests.js"></script>
     <script>
       window.onload = function() {
         var items = document.querySelectorAll('#left .item a.btn, #right .item a.btn');

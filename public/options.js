@@ -19,13 +19,11 @@ const enableDamageElement = document.getElementById('enableDamage');
 if (enableDamageElement) {
     enableDamageElement.addEventListener('change', function() {
         isDamageEnabled = this.checked;
-        console.log("algo");
     });
     // Set initial state based on checkbox
     isDamageEnabled = enableDamageElement.checked;
 } else {
     console.error('Could not find enableDamage element.');
-    console.log("algo2");
 }
 
 let isDamageTakenEnabled = true;
@@ -54,6 +52,8 @@ if (enableSpellHealElement) {
         isHealNumberEnabled = this.checked;
     });
 }
+
+document.getElementById('showCompletedQuests').addEventListener('change', generateQuestsHtml);
 
 document.getElementById('options').addEventListener('click', function() {
     const keyAssignmentsContainer = document.getElementById('keyAssignments');

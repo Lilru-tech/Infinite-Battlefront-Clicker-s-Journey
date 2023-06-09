@@ -18,6 +18,8 @@ let nextBowSkill = 100;
 let nextAxeSkill = 100;
 let nextRodSkill = 100;
 let nextShieldingSkill = 100;
+let questWastedMana = 0;
+let criticalDamageDealt = 0;
 
 const promotionButton = document.getElementById('promotion');
 const attackSpan = document.getElementById('attack');
@@ -203,7 +205,7 @@ function updatePlayerManaBar() {
       const normalDamageDealt = Math.floor(Math.random() * 8) + totalAttack - 5;
       let isCritical = false;    
       if (criticalChance >= Math.random() * 100) {
-        const criticalDamageDealt = normalDamageDealt + Math.floor(Math.random() * (normalDamageDealt * criticalDamage) / 100 + 20);
+        criticalDamageDealt = normalDamageDealt + Math.floor(Math.random() * (normalDamageDealt * criticalDamage) / 100 + 20);
         damageDealt = criticalDamageDealt;
         isCritical = true;
       } else {
@@ -229,6 +231,7 @@ function updatePlayerManaBar() {
           damageNumber.remove();
         }, animationDuration * 1000);
       }
+      updateQuests();
     }
     
     
@@ -252,7 +255,6 @@ function updatePlayerManaBar() {
         totalAttack = attack + Math.round(shieldingSkill + 0.5);
       }
       let damageTaken = Math.max(0, monsterAttack - damageBlocked);
-      // If the monster is a boss, triple the damage
       if (isBoss) {
         damageTaken *= 3;
       } else if (isGrandBoss) {
@@ -397,8 +399,10 @@ function updatePlayerManaBar() {
       
         if (wasBoss){
           bossKills++;
+          bossKillSpan.textContent = bossKills;
         } else if (wasGrandBoss){
           grandBossKills++;
+          grandBossKillSpan.textContent = grandBossKills;
         } else {
           monsterKills++;
         }
@@ -519,11 +523,16 @@ function updatePlayerManaBar() {
     function getMagicSkillPercentage() {
       const requiredManaWaste = nextMagicSkill;
       const manaWasteEachPercentage = Math.floor(requiredManaWaste / 100);
-      if (wastedMana>manaWasteEachPercentage){
-        magicSkillPercentage = magicSkillPercentage + Math.floor(wastedMana/manaWasteEachPercentage);
-        wastedMana=0;
+      let isQuest3Active = quests.some(quest => quest.id === 3 && quest.active);
+      if (wastedMana > manaWasteEachPercentage){
+          magicSkillPercentage = magicSkillPercentage + Math.floor(wastedMana / manaWasteEachPercentage);
+          if (isQuest3Active) {
+            questWastedMana += wastedMana;
+          }
+          wastedMana = 0;
       }
-    }
+      updateQuests();
+  }  
     
     function getSwordSkillPercentage() {
       const requiredSwordAttacks = nextSwordSkill;
