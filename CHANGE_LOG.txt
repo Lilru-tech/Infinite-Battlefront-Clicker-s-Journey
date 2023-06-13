@@ -3,7 +3,7 @@ Last Version: 1.7.0
 
 Version history
 *1.7.0
-Added Inventory
+Added Inventory system
 Added 3 new spells
 Added 8 new monsters
 Minor fixes
