@@ -176,7 +176,8 @@ function saveData() {
         img: itemImg.src,
         count: itemImg.dataset.count,
         itemType: itemImg.dataset.itemType,
-        name: itemImg.title
+        name: itemImg.title,
+        consumable: itemImg.dataset.consumable === 'true'
       }
     } else {
       return null;
@@ -184,6 +185,25 @@ function saveData() {
   });
   
   savedData.backpackItems = backpackItems;
+
+  const equippedItems = Array.from(document.getElementsByClassName('equipped-item'))
+  .filter(div => div.classList.contains('occupied'))
+  .map(div => {
+    const img = div.getElementsByTagName('img')[0];
+    return {
+      type: div.parentElement.id.split('-')[0],
+      img: img.src,
+      name: img.alt,
+      attack: parseInt(img.dataset.attack, 10) || 0,
+      defense: parseInt(img.dataset.defense, 10) || 0,
+      objectEffect: img.dataset.objectEffect || '',
+      itemType: img.dataset.itemType,
+      consumable: img.dataset.consumable === 'true' ? true : false,
+      class: img.dataset.class
+    };
+  });
+
+savedData.equippedItems = equippedItems;
   
   localStorage.setItem("gameData", JSON.stringify(savedData));
   console.log("Data saved.");
@@ -307,58 +327,59 @@ function loadData() {
       spellsContainer.boughtItems = data.spellsBought.map(item => ({ ...item, key: item.assignedKey }));
     }
 
-    // Removed the line that was emptying the lists
     // Load item order and parent list
     if (data.items) {
       data.items.forEach(function(item) {
-        const parent = $("#" + item.parent);
-        const itemElem = $("#" + item.id);
+        const parent = document.getElementById(item.parent);
+        const itemElem = document.getElementById(item.id);
       
         // Temporarily detach the item from the DOM
-        itemElem.detach();
+        parent.removeChild(itemElem);
 
         // Append it to its original parent
-        parent.append(itemElem);
+        parent.appendChild(itemElem);
       });
     }
     const backpackSlots = Array.from(document.getElementsByClassName('backpack-slot'));
-    data.backpackItems.forEach((item, i) => {
-      if (item && i < backpackSize) {
-      if (item) {
-            const img = document.createElement('img');
-            img.src = item.img;
-            img.title = item.name;
-            img.width = 50;
-            img.height = 50;
-            img.dataset.count = item.count;
-            img.dataset.itemType = item.itemType;
-    
-            const itemCountDiv = document.createElement('div');
-            itemCountDiv.className = 'item-count';
-            itemCountDiv.textContent = item.count;
-    
-            const backpackSlot = backpackSlots[i];
-            backpackSlot.appendChild(img);
-            backpackSlot.appendChild(itemCountDiv);
-            
-            const originalEffect = originalEffects.get(item.itemType);
-            if (originalEffect) {
-              img.onclick = () => {
-                originalEffect();
-                let count = parseInt(img.dataset.count, 10);
-                if (count > 1) {
-                  img.dataset.count = count - 1;
-                  itemCountDiv.textContent = count - 1;
-                } else {
-                  backpackSlot.removeChild(itemCountDiv);
-                  backpackSlot.removeChild(img);
-                }
-              };
-            } else {
-              console.log(`No effect found for itemType: ${item.itemType}`);
-            }
+    backpackSlots.forEach((slot, i) => {
+      if (data.backpackItems && data.backpackItems[i]) {
+        const item = data.backpackItems[i];
+        if (item) {
+          const img = document.createElement('img');
+          img.src = item.img;
+          img.title = item.name;
+          img.width = 75;
+          img.height = 75;
+          img.dataset.count = item.count;
+          img.dataset.itemType = item.itemType;
 
+          const itemCountDiv = document.createElement('div');
+          itemCountDiv.className = 'item-count';
+          itemCountDiv.textContent = item.count;
+
+          slot.innerHTML = '';
+          slot.appendChild(img);
+          slot.appendChild(itemCountDiv);
+
+          const originalEffect = originalEffects.get(item.itemType);
+          if (originalEffect) {
+            img.addEventListener('click', () => {
+              originalEffect();
+              let count = parseInt(img.dataset.count, 10);
+              if (count > 1) {
+                img.dataset.count = count - 1;
+                itemCountDiv.textContent = count - 1;
+              } else {
+                slot.removeChild(itemCountDiv);
+                slot.removeChild(img);
+              }
+            });
+          } else {
+            console.log(`No effect found for itemType: ${item.itemType}`);
+          }
         }
+      } else {
+        slot.innerHTML = '';
       }
     });
 
@@ -366,22 +387,32 @@ function loadData() {
     if (data.achievements) {
       achievements = data.achievements;
       const achievementsDiv = document.querySelector('#achievements .sleft');
+      achievementsDiv.innerHTML = '';
       achievements.forEach(({ name, description }) => {
-          const achievementDiv = document.createElement('div');
-          achievementDiv.classList.add('achievement');
+        const achievementDiv = document.createElement('div');
+        achievementDiv.classList.add('achievement');
 
-          const achievementName = document.createElement('a');
-          achievementName.textContent = name;
-          achievementName.title = description;
+        const achievementName = document.createElement('a');
+        achievementName.textContent = name;
+        achievementName.title = description;
 
-          achievementDiv.appendChild(achievementName);
-          achievementsDiv.appendChild(achievementDiv);
+        achievementDiv.appendChild(achievementName);
+        achievementsDiv.appendChild(achievementDiv);
       });
-  }
-  generateQuestsHtml();
-  updateQuestPointsDisplay();
+    }
+
+    if (data.equippedItems) {
+      data.equippedItems.forEach(item => {
+        addToInventory(item);
+      });
+    }
+
+    generateQuestsHtml();
+    updateQuestPointsDisplay();
+    attachItemEventListeners();
   }
 }
+
 
 function handleSaveButtonClick() {
   saveData();

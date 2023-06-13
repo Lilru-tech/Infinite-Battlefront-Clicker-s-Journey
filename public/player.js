@@ -20,6 +20,7 @@ let nextRodSkill = 100;
 let nextShieldingSkill = 100;
 let questWastedMana = 0;
 let criticalDamageDealt = 0;
+let disableAttackTurns = 0;
 
 const promotionButton = document.getElementById('promotion');
 const attackSpan = document.getElementById('attack');
@@ -241,63 +242,44 @@ function updatePlayerManaBar() {
     });
 
     function calculateDamageBlocked(defense) {
-      if (selectedVocation === 'Knight' || selectedVocation === 'Elite Knight'){
-        totalAttack = attack + Math.round(shieldingSkill + 1.25);
-      } else if (selectedVocation === 'Paladin' || selectedVocation === 'Holy Paladin'){
-        totalAttack = attack + Math.round(shieldingSkill + 1);
-      } else if (selectedVocation === 'Mage' || selectedVocation === 'Archmage'){
-        totalAttack = attack + Math.round(shieldingSkill + 0.5);
-      } else if (selectedVocation === 'Elf' || selectedVocation === 'Elder Elf'){
-        totalAttack = attack + Math.round(shieldingSkill + 0.8);
-      } else if (selectedVocation === 'Warrior' || selectedVocation === 'Warlord'){
-        totalAttack = attack + Math.round(shieldingSkill + 1.1);
-      } else if (selectedVocation === 'Druid' || selectedVocation === 'Archdruid'){
-        totalAttack = attack + Math.round(shieldingSkill + 0.5);
-      }
-      let damageTaken = Math.max(0, monsterAttack - damageBlocked);
-      if (isBoss) {
-        damageTaken *= 3;
-      } else if (isGrandBoss) {
-        damageTaken *= 10;
-      }
-      damageBlocked = Math.floor(Math.random() * (defense / 2));
-      
+      if (disableAttackTurns === 0) {
+        // Calculate damage only if the monster is not rooted
+        if (selectedVocation === 'Knight' || selectedVocation === 'Elite Knight') {
+          totalAttack = attack + Math.round(shieldingSkill + 1.25);
+        } else if (selectedVocation === 'Paladin' || selectedVocation === 'Holy Paladin') {
+          totalAttack = attack + Math.round(shieldingSkill + 1);
+        } else if (selectedVocation === 'Mage' || selectedVocation === 'Archmage') {
+          totalAttack = attack + Math.round(shieldingSkill + 0.5);
+        } else if (selectedVocation === 'Elf' || selectedVocation === 'Elder Elf') {
+          totalAttack = attack + Math.round(shieldingSkill + 0.8);
+        } else if (selectedVocation === 'Warrior' || selectedVocation === 'Warlord') {
+          totalAttack = attack + Math.round(shieldingSkill + 1.1);
+        } else if (selectedVocation === 'Druid' || selectedVocation === 'Archdruid') {
+          totalAttack = attack + Math.round(shieldingSkill + 0.5);
+        }
     
-      if (damageDealt > maxDamageDealt) {
-        maxDamageDealt = damageDealt;
-        topDamageDealt.textContent = maxDamageDealt;
-      }
-      currentMonsterHealth -= damageDealt;
-      updateHealthBar();
+        let damageTaken = Math.max(0, monsterAttack - damageBlocked);
+        if (isBoss) {
+          damageTaken *= 3;
+        } else if (isGrandBoss) {
+          damageTaken *= 10;
+        }
+        damageBlocked = Math.floor(Math.random() * (defense / 2));
     
-      if (damageTaken > maxDamageTaken) {
-        maxDamageTaken = damageTaken;
-        topDamageTaken.textContent = maxDamageTaken;
-      }
-      currentPlayerHealth -= damageTaken;
+        if (damageDealt > maxDamageDealt) {
+          maxDamageDealt = damageDealt;
+          topDamageDealt.textContent = maxDamageDealt;
+        }
+        currentMonsterHealth -= damageDealt;
+        updateHealthBar();
     
-      if (isDamageTakenEnabled) {
-        if (damageTaken === 0) {
-          const randomX = Math.random();
-          const randomY = Math.random();
-          const blockedMessage = document.createElement('span');
-          blockedMessage.classList.add('damage-number');
-          blockedMessage.classList.add('blocked');
-          blockedMessage.textContent = 'Blocked!';
-          blockedMessage.style.top = `calc(${randomY} * 100%)`;
-          blockedMessage.style.left = `calc(${randomX} * 100%)`;
-          blockedMessage.style.color = 'blue';
-        
-          const gameContainer = document.getElementById('game-container2');
-          gameContainer.appendChild(blockedMessage);
-        
-          const animationDuration = Math.random() * 2 + 1;
-          blockedMessage.style.animationDuration = `${animationDuration}s`;
-        
-          setTimeout(() => {
-            blockedMessage.remove();
-          }, animationDuration * 1000);
-        } else {
+        if (damageTaken > maxDamageTaken) {
+          maxDamageTaken = damageTaken;
+          topDamageTaken.textContent = maxDamageTaken;
+        }
+        currentPlayerHealth -= damageTaken;
+    
+        if (isDamageTakenEnabled && damageTaken > 0) {
           const randomX = Math.random();
           const randomY = Math.random();
           const damageNumber = document.createElement('span');
@@ -305,19 +287,33 @@ function updatePlayerManaBar() {
           damageNumber.textContent = damageTaken;
           damageNumber.style.top = `calc(${randomY} * 100%)`;
           damageNumber.style.left = `calc(${randomX} * 100%)`;
-        
+    
           const gameContainer = document.getElementById('game-container2');
           gameContainer.appendChild(damageNumber);
-        
+    
           const animationDuration = Math.random() * 2 + 1;
           damageNumber.style.animationDuration = `${animationDuration}s`;
-        
+    
           setTimeout(() => {
             damageNumber.remove();
           }, animationDuration * 1000);
         }
+      } else {
+        // If the monster is rooted, reduce the disableAttackTurns count
+        disableAttackTurns--;
+        // Display the "Rooted!" message on the screen
+        const gameContainer = document.getElementById('game-container2');
+        const rootedMessage = document.createElement('span');
+        rootedMessage.classList.add('rooted-message');
+        rootedMessage.textContent = 'Rooted!';
+        gameContainer.appendChild(rootedMessage);
+        setTimeout(() => {
+          rootedMessage.remove();
+        }, 1000);
       }
     }
+    
+    
     setInterval(() =>{
       if (currentPlayerHealth <= 0) {
         return;

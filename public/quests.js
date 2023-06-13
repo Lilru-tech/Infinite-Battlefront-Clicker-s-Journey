@@ -1,5 +1,5 @@
 let quests = [
-    { id: 1, description: "Kill 10 monsters", goal: 10, completed: false, active: false, questProgress: 0, points: 1 },
+    { id: 1, description: "Kill 10 monsters", goal: 1, completed: false, active: false, questProgress: 0, points: 1 },
     { id: 2, description: "Hit more than 100", goal: 100, completed: false, active: false, questProgress: 0, points: 1 },
     { id: 3, description: "Waste more than 1000 mana", goal: 1000, completed: false, active: false, questProgress: 0, points: 2 }
 ];
@@ -25,7 +25,7 @@ function updateQuests() {
     for (let quest of quests) {
         if (quest.active && !quest.completed) {
             if ((quest.id === 1 && quest.questProgress >= quest.goal) ||
-            (quest.id === 2 && (damageDealt > 100 || criticalDamageDealt > 100)) ||
+            (quest.id === 2 && (damageDealt > 25 || criticalDamageDealt > 100)) ||
             (quest.id === 3 && questWastedMana > 1000)) {
                 quest.completed = true;
                 quest.active = false;
@@ -36,6 +36,13 @@ function updateQuests() {
                 if (quest.id === 3) {
                     questWastedMana = 0;
                 }
+                if (quest.id === 1) {
+                  giveObject('Wooden Sword');
+                  giveObject('Radiant Wand');
+              }
+              if (quest.id === 2) {
+                  giveObject('Wooden Shield');
+              }              
             }
         }
     }
@@ -43,6 +50,22 @@ function updateQuests() {
     generateQuestsHtml();
 }
 
+function giveObject(objectName) {
+  const backpackSlots = document.querySelectorAll('.backpack-slot');
+  for (let i = 0; i < backpackSlots.length; i++) {
+      if (!backpackSlots[i].hasChildNodes()) {
+          // Find the object with the specified name in the objects array
+          const object = objects.find(obj => obj.name === objectName);
+          if (object) {
+              addItemToBackpack(object);
+              break;
+          } else {
+              console.error(`Object with name ${objectName} not found in objects array`);
+          }
+      }
+  }
+}
+  
 function updateQuestPointsDisplay() {
     document.getElementById('questPoints').textContent = questPoints;
 }

@@ -1,7 +1,13 @@
 ponernombre repo git
-Last Version: 1.6.0
+Last Version: 1.7.0
 
 Version history
+*1.7.0
+Added Inventory
+Added 3 new spells
+Added 8 new monsters
+Minor fixes
+
 *1.6.0
 Added backpack system
 Changed the way potions are bought and consumed

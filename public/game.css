@@ -5,8 +5,8 @@ body {
   margin: 0;
   padding: 0;
   align-items: flex-start;
-  overflow: hidden; /* Hide the overflow caused by the divs' height exceeding the body height */
-  height: 100vh; /* Set the height to 100% of the viewport */
+  overflow: hidden;
+  height: 100vh;
 }
 
 #menu {
@@ -24,12 +24,12 @@ body {
   margin-left: 10px;
   margin-top: 20px;
   margin-bottom: 20px;
-  overflow-y: auto; /* Add a vertical scrollbar if the contents exceed the div's height */
-  max-height: calc(100vh - 100px); /* Adjusts the max height so the #left div doesn't exceed the viewport. 70px is arbitrary, adjust as needed. */
-  scrollbar-width: none; /* For Firefox */
+  overflow-y: auto;
+  max-height: calc(100vh - 100px);
+  scrollbar-width: none;
 }
 
-#left::-webkit-scrollbar { /* For Chrome, Safari, and Opera */
+#left::-webkit-scrollbar {
   display: none;
 }
 
@@ -47,15 +47,15 @@ body {
 
   #right {
     grid-column: 3 / 3;
-    grid-row: 2 / 3; /* Update to span both rows */
+    grid-row: 2 / 3;
     display: flex;
     align-items: right;
     flex-direction: column;
     margin-top: 20px;
     width: 95%;
-    overflow-y: auto; /* Add a vertical scrollbar if the contents exceed the div's height */
-    max-height: calc(100vh - 100px); /* Adjusts the max height so the #left div doesn't exceed the viewport. 70px is arbitrary, adjust as needed. */
-    scrollbar-width: none; /* For Firefox */
+    overflow-y: auto;
+    max-height: calc(100vh - 100px);
+    scrollbar-width: none;
   }
   
   ::-webkit-scrollbar {
@@ -64,10 +64,10 @@ body {
   }
 
   #bottom {
-    grid-column: 2 / 3; /* Update based on the total number of columns in your grid layout */
-    grid-row: 3 / 3; /* It's always a good practice to use 'span' keyword for grid-row and grid-column. Like 'grid-row: span 3;' */
+    grid-column: 2 / 3;
+    grid-row: 3 / 3;
     display: flex;
-    justify-content: flex-end; /* Aligns items horizontally to the right */
+    justify-content: flex-end;
     flex-direction: column;
     margin-top: 25px;
     width: 95%; 
@@ -230,13 +230,12 @@ body {
     }
   }
   
-  /* Set the button style */
   #restoreHealthButton {
     display: block;
     margin: 20px auto;
     padding: 10px 20px;
     font-size: 24px;
-    background-color: #9b2c2c; /* Change the background color */
+    background-color: #9b2c2c;
     color: white;
     border: none;
     border-radius: 5px;
@@ -245,18 +244,16 @@ body {
   }
   
   #restoreHealthButton:hover {
-    background-color: #7b0f0f; /* Change the hover background color */
+    background-color: #7b0f0f;
     box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.5);
   }
   
-  
-  /* Set the button style */
   #hardRestoreHealthButton {
     display: block;
     margin: 20px auto;
     padding: 10px 20px;
     font-size: 24px;
-    background-color: #9b2c2c; /* Change the background color */
+    background-color: #9b2c2c;
     color: white;
     border: none;
     border-radius: 5px;
@@ -266,17 +263,15 @@ body {
   }
   
   #hardRestoreHealthButton:hover {
-    background-color: #7b0f0f; /* Change the hover background color */
+    background-color: #7b0f0f;
     box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.5);
   }
-  
-  /* Set the text style */
+
   p {
     font-size: 20px;
     margin-bottom: 10px;
   }
-  
-  /* Set the span style */
+
   span {
     font-weight: bold;
   }

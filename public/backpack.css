@@ -4,11 +4,12 @@
 }
 
 .backpack-slot {
-    width: 50px;
-    height: 50px;
+    width: 75px;
+    height: 75px;
     background-color: #ebdede;
-    border: 1px solid #dac7c7;
+    border: 3px solid #97b5de;
     margin: 5px;
+    border-radius: 5px;
     margin-top: 10px;
     margin-bottom: 10px;
 }

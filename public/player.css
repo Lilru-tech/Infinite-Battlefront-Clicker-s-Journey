@@ -123,6 +123,17 @@
     z-index: 2;
   }
 
+  .rootedMessage {
+    position: absolute;
+    top: calc(var(--random-y) * 100%);
+    left: calc(var(--random-x) * 100%);
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+    color: rgb(33, 57, 5);
+    animation: healAnimation 1s ease-in forwards;
+    z-index: 2;
+  }
+
   @keyframes healAnimation {
     0% {
       opacity: 1;

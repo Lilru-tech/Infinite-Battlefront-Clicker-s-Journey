@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="game.css">
   <link rel="stylesheet" href="monster.css">
   <link rel="stylesheet" href="player.css">
-  <link rel="stylesheet" href="shop.css">
   <link rel="stylesheet" href="vocations.css">
   <link rel="stylesheet" href="collapsible.css">
   <link rel="stylesheet" href="spells.css">
@@ -214,9 +213,109 @@
 <li class="item sortable-item" id="inventory">
   <a href="#inventory" class="btn"><i class="far fa-envelope" aria-hidden="true"></i>Inventory</a>
   <div class="sleft">
-      <a id="inventory-list"></a>
+    <div class="inventory">
+      <div class="row">
+        <div class="slot first-column" id="necklace-slot">
+          <div class="item-container">
+            <div class="default-image">
+              <img src="sprites/objects/necklace.png" alt="Default Necklace" width="75" height="75">
+            </div>
+            <div class="equipped-item">
+            </div>
+          </div>
+        </div>
+        <div class="slot second-column" id="helmet-slot">
+          <div class="item-container">
+            <div class="default-image">
+              <img src="sprites/objects/helmet.png" alt="Default Helmet" width="75" height="75">
+            </div>
+            <div class="equipped-item">
+            </div>
+          </div>
+        </div>
+        <div class="slot third-column" id="other-necklace-slot">
+          <div class="item-container">
+            <div class="default-image">
+              <img src="sprites/objects/necklace.png" alt="Default Other Necklace" width="75" height="75">
+            </div>
+            <div class="equipped-item">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="slot first-column" id="weapon-slot">
+          <div class="item-container">
+            <div class="default-image">
+              <img src="sprites/objects/weapon.png" alt="Default Weapon" width="75" height="75">
+            </div>
+            <div class="equipped-item">
+            </div>
+          </div>
+        </div>
+        <div class="slot second-column" id="armor-slot">
+          <div class="item-container">
+            <div class="default-image">
+              <img src="sprites/objects/armor.png" alt="Default Armor" width="75" height="75">
+            </div>
+            <div class="equipped-item">
+            </div>
+          </div>
+        </div>
+        <div class="slot third-column" id="shield-slot">
+          <div class="item-container">
+            <div class="default-image">
+              <img src="sprites/objects/shield.png" alt="Default Shield" width="75" height="75">
+            </div>
+            <div class="equipped-item">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="slot first-column" id="ring-slot">
+          <div class="item-container">
+            <div class="default-image">
+              <img src="sprites/objects/ring.png" alt="Default Ring" width="75" height="75">
+            </div>
+            <div class="equipped-item">
+            </div>
+          </div>
+        </div>
+        <div class="slot second-column" id="legs-slot">
+          <div class="item-container">
+            <div class="default-image">
+              <img src="sprites/objects/legs.png" alt="Default Legs" width="75" height="75">
+            </div>
+            <div class="equipped-item">
+            </div>
+          </div>
+        </div>
+        <div class="slot third-column" id="other-ring-slot">
+          <div class="item-container">
+            <div class="default-image">
+              <img src="sprites/objects/ring.png" alt="Default Other Ring" width="75" height="75">
+            </div>
+            <div class="equipped-item">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="slot" id="boots-slot">
+          <div class="item-container">
+            <div class="default-image">
+              <img src="sprites/objects/boots.png" alt="Default Boots" width="75" height="75">
+            </div>
+            <div class="equipped-item">
+            </div>
+          </div>
+        </div>
+      </div>          
+    </div>         
   </div>
-</li> 
+</li>
+
 </ul>
 </div>
 <div id="bottom" class ="left">
@@ -249,6 +348,7 @@
     <script src="inventory.js"></script>
     <script src="backpack.js"></script>
     <script src="quests.js"></script>
+    <script src="objects.js"></script>
     <script>
       window.onload = function() {
         var items = document.querySelectorAll('#left .item a.btn, #right .item a.btn');

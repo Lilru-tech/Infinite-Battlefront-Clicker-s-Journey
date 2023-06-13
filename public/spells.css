@@ -64,3 +64,8 @@
     position: absolute;
     animation: dropdown-effect 2s linear forwards;
   }  
+
+  .rootedMessage{
+    position: absolute;
+    animation: dropdown-effect 2s linear forwards;
+  }  

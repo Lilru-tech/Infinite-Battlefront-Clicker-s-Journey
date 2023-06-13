@@ -36,7 +36,7 @@ function calculateSpellEffect() {
 const spellsItems = [
     {
       name: 'Luminura',
-      description: 'It heals you a bit of health points, depending on your Magic level',
+      description: 'Harness the gentle glow of divine light. Restore a modest amount of health, rejuvenating your body and rekindling hope in times of need.',
       spellType: 'health',
       price: 100,
       level: 2,
@@ -76,7 +76,7 @@ const spellsItems = [
     },
     {
         name: 'Mediura',
-        description: 'It heals you a bit of health points, depending on your Magic level',
+        description: 'Channel the healing energies of the arcane. Infuse yourself with revitalizing power, mending wounds and restoring vitality to embark on your heroic journey.',
         spellType: 'health',
         price: 100,
         level: 3,
@@ -117,7 +117,7 @@ const spellsItems = [
         },
         {
             name: 'Levitori',
-            description: 'It heals you a bit of health points, depending on your Magic level',
+            description: 'Unleash a powerful strike, harnessing your knightly strength. Crush foes with a mighty blow and emerge as a champion of justice',
             spellType: 'attack',
             price: 100,
             level: 3,
@@ -155,7 +155,7 @@ const spellsItems = [
           },
           {
             name: 'Ignisori',
-            description: 'It ignites the monster, causing damage every 2 seconds, depending on your Magic level',
+            description: 'Set enemies ablaze with fiery fury. Engulf your foes in relentless flames, scorching them turn after turn. Burn, conquer, and leave nothing but ashes in your wake.',
             spellType: 'attack',
             price: 100,
             level: 4,
@@ -203,7 +203,7 @@ const spellsItems = [
           },
           {
             name: 'Lumito',
-            description: 'It heals you a bit of health points, depending on your Magic level',
+            description: 'Unleash the power within. Tap into your hidden potential, amplifying your skills by 5 points. Become an unstoppable force, surpassing all limitations with newfound mastery.',
             spellType: 'attack',
             price: 100,
             level: 5,
@@ -213,23 +213,12 @@ const spellsItems = [
             coolDown: 60,
             onCooldown: false,
             spellEffect: () => {
-              let attackSpellAmount;
-              attackSpellAmount = calculateSpellEffect();
-              currentMonsterHealth -= attackSpellAmount;
-              if (currentMonsterHealth<= 0){
-                defeatMonster();
-              }
-              updateHealthBar();
-            
-              // Increase skills by 5
               swordSkill += 5;
               crossBowSkill += 5;
               wandSkill += 5;
               bowSkill += 5;
               axeSkill += 5;
               rodSkill += 5;
-          
-              // After 1 minute, decrease the skills by 5 again
               setTimeout(() => {
                 swordSkill -= 5;
                 crossBowSkill -= 5;
@@ -238,7 +227,28 @@ const spellsItems = [
                 axeSkill -= 5;
                 rodSkill -= 5;
               }, 20000);
-          
+            }
+          },
+          {
+            name: 'Sacrum Hastam',
+            description: 'Holy Spear of Radiance: Channel divine energy to pierce darkness, dealing devastating damage. Vanquish evil with righteous might.',
+            spellType: 'attack',
+            price: 100,
+            level: 5,
+            vocation: ['Holy Paladin', 'Elder Elf'],
+            manaCost: 45,
+            image: 'smallAttackDistance.png',
+            coolDown: 4,
+            onCooldown: false,
+            spellEffect: () => {
+              let attackSpellAmount;
+              attackSpellAmount = Math.round((calculateSpellEffect())*1.4);
+              currentMonsterHealth -= attackSpellAmount;
+              if (currentMonsterHealth<= 0){
+                defeatMonster();
+              }
+              updateHealthBar();
+            
               if (isSpellDamageEnabled) {
                 const randomX = Math.random();
                 const randomY = Math.random();
@@ -256,7 +266,83 @@ const spellsItems = [
                 }, animationDuration * 1000);
               }
             }
-          }            
+          },
+          {
+            name: 'Terrafirmus',
+            description: 'Terrafirmus is a powerful spell that harnesses the earth\'s essence to bind and immobilize the targeted monster, rendering it rooted to the ground. The roots emerge from the earth, entangling the creature and restricting its movement, disabling its attacks for 5 turns.',
+            spellType: 'root',
+            price: 100,
+            level: 5,
+            vocation: ['Archmage', 'Archdruid'],
+            manaCost: 70,
+            image: 'smallRooting.png',
+            coolDown: 45,
+            onCooldown: false,
+            spellEffect: () => {
+              const disableAttackTurns = 5;
+              // Set the disableAttackTurns to the desired duration
+              
+              // Store the original attack values of the monster, boss, and grand boss
+              const originalMonsterAttack = monsterAttack;
+              const originalBossAttack = bossAttack;
+              const originalGrandBossAttack = grandBossAttack;
+              
+              // Set the attack values to 0 for the specified number of turns
+              monsterAttack = 0;
+              bossAttack = 0;
+              grandBossAttack = 0;
+              
+              if (isSpellDamageEnabled) {
+                const randomX = Math.random();
+                const randomY = Math.random();
+                const rootedMessage = document.createElement('span');
+                rootedMessage.classList.add('rootedMessage');
+                rootedMessage.textContent = 'Rooted!';
+                rootedMessage.style.top = `calc(${randomY} * 100%)`;
+                rootedMessage.style.left = `calc(${randomX} * 100%)`;
+                const gameContainer = document.getElementById('game-container');
+                gameContainer.appendChild(rootedMessage);
+                const animationDuration = 6;
+                rootedMessage.style.animationDuration = `${animationDuration}s`;
+                setTimeout(() => {
+                  monsterAttack = originalMonsterAttack;
+                  bossAttack = originalBossAttack;
+                  grandBossAttack = originalGrandBossAttack;
+                  rootedMessage.remove();
+                }, disableAttackTurns * 1000);
+              }
+            }                       
+          },
+          {
+            name: 'Essentia Amplifica',
+            description: 'Essentia Amplifica is a potent spell that channels the raw essence of magic, enhancing the healing and mana restoration capabilities of the caster. For a duration of 10 seconds, the healing and mana rates are multiplied by 3.',
+            spellType: 'health',
+            price: 100,
+            level: 10,
+            vocation: ['Elite Knight', 'Royal Paladin', 'Warlord', 'Elder Elf', 'Archmage', 'Archdruid'],
+            manaCost: 70,
+            image: 'smallHealEnhancement.png',
+            coolDown: 100,
+            onCooldown: false,
+            spellEffect: () => {
+              const duration = 15; // Duration in seconds
+              
+              // Store the original healing and mana rates
+              const originalHealingRate = healingRates[selectedVocation].healthRate;
+              const originalManaRate = manaRates[selectedVocation].manaRate;
+              
+              // Multiply the rates by 3
+              healingRates[selectedVocation].healthRate *= 4;
+              manaRates[selectedVocation].manaRate *= 4;
+              
+              // Restore the original rates after the duration
+              setTimeout(() => {
+                healingRates[selectedVocation].healthRate = originalHealingRate;
+                manaRates[selectedVocation].manaRate = originalManaRate;
+              }, duration * 1000);
+            }                                  
+          }
+                       
     ];
 
   const spellsContainer = {

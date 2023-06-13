@@ -96,9 +96,9 @@ const shopStatsItems = [
     {
       name: 'Small Health Potion',
       description: 'It heals you 100 health points',
-      itemType: 'smallHealth',
+      itemType: 'smallHealthpotion',
       price: 100,
-      img: 'sprites/objects/smallHealthPotion.png',
+      consumable: true,
       effect: function(){
         healPlayerPotion(100);
         updatePlayerHealthBar();
@@ -107,9 +107,9 @@ const shopStatsItems = [
     {
       name: 'Small Mana Potion',
       description: 'It recovers you 100 mana points',
-      itemType: 'smallMana',
+      itemType: 'smallManapotion',
       price: 100,
-      img: 'sprites/objects/smallManaPotion.png',
+      consumable: true,
       effect: function(){
         manaPlayerPotion(100);
         updatePlayerManaBar();
@@ -118,9 +118,9 @@ const shopStatsItems = [
     {
       name: 'Medium Health Potion',
       description: 'It heals you 250 health points',
-      itemType: 'mediumHealth',
+      itemType: 'mediumHealthpotion',
       price: 300,
-      img: 'sprites/objects/mediumHealthPotion.png',
+      consumable: true,
       effect: function(){
         healPlayerPotion(250);
         updatePlayerHealthBar();
@@ -129,9 +129,9 @@ const shopStatsItems = [
     {
       name: 'Medium Mana Potion',
       description: 'It recovers you 250 mana points',
-      itemType: 'mediumMana',
+      itemType: 'mediumManapotion',
       price: 300,
-      img: 'sprites/objects/mediumManaPotion.png',
+      consumable: true,
       effect: function(){
         manaPlayerPotion(250);
         updatePlayerManaBar();
@@ -140,9 +140,9 @@ const shopStatsItems = [
     {
       name: 'Great Health Potion',
       description: 'It heals you 500 health points',
-      itemType: 'greatHealth',
+      itemType: 'greatHealthpotion',
       price: 750,
-      img: 'sprites/objects/greatHealthPotion.png',
+      consumable: true,
       effect: function(){
         healPlayerPotion(500);
         updatePlayerHealthBar();
@@ -151,9 +151,9 @@ const shopStatsItems = [
     {
       name: 'Great Mana Potion',
       description: 'It recovers you 500 mana points',
-      itemType: 'greatMana',
+      itemType: 'greatManapotion',
       price: 750,
-      img: 'sprites/objects/greatManaPotion.png',
+      consumable: true,
       effect: function(){
         manaPlayerPotion(500);
         updatePlayerManaBar();
@@ -161,74 +161,83 @@ const shopStatsItems = [
     }
   ];
   
+  function addItemToBackpack(item) {
+    let sameItemSlot = Array.from(document.getElementsByClassName('backpack-slot')).find(slot => {
+      let child = slot.firstChild;
+      return child && child.dataset.itemType === item.itemType && parseInt(child.dataset.count, 10) < 100;
+    });
+  
+    if (sameItemSlot) {
+      let itemImg = sameItemSlot.firstChild;
+      let itemCount = sameItemSlot.getElementsByClassName('item-count')[0];
+      let count = parseInt(itemImg.dataset.count, 10);
+      itemImg.dataset.count = count + 1;
+      itemCount.textContent = count + 1;
+    } else {
+      let emptySlot = Array.from(document.getElementsByClassName('backpack-slot')).find(slot => !slot.firstChild);
+      if (emptySlot) {
+        let itemImg = document.createElement('img');
+        itemImg.src = 'sprites/objects/' + item.itemType + '.png';
+        itemImg.dataset.count = 1;
+        itemImg.dataset.itemType = item.itemType;
+        itemImg.width = 75;
+        itemImg.height = 75;
+        if (!item.consumable) {
+          itemImg.title = `${item.name}\nAttack: ${item.attack}\nDefense: ${item.defense}\n${item.objectEffect}`;
+          itemImg.onclick = () => {
+              console.log("No consumable");
+              addToInventory(item, emptySlot);
+          };
+      } else {
+          itemImg.title = item.name;
+          const originalEffect = originalEffects.get(item.itemType);
+          if (originalEffect) {
+              itemImg.onclick = () => {
+                  console.log("Consumable");
+                  originalEffect();
+                  let count = parseInt(itemImg.dataset.count, 10);
+                  if (count > 1) {
+                      itemImg.dataset.count = count - 1;
+                      itemCount.textContent = count - 1;
+                  } else {
+                      emptySlot.removeChild(itemCount);
+                      emptySlot.removeChild(itemImg);
+                  }
+              };
+          } else {
+              console.log(`No effect found for itemType: ${item.itemType}`);
+          }
+      }      
+        emptySlot.appendChild(itemImg);
+  
+        let itemCount = document.createElement('span');
+        itemCount.className = 'item-count';
+        itemCount.textContent = '1';
+        emptySlot.appendChild(itemCount);
+      }
+    }
+  }
+
   let originalEffects = new Map();
   shopItemsItems.forEach((item) => {
       if (typeof item.effect === 'function') {
           originalEffects.set(item.itemType, item.effect);
-          item.effect = () => addPotionToBackpack(item); // Overwrite the effect here
+          item.effect = () => addItemToBackpack(item); // Overwrite the effect here
       } else {
           console.log(`Effect not found or not a function for itemType: ${item.itemType}`);
       }
   });
-  
-  function addPotionToBackpack(item) {
-    let sameItemSlot = Array.from(document.getElementsByClassName('backpack-slot')).find(slot => {
-        let child = slot.firstChild;
-        return child && child.dataset.itemType === item.itemType && parseInt(child.dataset.count, 10) < 100;
-    });
-  
-    if (sameItemSlot) {
-        let itemImg = sameItemSlot.firstChild;
-        let itemCount = sameItemSlot.getElementsByClassName('item-count')[0];
-        let count = parseInt(itemImg.dataset.count, 10);
-        itemImg.dataset.count = count + 1;
-        itemCount.textContent = count + 1;
-    } else {
-        // find first empty slot
-        let emptySlot = Array.from(document.getElementsByClassName('backpack-slot')).find(slot => !slot.firstChild);
-        if (emptySlot) {
-            let itemImg = document.createElement('img');
-            itemImg.src = item.img;
-            itemImg.dataset.count = 1;
-            itemImg.dataset.itemType = item.itemType;
-            itemImg.width = 50;
-            itemImg.height = 50;
-            itemImg.title = item.name;
-            const originalEffect = originalEffects.get(item.itemType);
-            if (originalEffect) {
-              itemImg.onclick = () => {
-                originalEffect();
-                let count = parseInt(itemImg.dataset.count, 10);
-                if (count > 1) {
-                  itemImg.dataset.count = count - 1;
-                  itemCount.textContent = count - 1;
-                } else {
-                  emptySlot.removeChild(itemCount);
-                  emptySlot.removeChild(itemImg);
-                }
-              };
-            } else {
-              console.log(`No effect found for itemType: ${item.itemType}`);
-            }
-            emptySlot.appendChild(itemImg);
-  
-            let itemCount = document.createElement('span');
-            itemCount.className = 'item-count';
-            itemCount.textContent = '1';
-            emptySlot.appendChild(itemCount);
-        }
-    }
-}
-  
+    
+  const shopItems = {
+    element: document.getElementById('shopItems'),
+    items: shopItemsItems
+  }; 
+
 const shopStats = {
     element: document.getElementById('shopStats'),
     items: shopStatsItems
   };
-  
-  const shopItems = {
-    element: document.getElementById('shopItems'),
-    items: shopItemsItems
-  };  
+   
   
   function generateShopStatsItems() {
     const shopList = document.createElement('ul');
@@ -300,7 +309,7 @@ const shopStats = {
   }
 
   function purchaseItem(item) {
-    addPotionToBackpack(item);
+    addItemToBackpack(item);
   }  
 
   function generateShopItemsItems() {
